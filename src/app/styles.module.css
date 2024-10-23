@@ -1,0 +1,18 @@
+.gridContainer {
+    box-sizing: border-box;
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    gap: 1px;
+    transition: grid-template-columns 0.2s ease-out, grid-template-rows 0.2s ease-out;
+}
+
+.gridItem {
+    background-color: #000; /* Black background */
+    color: #606060;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
