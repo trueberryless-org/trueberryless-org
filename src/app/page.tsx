@@ -21,9 +21,9 @@ export default function Home() {
     const effectStrength = 0.2; // Strength of the resizing effect
     const exponentialFactor = 1.5; // Exponent for scaling
 
-    const resetRef = useRef(null); // Reference for reset timer
+    const resetRef = useRef<any>(null); // Reference for reset timer
 
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: { clientX: any; clientY: any }) => {
         clearTimeout(resetRef.current); // Clear the timer on mouse move
 
         const mouseX = e.clientX; // Relative to viewport
