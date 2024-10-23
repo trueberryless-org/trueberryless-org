@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: trueberryless-org
-    namespace: trueberryless-org
-    labels:
-        app: trueberryless-org
+  name: trueberryless-org
+  namespace: trueberryless-org
+  labels:
+    app: trueberryless-org
 spec:
-    replicas: 3
-    selector:
-        matchLabels:
-            app: trueberryless-org
-    template:
-        metadata:
-            labels:
-                app: trueberryless-org
-        spec:
-            containers:
-                - name: trueberryless-org
-                  image: "trueberryless/trueberryless-org:main-5bf6b6c0261a73bd9fff5a155eff6823a5fa1822"
-                  imagePullPolicy: Always
-                  ports:
-                      - containerPort: 3000
+  replicas: 3
+  selector:
+    matchLabels:
+      app: trueberryless-org
+  template:
+    metadata:
+      labels:
+        app: trueberryless-org
+    spec:
+      containers:
+        - name: trueberryless-org
+          image: "trueberryless/trueberryless-org:main-be27190c8ada4304028f498ec90707826c37941d"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
