@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: trueberryless-org
+    namespace: trueberryless-org
+spec:
+    rules:
+        - host: trueberryless-org.trueberryless.org
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: trueberryless-org
+                            port:
+                                number: 80
+
+    tls:
+        - hosts:
+              - trueberryless-org.trueberryless.org
+          secretName: trueberryless-org
