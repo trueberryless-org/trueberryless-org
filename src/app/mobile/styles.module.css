@@ -1,0 +1,77 @@
+:root {
+    --background-color: #e8f6f3;
+    --text-color: #2c3e50;
+    --link-color: #9b180d;
+    --accent-color: #f498db;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #1a332e;
+        --text-color: #e0f2f1;
+        --link-color: #4ecca3;
+        --accent-color: #e08f4e;
+    }
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: "JetBrains Mono Variable", monospace;
+    cursor: default;
+    user-select: none;
+}
+
+main {
+    color: var(--text-color);
+    max-width: 80ch;
+    padding: 1em 1.25em;
+    margin: 0 auto;
+}
+
+h1 {
+    font-weight: 800;
+    font-size: 2.5em;
+}
+
+h2 {
+    font-weight: 800;
+    font-size: 2em;
+}
+
+h3 {
+    font-weight: 800;
+    font-size: 1.5em;
+}
+
+ul {
+    padding-inline-start: 1em;
+}
+
+li {
+    line-height: 1.6;
+    text-wrap: balance;
+}
+
+a {
+    color: var(--link-color);
+    transition: color 0.3s ease;
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+@media (max-width: 400px) {
+    h1 {
+        font-size: 2em;
+    }
+    h2 {
+        font-size: 1.5em;
+    }
+    h3 {
+        font-size: 1em;
+    }
+}
