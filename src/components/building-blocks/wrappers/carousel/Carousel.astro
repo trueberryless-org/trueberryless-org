@@ -1,0 +1,337 @@
+---
+import Button from "@core-elements/button/Button.astro";
+import CarouselSlide from "./CarouselSlide.astro";
+import { slugifyLabel } from "@components/utils/slugify";
+
+type SlideProps = Record<string, unknown>;
+
+const {
+  slides = [],
+  autoPlay = false,
+  autoScroll = false,
+  showIndicators = true,
+  showArrows = true,
+  loop = true,
+  align = "center",
+  slidesToScroll = "auto",
+  slideWidthPercent = 100,
+  minSlideWidth = 0,
+  style = "",
+  label,
+  "data-children-prop": childrenDataProp,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+if (!htmlAttributes.id && label) {
+  htmlAttributes.id = slugifyLabel(label);
+}
+
+const dataAttributes: Record<string, string> = {};
+
+dataAttributes["data-show-indicators"] = String(showIndicators);
+dataAttributes["data-show-arrows"] = String(showArrows);
+dataAttributes["data-loop"] = String(loop);
+dataAttributes["data-align"] = String(align);
+dataAttributes["data-slides-to-scroll"] = String(slidesToScroll);
+
+if (autoPlay) {
+  dataAttributes["data-autoplay"] = "3";
+}
+
+if (autoScroll) {
+  dataAttributes["data-autoscroll"] = "1";
+  dataAttributes["data-show-indicators"] = "false";
+  dataAttributes["data-show-arrows"] = "false";
+}
+
+const effectiveChildrenProp = childrenDataProp ?? (useDefaultEditableBinding ? "slides" : null);
+const arrayDataAttributes = effectiveChildrenProp
+  ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
+  : {};
+
+const carouselClasses = "carousel";
+
+// Build the style attribute, merging custom styles with CSS variables
+const carouselStyles = `
+  --slide-width: ${slideWidthPercent}%;
+  --min-slide-width: ${minSlideWidth}px;
+  ${style}
+`.trim();
+
+const hasSlides = slides?.length > 0;
+const hasSlotContent = Astro.slots.has("default");
+
+if (!_component && !hasSlides && !hasSlotContent) return;
+---
+
+<section
+  class:list={carouselClasses}
+  role="region"
+  aria-label="Carousel"
+  {...htmlAttributes}
+>
+  <div
+    class="carousel-inner"
+    style={carouselStyles}
+    {...dataAttributes}
+  >
+    <div class="viewport">
+      <div
+        class="track"
+        {...arrayDataAttributes}
+      >
+        <slot>
+          {
+            slides?.map((slide: SlideProps, index: number) => (
+              <CarouselSlide
+                {...slide}
+                data-editable="array-item"
+                data-id="building-blocks/wrappers/carousel/carousel-slide"
+                useDefaultEditableBinding={!!effectiveChildrenProp}
+                aria-label={`Slide ${index + 1} of ${slides.length}`}
+              />
+            ))
+          }
+        </slot>
+      </div>
+    </div>
+
+    <div class="controls-wrapper">
+      <Button
+        iconName="arrow-left"
+        size="md"
+        variant="tertiary"
+        hideText={true}
+        aria-label="Previous slide"
+        class="prev"
+        element="button"
+      />
+
+      <div class="indicators"></div>
+
+      <Button
+        iconName="arrow-right"
+        size="md"
+        variant="tertiary"
+        hideText={true}
+        aria-label="Next slide"
+        class="next"
+        element="button"
+      />
+    </div>
+  </div>
+</section>
+
+<script>
+  import EmblaCarousel from "embla-carousel";
+  import AutoScroll from "embla-carousel-auto-scroll";
+  import Autoplay from "embla-carousel-autoplay";
+  import { onPageLoad } from "@component-utils/onPageLoad";
+
+  function setupCarousels() {
+    const carousels = document.querySelectorAll(".carousel");
+
+    carousels.forEach((carousel) => {
+      if (carousel.hasAttribute("data-embla-initialized")) {
+        return;
+      }
+
+      const inner = carousel.querySelector(".carousel-inner");
+      const viewport = inner?.querySelector(".viewport") as HTMLElement;
+      const track = viewport?.querySelector(".track");
+      const slides = track?.querySelectorAll(".slide");
+      const controlsWrapper = inner?.querySelector(".controls-wrapper");
+      const indicatorsContainer = controlsWrapper?.querySelector(".indicators");
+
+      if (!inner || !viewport || !track || !slides || !slides.length) {
+        console.warn("Carousel: Missing required elements");
+        return;
+      }
+
+      const loop = inner.hasAttribute("data-loop");
+      const slidesToScroll = inner.hasAttribute("data-slides-to-scroll")
+        ? Number(inner.getAttribute("data-slides-to-scroll")) || "auto"
+        : "auto";
+      const alignAttr = inner.getAttribute("data-align");
+      const align =
+        alignAttr === "start" || alignAttr === "center" || alignAttr === "end"
+          ? (alignAttr as "start" | "center" | "end")
+          : "start";
+
+      const plugins = [];
+      if (inner.hasAttribute("data-autoplay")) {
+        const autoplayInterval = Number(inner.getAttribute("data-autoplay")) * 1000 || 3000;
+        plugins.push(Autoplay({ delay: autoplayInterval, stopOnInteraction: false }));
+      }
+
+      let watchDrag = true;
+      if (inner.hasAttribute("data-autoscroll")) {
+        const scrollValue = parseFloat(inner.getAttribute("data-autoscroll") || "1");
+        const speed = isNaN(scrollValue) ? 1 : scrollValue;
+        plugins.push(AutoScroll({ speed }));
+        watchDrag = false;
+      }
+
+      const embla = EmblaCarousel(
+        viewport,
+        {
+          loop,
+          slidesToScroll,
+          align,
+          watchDrag,
+          duration: 20,
+          startIndex: 0,
+          skipSnaps: false,
+          inViewThreshold: 0.7,
+        },
+        plugins
+      );
+
+      carousel.setAttribute("data-embla-initialized", "true");
+
+      const prevButton = inner.querySelector(".prev > .button-inner") as HTMLButtonElement;
+      const nextButton = inner.querySelector(".next > .button-inner") as HTMLButtonElement;
+
+      if (prevButton) {
+        prevButton.style.borderRadius = "9999px";
+      }
+      if (nextButton) {
+        nextButton.style.borderRadius = "9999px";
+      }
+
+      const updateButtons = () => {
+        if (prevButton) prevButton.disabled = !embla.canScrollPrev();
+        if (nextButton) nextButton.disabled = !embla.canScrollNext();
+      };
+
+      updateButtons();
+      embla.on("select", updateButtons);
+      if (prevButton) prevButton.addEventListener("click", () => embla.scrollPrev());
+      if (nextButton) nextButton.addEventListener("click", () => embla.scrollNext());
+
+      // Setup indicators
+      if (indicatorsContainer) {
+        const renderDots = () => {
+          indicatorsContainer.innerHTML = "";
+          embla.scrollSnapList().forEach((_, index) => {
+            const dot = document.createElement("button");
+            dot.className = "indicator";
+            dot.setAttribute("type", "button");
+            dot.setAttribute("aria-label", `Go to position ${index + 1}`);
+            dot.setAttribute("data-selected", (index === embla.selectedScrollSnap()).toString());
+            dot.setAttribute("aria-selected", (index === embla.selectedScrollSnap()).toString());
+            dot.addEventListener("click", () => embla.scrollTo(index));
+            indicatorsContainer.appendChild(dot);
+          });
+        };
+
+        const updateSelectedDot = () => {
+          indicatorsContainer.querySelectorAll(".indicator").forEach((dot, index) => {
+            const isSelected = index === embla.selectedScrollSnap();
+            dot.setAttribute("data-selected", isSelected.toString());
+            dot.setAttribute("aria-selected", isSelected.toString());
+          });
+        };
+
+        embla.on("select", updateSelectedDot);
+        embla.on("reInit", renderDots);
+        renderDots();
+      }
+    });
+  }
+
+  onPageLoad(setupCarousels);
+</script>
+
+<style>
+  @layer components {
+    .carousel {
+      margin-top: var(--spacing-lg);
+      width: 100%;
+
+      > .carousel-inner {
+        position: relative;
+        --slide-width: 100%;
+        --min-slide-width: 0px;
+
+        > .viewport {
+          overflow: hidden;
+          position: relative;
+          width: 100%;
+        }
+
+        > .viewport > .track {
+          display: flex;
+          flex-wrap: nowrap;
+
+          > :global(.slide) {
+            flex-basis: calc(max(var(--slide-width, 100%), var(--min-slide-width, 0px)));
+            flex-shrink: 0;
+            width: 100%;
+          }
+        }
+
+        > .controls-wrapper {
+          align-items: center;
+          display: flex;
+          gap: var(--spacing-md);
+          justify-content: center;
+          margin-bottom: var(--spacing-sm);
+          margin-top: var(--spacing-sm);
+        }
+
+        > .controls-wrapper > :global(.prev) > :global(.button-inner),
+        > .controls-wrapper > :global(.next) > :global(.button-inner) {
+          background-color: var(--color-bg);
+          border-radius: 9999px;
+          flex-shrink: 0;
+          pointer-events: auto;
+
+          &:hover {
+            background-color: var(--color-bg-surface);
+          }
+        }
+
+        > .controls-wrapper > .indicators {
+          display: flex;
+          gap: var(--spacing-sm);
+          justify-content: center;
+        }
+
+        > .controls-wrapper > .indicators > :global(.indicator) {
+          aspect-ratio: 1/1;
+          border: none;
+          border-radius: var(--radius-full);
+          cursor: pointer;
+          min-height: 0;
+          min-width: 0;
+          padding: 0;
+          transition:
+            transform var(--animation-normal) ease,
+            background-color var(--animation-normal) ease;
+          width: 8px;
+
+          &[data-selected="true"] {
+            background-color: var(--color-brand-muted);
+            transform: scale(1.2);
+          }
+        }
+
+        &[data-show-indicators="false"] {
+          > .controls-wrapper > .indicators {
+            display: none;
+          }
+        }
+
+        &[data-show-arrows="false"] {
+          > .controls-wrapper > :global(.prev),
+          > .controls-wrapper > :global(.next) {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+</style>

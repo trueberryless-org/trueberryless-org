@@ -1,0 +1,151 @@
+label:
+  type: text
+  comment: Optional label for the custom section to help identify it in the editor.
+contentSections:
+  type: array
+  comment: Array of content sections to render within the custom section.
+  options:
+    structures: _structures.containerSections
+maxContentWidth:
+  type: select
+  comment: Maximum width constraint for the content.
+  options:
+    values:
+      - id: xs
+        name: Extra Small
+      - id: sm
+        name: Small
+      - id: md
+        name: Medium
+      - id: lg
+        name: Large
+      - id: xl
+        name: Extra Large
+      - id: 2xl
+        name: 2xl
+      - id: 3xl
+        name: 3xl
+paddingHorizontal:
+  type: select
+  comment: Horizontal padding applied to the custom section content.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: xs
+        name: Extra Small
+      - id: sm
+        name: Small
+      - id: md
+        name: Medium
+      - id: lg
+        name: Large
+      - id: xl
+        name: Extra Large
+      - id: 2xl
+        name: 2xl
+      - id: 3xl
+        name: 3xl
+paddingVertical:
+  type: select
+  comment: Vertical padding applied to the custom section content.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: xs
+        name: Extra Small
+      - id: sm
+        name: Small
+      - id: md
+        name: Medium
+      - id: lg
+        name: Large
+      - id: xl
+        name: Extra Large
+      - id: 2xl
+        name: 2xl
+      - id: 3xl
+        name: 3xl
+colorScheme:
+  type: select
+  comment: Color scheme theme for the custom section.
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+backgroundColor:
+  type: select
+  comment: Background color for the custom section.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight
+backgroundImage:
+  type: object
+  comment: Background image configuration for the custom section.
+  options:
+    preview:
+      icon: image
+      text:
+        - key: alt
+        - Background Image
+      subtext:
+        - key: source
+        - Add an image source
+      image:
+        - key: source
+backgroundImage.source:
+  comment: URL or path to the background image.
+  type: image
+  options:
+    paths:
+      uploads: src/assets/images
+      static: ""
+    resize_style: contain
+    width: 1920
+    height: 1280
+backgroundImage.alt:
+  comment: Alt text for the background image.
+  type: textarea
+backgroundImage.positionVertical:
+  comment: Vertical position of the background image.
+  type: select
+  options:
+    values:
+      - id: top
+        name: Top
+      - id: center
+        name: Center
+      - id: bottom
+        name: Bottom
+backgroundImage.positionHorizontal:
+  comment: Horizontal position of the background image.
+  type: select
+  options:
+    values:
+      - id: left
+        name: Left
+      - id: center
+        name: Center
+      - id: right
+        name: Right
+rounded:
+  type: switch
+  comment: Whether to apply rounded corners to the custom section.
+useDefaultEditableBinding:
+  type: switch
+  comment: Whether the custom section should use its default editable bindings.
+  hidden: true

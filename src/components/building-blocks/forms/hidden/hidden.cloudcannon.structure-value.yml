@@ -1,0 +1,19 @@
+label: Hidden
+icon: eye-slash
+description: Hidden form field for storing data.
+value:
+  _component: building-blocks/forms/hidden
+  name: ""
+  value: ""
+preview:
+  text:
+    - Hidden
+  subtext:
+    - key: text
+    - ""
+  icon: eye-slash
+picker_preview:
+  text: Hidden
+  subtext: Hidden form field for storing data.
+_inputs_from_glob:
+  - /src/components/building-blocks/forms/hidden/hidden.cloudcannon.inputs.yml

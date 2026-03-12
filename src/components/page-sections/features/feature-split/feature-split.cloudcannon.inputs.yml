@@ -1,0 +1,86 @@
+eyebrow:
+  type: text
+  comment: Optional eyebrow text displayed above the heading.
+heading:
+  type: text
+  comment: Main heading for the split section.
+subtext:
+  type: markdown
+  comment: Supporting body copy beneath the heading.
+  options:
+    blockquote: false
+    bold: true
+    format:
+    italic: true
+    link: true
+    strike: false
+    subscript: true
+    superscript: true
+    underline: false
+    bulletedlist: false
+    numberedlist: false
+buttonSections:
+  type: array
+  comment: Calls-to-action shown beneath the copy block.
+  options:
+    structures: _structures.buttonSections
+imageSource:
+  type: image
+  comment: Optional image displayed above the feature list.
+  options:
+    paths:
+      uploads: src/assets/images
+      static: ""
+    resize_style: contain
+    width: 1920
+    height: 1280
+imageAlt:
+  type: text
+  comment: Alt text describing the image content.
+imageAspectRatio:
+  type: select
+  comment: Aspect ratio applied to the image.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: portrait
+        name: Portrait
+      - id: square
+        name: Square
+      - id: landscape
+        name: Landscape
+      - id: widescreen
+        name: Widescreen
+imageRounded:
+  type: switch
+  comment: Toggles rounded corners on the image.
+reverse:
+  type: switch
+  comment: Flips the layout so the feature list appears before the copy.
+colorScheme:
+  type: select
+  comment: Color scheme theme applied to the section wrapper.
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+backgroundColor:
+  type: select
+  comment: Background color for the section.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

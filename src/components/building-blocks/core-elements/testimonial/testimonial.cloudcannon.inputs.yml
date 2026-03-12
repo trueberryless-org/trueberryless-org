@@ -1,0 +1,40 @@
+text:
+  type: markdown
+  comment: Quotation marks will be added around the text.
+  options:
+    blockquote: false
+    bold: true
+    format:
+    italic: true
+    link: true
+    strike: false
+    subscript: true
+    superscript: true
+    underline: false
+    bulletedlist: false
+    numberedlist: false
+authorName:
+  comment: The person to whom you're attributing the quotation.
+  type: textarea
+authorDescription:
+  comment: The role or company of the person.
+  type: textarea
+authorImage:
+  comment: The image of the author.
+  type: image
+  options:
+    paths:
+      uploads: src/assets/images
+      static: ""
+    resize_style: contain
+    width: 1920
+    height: 1280
+alignX:
+  comment: The horizontal alignment of the testimonial.
+  type: select
+  options:
+    values:
+      - id: start
+        name: Start
+      - id: center
+        name: Center

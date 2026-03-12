@@ -1,0 +1,40 @@
+type:
+  type: select
+  options:
+    values:
+      - id: youtube
+        name: YouTube
+      - id: vimeo
+        name: Vimeo
+      - id: local-source
+        name: Local Source
+title:
+  type: text
+  comment: Used for externally hosted videos - The video title provides accessibility information for assistive technologies (like screen readers) and can display a tooltip when a user hovers over the video.
+id:
+  type: text
+  comment: Used for externally hosted videos - Enter the YouTube or Vimeo id.
+source:
+  type: file
+  label: Video Source
+  comment: Used for locally hosted videos - Must be mp4 as this is supported by all modern browsers.
+  options:
+    accepts_mime_types:
+      - video/mp4
+    paths:
+      uploads: public/videos
+      static: public
+thumbnail:
+  type: image
+  comment: Used for locally hosted videos - The image displayed before the video plays or while it is loading.
+  options:
+    accepts_mime_types:
+      - image/jpeg
+      - image/png
+      - image/webp
+    paths:
+      uploads: public/images
+      static: public
+    resize_style: contain
+    width: 1920
+    height: 1280

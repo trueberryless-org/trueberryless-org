@@ -1,0 +1,83 @@
+eyebrow:
+  type: text
+  comment: Optional label displayed above the hero heading.
+heading:
+  type: text
+  comment: Main heading text for the hero section.
+subtext:
+  type: markdown
+  comment: Subtitle text displayed below the main heading.
+  options:
+    blockquote: false
+    bold: true
+    format:
+    italic: true
+    link: true
+    strike: false
+    subscript: true
+    superscript: true
+    underline: false
+    bulletedlist: false
+    numberedlist: false
+imageSource:
+  type: image
+  comment: Feature image to display alongside the hero content.
+  options:
+    paths:
+      uploads: src/assets/images
+      static: ""
+    resize_style: contain
+    width: 1920
+    height: 1280
+imageAlt:
+  type: text
+  comment: Alt text for the feature image for accessibility.
+imageAspectRatio:
+  type: select
+  comment: Set a fixed aspect ratio for the image.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: square
+        name: Square (1:1)
+      - id: landscape
+        name: Landscape (4:3)
+      - id: portrait
+        name: Portrait (3:4)
+      - id: widescreen
+        name: Widescreen (16:9)
+buttonSections:
+  type: array
+  comment: Array of button components for call-to-action buttons. See the Button component documentation for more information.
+  options:
+    structures: _structures.buttonSections
+reverse:
+  type: switch
+  comment: Whether to reverse the order of content and image (image first, content second).
+colorScheme:
+  type: select
+  comment: Color scheme theme for the hero.
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+backgroundColor:
+  type: select
+  comment: Background color for the hero.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

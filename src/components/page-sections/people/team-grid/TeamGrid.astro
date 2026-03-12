@@ -1,0 +1,92 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import TeamItem from "@page-sections/people/team-grid/TeamItem.astro";
+import Grid from "@wrappers/grid/Grid.astro";
+
+type MemberProps = Record<string, unknown>;
+
+const {
+  eyebrow = "",
+  heading = "",
+  subtext = "",
+  teamMembers = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "4xl",
+  useDefaultEditableBinding = false,
+  _component,
+  class: className,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["team-grid", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <SimpleText
+    alignX="center"
+    class="eyebrow"
+    data-prop="eyebrow"
+    text={eyebrow}
+  />
+  <Heading
+    class="team-grid-heading"
+    level="h2"
+    size="lg"
+    alignX="center"
+    data-prop="heading"
+  >
+    {heading}
+  </Heading>
+  <SimpleText
+    class="team-grid-subtext"
+    size="md"
+    alignX="center"
+    data-prop="subtext"
+    text={subtext}
+  />
+  <Grid
+    class="team-grid-grid"
+    gap="md"
+    minItemWidth={260}
+    maxItemWidth={400}
+    data-children-prop="teamMembers"
+    layout="start"
+  >
+    {
+      teamMembers.map((member: MemberProps) => (
+        <TeamItem
+          data-id="page-sections/people/team-grid/team-item"
+          data-editable="array-item"
+          {...member}
+          class="team-grid-item"
+        />
+      ))
+    }
+  </Grid>
+</CustomSection>
+
+<style>
+  @layer page-sections {
+    :global(.team-grid-heading) {
+      margin-bottom: var(--spacing-sm);
+    }
+
+    :global(.team-grid-subtext) {
+      margin-top: 0;
+    }
+
+    :global(.team-grid-grid) {
+      margin-top: var(--spacing-xl);
+    }
+  }
+</style>

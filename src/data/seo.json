@@ -1,0 +1,8 @@
+{
+  "name": "Astro Component Starter",
+  "url": "https://example.com",
+  "description": "",
+  "logoSource": "/images/logo.svg",
+  "titleFormat": "{title} | Astro Component Starter",
+  "twitterHandle": "@yourusername"
+}

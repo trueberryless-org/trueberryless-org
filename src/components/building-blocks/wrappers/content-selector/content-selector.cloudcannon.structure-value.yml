@@ -1,0 +1,42 @@
+label: Content Selector
+icon: view_sidebar
+description: Lets users switch between different content panels using tabs.
+value:
+  _component: building-blocks/wrappers/content-selector
+  label: ""
+  items: []
+  navigationPosition: start
+preview:
+  text:
+    - Content Selector
+  subtext:
+    - key: label
+  icon: view_sidebar
+picker_preview:
+  text: Content Selector
+  subtext: Lets users switch between different content panels using tabs.
+_inputs_from_glob:
+  - /src/components/building-blocks/wrappers/content-selector/content-selector.cloudcannon.inputs.yml
+_structures:
+  contentSelectorItems:
+    values:
+      - label: Content Selector Item
+        icon: place_item
+        value:
+          title: Section Title
+          contentSections: []
+        preview:
+          text:
+            - key: title
+            - Content Selector Item
+          subtext:
+            - template: A content selector item containing {contentSections|array_length} content {"block"|pluralize=contentSections}
+            - Add content to the content selector item
+        _inputs:
+          title:
+            type: text
+            comment: The heading for the content panel.
+          contentSections:
+            type: array
+            options:
+              structures: _structures.contentSelectorSections

@@ -1,0 +1,87 @@
+---
+const {
+  name,
+  options = [],
+  title,
+  orientation = "vertical",
+  required = false,
+  multiple = false,
+  class: className,
+  useDefaultEditableBinding: _useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const inputType = multiple ? "checkbox" : "radio";
+const inputName = multiple ? `${name}[]` : name;
+---
+
+<fieldset
+  class:list={["choice-group", className]}
+  role={multiple ? "group" : "radiogroup"}
+  {...htmlAttributes}
+>
+  {
+    title && (
+      <legend class="legend">
+        {title}
+        {required && (
+          <span
+            class="choice-group-required"
+            aria-label="required"
+          >
+            *
+          </span>
+        )}
+      </legend>
+    )
+  }
+  <div class:list={["choice-group-options", `orientation-${orientation}`, multiple && "multiple"]}>
+    {
+      options.map((option, index) => (
+        <label class="choice-group-option">
+          <input
+            type={inputType}
+            name={inputName}
+            value={option.value}
+            checked={option.checked || false}
+            required={required && index === 0}
+            aria-required={required && index === 0}
+            class="choice-group-field"
+          />
+          <span class="choice-group-label-text">{option.label}</span>
+        </label>
+      ))
+    }
+  </div>
+</fieldset>
+
+<style>
+  @layer components {
+    .choice-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin: 0;
+      margin-bottom: var(--spacing-md);
+      padding: var(--spacing-md);
+      width: 100%;
+
+      .choice-group-required {
+        color: var(--color-error);
+        margin-inline-end: var(--spacing-em-xs);
+      }
+
+      > .choice-group-options {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+
+        &.orientation-horizontal {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+      }
+    }
+  }
+</style>

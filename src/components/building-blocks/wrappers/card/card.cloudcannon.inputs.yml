@@ -1,0 +1,161 @@
+label:
+  type: text
+  comment: Optional label for the card to help identify it in the editor.
+contentSections:
+  type: array
+  comment: Content inside the main area of the card, with padding.
+  options:
+    structures: _structures.cardSections
+beforeContentSections:
+  type: array
+  comment: Content that appears above the main card area, without padding.
+  hidden: "!showBeforeAfter"
+  options:
+    structures: _structures.cardSections
+afterContentSections:
+  type: array
+  comment: Content that appears below the main card area, without padding.
+  hidden: "!showBeforeAfter"
+  options:
+    structures: _structures.cardSections
+maxContentWidth:
+  type: select
+  comment: Maximum width constraint for the card content.
+  options:
+    values:
+      - id: xs
+        name: Extra Small
+      - id: sm
+        name: Small
+      - id: md
+        name: Medium
+      - id: lg
+        name: Large
+      - id: xl
+        name: Extra Large
+      - id: 2xl
+        name: 2xl
+      - id: 3xl
+        name: 3xl
+showBeforeAfter:
+  type: switch
+  label: Show Before / After Content Sections
+  comment: Whether to show the before/after content blocks used to add content outside the card's padding.
+paddingHorizontal:
+  type: select
+  comment: Horizontal padding applied to the card content.
+  options:
+    values:
+      - id: xs
+        name: Extra Small
+      - id: sm
+        name: Small
+      - id: md
+        name: Medium
+      - id: lg
+        name: Large
+      - id: xl
+        name: Extra Large
+      - id: 2xl
+        name: 2xl
+paddingVertical:
+  type: select
+  comment: Vertical padding applied to the card content.
+  options:
+    values:
+      - id: xs
+        name: Extra Small
+      - id: sm
+        name: Small
+      - id: md
+        name: Medium
+      - id: lg
+        name: Large
+      - id: xl
+        name: Extra Large
+      - id: 2xl
+        name: 2xl
+colorScheme:
+  type: select
+  comment: Color scheme theme for the card.
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+backgroundColor:
+  type: select
+  comment: Background color for the card.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight
+backgroundImage:
+  type: object
+  comment: Background image configuration for the card.
+  options:
+    preview:
+      icon: image
+      text:
+        - key: alt
+        - Background Image
+      subtext:
+        - key: source
+        - Add an image source
+      image:
+        - key: source
+backgroundImage.source:
+  comment: URL or path to the background image.
+  type: image
+  options:
+    paths:
+      uploads: src/assets/images
+      static: ""
+    resize_style: contain
+    width: 1920
+    height: 1280
+backgroundImage.alt:
+  comment: Alt text for the background image.
+  type: text
+backgroundImage.positionVertical:
+  comment: Vertical position of the background image.
+  type: select
+  options:
+    values:
+      - id: top
+        name: Top
+      - id: center
+        name: Center
+      - id: bottom
+        name: Bottom
+backgroundImage.positionHorizontal:
+  comment: Horizontal position of the background image.
+  type: select
+  options:
+    values:
+      - id: left
+        name: Left
+      - id: center
+        name: Center
+      - id: right
+        name: Right
+link:
+  type: url
+  comment: URL to make the entire card clickable. Leave empty for a non-clickable card.
+rounded:
+  type: switch
+  comment: Whether to apply rounded corners to the card.
+border:
+  type: switch
+  comment: Whether to apply a border to the card.

@@ -1,0 +1,81 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import Text from "@core-elements/text/Text.astro";
+import FeatureItem from "@features/feature-grid/FeatureItem.astro";
+import Grid from "@wrappers/grid/Grid.astro";
+
+type FeatureProps = Record<string, unknown>;
+
+const {
+  eyebrow = "",
+  heading = "",
+  subtext = "",
+  features = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "4xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["feature-grid", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <SimpleText
+    alignX="center"
+    class="eyebrow"
+    data-prop="eyebrow"
+    text={eyebrow}
+  />
+  <Heading
+    level="h2"
+    size="lg"
+    alignX="center"
+    data-prop="heading"
+  >
+    {heading}
+  </Heading>
+  <Text
+    class="feature-grid-subtext"
+    alignX="center"
+    data-prop="subtext"
+    text={subtext}
+  />
+  <Grid
+    gap="lg"
+    minItemWidth="360"
+    maxItemWidth="360"
+    class="feature-grid-grid"
+    data-children-prop="features"
+  >
+    {
+      features.map((feature: FeatureProps) => (
+        <FeatureItem
+          data-id="page-sections/features/feature-grid/feature-item"
+          data-editable="array-item"
+          {...feature}
+        />
+      ))
+    }
+  </Grid>
+</CustomSection>
+
+<style>
+  @layer page-sections {
+    :global(.feature-grid-grid) {
+      margin-top: var(--spacing-2xl);
+    }
+  }
+</style>

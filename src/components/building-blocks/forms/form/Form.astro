@@ -1,0 +1,54 @@
+---
+import RenderBlock from "@components/utils/renderBlock.astro";
+
+const {
+  action,
+  formBlocks = [],
+  class: className,
+  _component,
+  useDefaultEditableBinding = false,
+  "data-children-prop": childrenDataProp,
+  ...htmlAttributes
+} = Astro.props;
+
+const effectiveChildrenProp = childrenDataProp ?? (useDefaultEditableBinding ? "formBlocks" : null);
+const arrayDataAttributes = effectiveChildrenProp
+  ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
+  : {};
+
+const hasFormBlocks = formBlocks?.length > 0;
+const hasSlotContent = Astro.slots.has("default");
+const usesFormBlocks = !hasSlotContent;
+
+if (!_component && !hasFormBlocks && !usesFormBlocks) return;
+---
+
+<form
+  class:list={["form", className]}
+  action={action}
+  method="post"
+  enctype="multipart/form-data"
+  {...htmlAttributes}
+>
+  <div {...arrayDataAttributes}>
+    <slot>
+      {
+        formBlocks && (
+          <RenderBlock
+            contentSections={formBlocks}
+            useDefaultEditableBinding={!!effectiveChildrenProp}
+          />
+        )
+      }
+    </slot>
+  </div>
+</form>
+
+<style>
+  @layer components {
+    .form {
+      margin-top: var(--spacing-lg);
+      width: 100%;
+    }
+  }
+</style>

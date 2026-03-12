@@ -1,0 +1,5 @@
+:where(:root) {
+  --animation-fast: 100ms;
+  --animation-normal: 200ms;
+  --animation-slow: 500ms;
+}

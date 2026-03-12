@@ -1,0 +1,67 @@
+@layer base {
+  :where(:root) {
+    html,
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      padding: 0;
+      width: 100%;
+    }
+
+    body {
+      background-color: var(--color-bg);
+      min-height: 100vh;
+    }
+
+    body,
+    [data-theme="dark"],
+    [data-theme="light"] {
+      color: var(--color-text);
+    }
+
+    main {
+      width: 100%;
+    }
+
+    code[class*="language-"],
+    pre[class*="language-"] {
+      border-radius: var(--radius-sm);
+      font-size: var(--font-size-md);
+    }
+
+    .astro-code {
+      border-radius: var(--radius-sm);
+      padding: var(--spacing-lg);
+      code {
+        white-space: pre-wrap;
+      }
+    }
+
+    p,
+    ul,
+    ol {
+      code {
+        background: var(--color-bg);
+        border-radius: 0.25rem;
+        padding: 0.1rem 0.2rem;
+      }
+    }
+
+    blockquote {
+      border-left: 3px solid var(--color-border);
+      padding-left: var(--spacing-sm);
+    }
+
+    main > :first-child.hero,
+    main > :first-child.blog-block,
+    main > :first-child.container,
+    main > :first-child.carousel,
+    main > :first-child.grid,
+    main > :first-child.split,
+    main > :first-child.accordion,
+    main > :first-child.content-selector,
+    main > :first-child.card {
+      margin-top: 0;
+    }
+  }
+}

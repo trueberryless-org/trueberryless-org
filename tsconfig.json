@@ -1,0 +1,26 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@building-blocks/*": ["src/components/building-blocks/*"],
+      "@core-elements/*": ["src/components/building-blocks/core-elements/*"],
+      "@forms/*": ["src/components/building-blocks/forms/*"],
+      "@wrappers/*": ["src/components/building-blocks/wrappers/*"],
+      "@navigation/*": ["src/components/navigation/*"],
+      "@page-sections/*": ["src/components/page-sections/*"],
+      "@features/*": ["src/components/page-sections/features/*"],
+      "@builders/*": ["src/components/page-sections/builders/*"],
+      "@component-utils/*": ["src/components/utils/*"],
+      "@component-docs/*": ["src/component-docs/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@styles/*": ["src/styles/*"],
+      "@data/*": ["src/data/*"],
+      "@content/*": ["src/content/*"],
+      "@assets/*": ["src/assets/*"]
+    }
+  },
+  "include": [".astro/types.d.ts", "src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

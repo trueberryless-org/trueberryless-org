@@ -1,0 +1,18 @@
+label: Text
+icon: edit_note
+description: Content component for markdown-formatted text.
+value:
+  _component: building-blocks/core-elements/text
+  text: My text goes here.
+  alignX: start
+preview:
+  text:
+    - Text
+  subtext:
+    - key: text
+  icon: edit_note
+picker_preview:
+  text: Text
+  subtext: Content component for markdown-formatted text.
+_inputs_from_glob:
+  - /src/components/building-blocks/core-elements/text/text.cloudcannon.inputs.yml

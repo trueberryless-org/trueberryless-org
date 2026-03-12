@@ -1,0 +1,103 @@
+---
+import StructuredData from "@components/utils/StructuredData.astro";
+import seoData from "@data/seo.json";
+import "@styles/style.css";
+import { SEO } from "astro-seo";
+
+export interface Props {
+  title: string;
+  description?: string | null;
+  keywords?: string[] | null;
+  image?: string | null;
+  canonical?: string | null;
+}
+
+const props = Astro.props;
+const formattedTitle = seoData.titleFormat.replace("{title}", props.title);
+const pageDescription = props.description || seoData.description;
+const pageImage = props.image || seoData.logoSource;
+---
+
+<!doctype html>
+<html
+  lang="en"
+  data-theme="light"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon.svg"
+    />
+    <meta
+      name="generator"
+      content={Astro.generator}
+    />
+    <style is:inline>
+      @layer reset, base, components, page-sections, utils, overrides;
+    </style>
+
+    {
+      import.meta.env.DEV ? (
+        <script
+          type="module"
+          src="/@vite/client"
+        />
+      ) : null
+    }
+
+    <script>
+      if (window.inEditorMode) {
+        import("../../live-editing");
+      }
+    </script>
+
+    <SEO
+      title={formattedTitle}
+      description={pageDescription}
+      openGraph={{
+        basic: {
+          title: formattedTitle,
+          type: "website",
+          image: pageImage,
+        },
+        optional: {
+          description: pageDescription,
+        },
+      }}
+      extend={{
+        link: [
+          {
+            rel: "canonical",
+            href: props.canonical || Astro.url.href,
+          },
+        ],
+      }}
+    />
+
+    <StructuredData site={seoData} />
+
+    <link
+      rel="sitemap"
+      type="application/xml"
+      title="Sitemap"
+      href="/sitemap-index.xml"
+    />
+
+    <slot name="head" />
+  </head>
+  <body>
+    <div>
+      <slot />
+    </div>
+    <script>
+      import "@choctawnationofoklahoma/lite-vimeo";
+      import "@justinribeiro/lite-youtube";
+    </script>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+---
+import ListItem from "./ListItem.astro";
+
+type ItemProps = Record<string, unknown>;
+
+const {
+  items = [],
+  direction = "vertical",
+  alignX = "start",
+  size = "md",
+  listType = "icon",
+  class: className,
+  "data-children-prop": childrenDataProp,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const hasItems = items?.length > 0;
+const hasSlotContent = Astro.slots.has("default");
+const usesItemsArray = !hasSlotContent;
+
+const ListTag = listType === "numbered" ? "ol" : "ul";
+const showIcons = listType === "icon";
+
+if (!_component && !hasItems && !hasSlotContent) return;
+
+const effectiveChildrenProp = childrenDataProp ?? (useDefaultEditableBinding ? "items" : null);
+const arrayDataAttributes = effectiveChildrenProp
+  ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
+  : {};
+
+if (!_component && !hasItems && !usesItemsArray) return;
+---
+
+<div
+  class:list={["list", className]}
+  {...htmlAttributes}
+>
+  <ListTag
+    role="list"
+    class:list={[
+      `size-${size}`,
+      `direction-${direction}`,
+      `alignment-${alignX}`,
+      `type-${listType}`,
+    ]}
+    {...arrayDataAttributes}
+  >
+    <slot>
+      {
+        items?.map((item: ItemProps) => (
+          <ListItem
+            data-id="building-blocks/core-elements/list/list-item"
+            data-editable="array-item"
+            useDefaultEditableBinding={!!effectiveChildrenProp}
+            showIcon={showIcons}
+            {...item}
+          />
+        ))
+      }
+    </slot>
+  </ListTag>
+</div>
+
+<style>
+  @layer components {
+    .list {
+      margin-top: var(--spacing-lg);
+
+      > :where(ul, ol) {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-em-sm);
+        margin: 0;
+
+        padding-inline-start: var(--spacing-md);
+
+        &.direction-horizontal {
+          flex-flow: row wrap;
+          gap: var(--spacing-em-md);
+        }
+
+        &.type-bullet {
+          list-style: disc;
+        }
+
+        &.type-numbered {
+          list-style: decimal;
+        }
+
+        &.type-bullet.direction-horizontal,
+        &.type-numbered.direction-horizontal {
+          gap: var(--spacing-em-2xl);
+        }
+
+        &.type-icon {
+          list-style: none;
+          padding: 0;
+        }
+
+        &.alignment-end {
+          align-items: flex-end;
+          justify-content: flex-end;
+        }
+
+        &.alignment-center {
+          align-items: center;
+          justify-content: center;
+        }
+
+        &.size-xs {
+          font-size: var(--font-size-xs);
+        }
+
+        &.size-sm {
+          font-size: var(--font-size-sm);
+        }
+
+        &.size-md {
+          font-size: var(--font-size-md);
+        }
+
+        &.size-lg {
+          font-size: var(--font-size-lg);
+        }
+
+        &.size-xl {
+          font-size: var(--font-size-xl);
+        }
+
+        &.size-2xl {
+          font-size: var(--font-size-2xl);
+        }
+
+        &.size-3xl {
+          font-size: var(--font-size-3xl);
+        }
+
+        &.size-4xl {
+          font-size: var(--font-size-4xl);
+        }
+      }
+    }
+  }
+</style>

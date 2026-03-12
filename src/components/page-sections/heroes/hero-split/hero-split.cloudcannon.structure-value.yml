@@ -1,0 +1,34 @@
+label: Hero Split
+icon: hero
+description: Prominent section block for landing pages.
+value:
+  _component: page-sections/heroes/hero-split
+  eyebrow: Eyebrow text
+  heading: Heading text
+  subtext: Subtitle placeholder text that will be replaced with actual content.
+  imageSource: /src/assets/images/component-docs/dunedin-cliff.jpg
+  imageAlt: Hero image
+  imageAspectRatio: none
+  buttonSections:
+    - _component: building-blocks/core-elements/button
+      text: My Button
+      hideText: false
+      link: ""
+      iconName: ""
+      iconPosition: before
+      variant: primary
+      size: md
+  reverse: false
+  colorScheme: inherit
+  backgroundColor: base
+preview:
+  text:
+    - Hero Split
+  subtext:
+    - key: heading
+  icon: hero
+picker_preview:
+  text: Hero Split
+  subtext: Prominent section block for landing pages.
+_inputs_from_glob:
+  - /src/components/page-sections/heroes/hero-split/hero-split.cloudcannon.inputs.yml

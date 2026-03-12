@@ -1,0 +1,32 @@
+faqSection:
+  template: mdx_component
+  inline: false
+  preview:
+    text:
+      - FAQ Section
+    subtext:
+      - key: heading
+    icon: help_outline
+  definitions:
+    component_name: FaqSection
+    named_args:
+      - editor_key: heading
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: items
+        type: array
+      - editor_key: paddingVertical
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: colorScheme
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: backgroundColor
+        type: string
+        optional: true
+        remove_empty: true
+  _inputs_from_glob:
+    - /src/components/page-sections/info-blocks/faq-section/faq-section.cloudcannon.inputs.yml

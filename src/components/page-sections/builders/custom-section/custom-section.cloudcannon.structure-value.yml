@@ -1,0 +1,30 @@
+label: Custom Section
+icon: star
+description: Used to group and style large sections of a page.
+value:
+  _component: page-sections/builders/custom-section
+  label: ""
+  contentSections: []
+  maxContentWidth: 2xl
+  paddingHorizontal: md
+  paddingVertical: md
+  colorScheme: inherit
+  backgroundColor: base
+  backgroundImage:
+    source: ""
+    alt: ""
+    positionVertical: top
+    positionHorizontal: center
+  rounded: false
+  useDefaultEditableBinding: true
+preview:
+  text:
+    - Custom Section
+  subtext:
+    - key: label
+  icon: width_full
+picker_preview:
+  text: Custom Section
+  subtext: Used to group and style large sections of a page.
+_inputs_from_glob:
+  - /src/components/page-sections/builders/custom-section/custom-section.cloudcannon.inputs.yml

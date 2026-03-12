@@ -1,0 +1,65 @@
+---
+const {
+  label,
+  name,
+  required = false,
+  accept,
+  multiple = false,
+  class: className,
+  useDefaultEditableBinding: _useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const fieldId = htmlAttributes.id || `file-upload-${crypto.randomUUID()}`;
+---
+
+<div class:list={["file-upload", className]}>
+  {
+    label && (
+      <label
+        for={fieldId}
+        class="label"
+      >
+        {label}
+        {required && (
+          <span
+            class="file-upload-required"
+            aria-label="required"
+          >
+            *
+          </span>
+        )}
+      </label>
+    )
+  }
+  <input
+    type="file"
+    name={name}
+    id={fieldId}
+    required={required}
+    aria-required={required}
+    accept={accept}
+    multiple={multiple}
+    class="field"
+    {...htmlAttributes}
+  />
+</div>
+
+<style>
+  @layer components {
+    .file-upload {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      margin: 0;
+      margin-bottom: var(--spacing-md);
+      width: 100%;
+
+      .file-upload-required {
+        color: var(--color-error);
+        margin-inline-end: var(--spacing-em-xs);
+      }
+    }
+  }
+</style>

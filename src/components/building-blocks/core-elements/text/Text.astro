@@ -1,0 +1,63 @@
+---
+import markdownit from "markdown-it";
+
+const md = markdownit({ html: true });
+
+const {
+  text = "",
+  alignX = "start",
+  class: className,
+  useDefaultEditableBinding = false,
+  "data-prop": customDataProp,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const markdownContent = text ? md.render(text) : "";
+
+const effectiveDataProp = customDataProp ?? (useDefaultEditableBinding ? "text" : null);
+const textDataAttributes = effectiveDataProp
+  ? { "data-editable": "text", "data-prop": effectiveDataProp }
+  : {};
+
+const hasText = text?.trim().length > 0;
+const hasSlotContent = Astro.slots.has("default");
+
+if (!_component && !hasText && !hasSlotContent) return;
+---
+
+<div
+  class:list={["text", className]}
+  {...htmlAttributes}
+>
+  <div
+    class:list={["text-inner", `align-${alignX}`]}
+    {...textDataAttributes}
+  >
+    <slot>
+      {text && <Fragment set:html={markdownContent} />}
+    </slot>
+  </div>
+</div>
+
+<style>
+  @layer components {
+    .text {
+      margin-top: var(--spacing-lg);
+
+      > .text-inner {
+        &.align-start {
+          text-align: start;
+        }
+
+        &.align-center {
+          text-align: center;
+        }
+
+        &.align-end {
+          text-align: end;
+        }
+      }
+    }
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+const {
+  type,
+  id,
+  title,
+  source,
+  thumbnail,
+  class: className,
+  useDefaultEditableBinding: _useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+{
+  type === "vimeo" ? (
+    <lite-vimeo
+      class:list={["video", className]}
+      videotitle={`${title}`}
+      videoid={`${id}`}
+      {...htmlAttributes}
+    >
+      <a
+        class="lite-vimeo-fallback"
+        href={`https://vimeo.com/${id}`}
+      >
+        Watch on Vimeo: "{title}"
+      </a>
+    </lite-vimeo>
+  ) : type === "youtube" ? (
+    <lite-youtube
+      class:list={["video", className]}
+      videotitle={`${title}`}
+      videoid={`${id}`}
+      {...htmlAttributes}
+    >
+      <a
+        class="lite-youtube-fallback"
+        href={`https://www.youtube.com/watch?v=${id}`}
+      >
+        Watch on YouTube: "{title}"
+      </a>
+    </lite-youtube>
+  ) : (
+    <video
+      preload="none"
+      controls
+      poster={thumbnail}
+      class:list={["video", className]}
+      {...htmlAttributes}
+    >
+      <source
+        src={`${source}`}
+        type="video/mp4"
+      />
+      Your browser does not support the HTML5 video element.
+    </video>
+  )
+}
+
+<style>
+  @layer components {
+    .video {
+      display: block;
+      margin-top: var(--spacing-lg);
+    }
+  }
+</style>

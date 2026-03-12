@@ -1,0 +1,35 @@
+video:
+  template: mdx_component
+  inline: false
+  preview:
+    text:
+      - template: Video - {type}
+      - Video
+    subtext:
+      - key: title
+    icon: videocam
+  definitions:
+    component_name: Video
+    named_args:
+      - editor_key: type
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: title
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: id
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: source
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: thumbnail
+        type: string
+        optional: true
+        remove_empty: true
+  _inputs_from_glob:
+    - /src/components/building-blocks/core-elements/video/video.cloudcannon.inputs.yml

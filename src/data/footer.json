@@ -1,0 +1,33 @@
+{
+  "logoSource": "/images/logo.svg",
+  "logoAlt": "Logo",
+  "links": [
+    {
+      "name": "Home",
+      "path": "/"
+    },
+    {
+      "name": "Why",
+      "path": "/why/"
+    },
+    {
+      "name": "Blog",
+      "path": "/blog/"
+    }
+  ],
+  "socials": [
+    {
+      "icon": "social/github",
+      "link": "https://github.com"
+    },
+    {
+      "icon": "social/x",
+      "link": "https://twitter.com"
+    },
+    {
+      "icon": "social/linkedin",
+      "link": "https://linkedin.com"
+    }
+  ],
+  "footerText": "© 2026 All rights reserved."
+}

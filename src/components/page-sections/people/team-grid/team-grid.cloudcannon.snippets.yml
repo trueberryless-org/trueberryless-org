@@ -1,0 +1,36 @@
+teamGrid:
+  template: mdx_component
+  inline: false
+  preview:
+    text:
+      - Team Grid
+    subtext:
+      - key: subtext
+    icon: people
+  definitions:
+    component_name: TeamGrid
+    named_args:
+      - editor_key: eyebrow
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: heading
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: subtext
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: teamMembers
+        type: array
+      - editor_key: colorScheme
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: backgroundColor
+        type: string
+        optional: true
+        remove_empty: true
+  _inputs_from_glob:
+    - /src/components/page-sections/people/team-grid/team-grid.cloudcannon.inputs.yml

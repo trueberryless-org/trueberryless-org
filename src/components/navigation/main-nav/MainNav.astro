@@ -1,0 +1,131 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Bar from "@components/navigation/bar/Bar.astro";
+import Mobile from "@components/navigation/mobile/Mobile.astro";
+import Image from "@core-elements/image/Image.astro";
+import ButtonGroup from "@wrappers/button-group/ButtonGroup.astro";
+
+type NavButton = {
+  text?: string;
+  href?: string;
+  [key: string]: unknown;
+};
+
+const {
+  logoSource,
+  logoAlt = "logo",
+  navData = [],
+  buttonSections = [] as NavButton[],
+  class: className,
+  useDefaultEditableBinding: _useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const mobileNavData = [
+  ...navData,
+  ...buttonSections.map((button: NavButton) => ({
+    name: button.text || "Button",
+    path: button.href || "#",
+    children: [],
+  })),
+];
+---
+
+<CustomSection
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical="none"
+  class:list={["main-nav", className]}
+  {...htmlAttributes}
+  useDefaultEditableBinding={false}
+>
+  <a href="/">
+    <Image
+      source={logoSource}
+      class="main-nav-logo"
+      alt={logoAlt}
+      useDefaultEditableBinding={false}
+    />
+  </a>
+  <div class="nav-end">
+    <Bar
+      navData={navData}
+      class="desktop-main-nav"
+    />
+
+    <ButtonGroup
+      direction="row"
+      align="center"
+      class="desktop-button-group"
+      buttonSections={buttonSections}
+      useDefaultEditableBinding={false}
+    />
+  </div>
+  <Mobile
+    logoSource={logoSource}
+    logoAlt={logoAlt}
+    navData={mobileNavData}
+    class="mobile-main-nav"
+    useDefaultEditableBinding={false}
+  />
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .main-nav {
+      background-color: var(--color-bg);
+      padding-block: var(--spacing-md);
+      position: sticky;
+      top: 0;
+      z-index: var(--layer-2);
+
+      .desktop-main-nav,
+      .desktop-button-group.button-group {
+        @container (max-width: 768px) {
+          display: none;
+        }
+      }
+
+      .main-nav-logo {
+        margin-top: 0 !important;
+      }
+
+      .nav-hamburger.mobile-button {
+        @container (min-width: 769px) {
+          display: none;
+        }
+      }
+
+      > .outer-content > .content {
+        align-items: center;
+        container-type: inline-size;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-md);
+
+        > a > .image img {
+          height: 1.8em;
+          max-width: min(20em, 100%);
+          width: auto;
+        }
+
+        .button-group {
+          margin-top: 0;
+        }
+      }
+
+      > .outer-content > .content > .nav-end {
+        align-items: center;
+        display: flex;
+        flex-shrink: 0;
+        justify-content: flex-end;
+        margin-left: auto;
+
+        > .button-group {
+          container-type: normal;
+        }
+      }
+    }
+  }
+</style>

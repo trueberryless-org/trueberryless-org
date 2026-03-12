@@ -1,0 +1,33 @@
+label: CTA Split
+icon: hero
+description: Side-by-side CTA with copy on one side and stacked buttons on the other.
+value:
+  _component: page-sections/ctas/cta-split
+  heading: Heading text
+  subtext: Subtext placeholder text that will be replaced with actual content.
+  imageSource: /src/assets/images/component-docs/dunedin-cliff.jpg
+  imageAlt: CTA image
+  buttonSections:
+    - _component: building-blocks/core-elements/button
+      text: My Button
+      hideText: false
+      link: ""
+      iconName: ""
+      iconPosition: before
+      variant: primary
+      size: md
+  reverse: false
+  colorScheme: inherit
+  backgroundColor: base
+  rounded: false
+preview:
+  text:
+    - CTA Split
+  subtext:
+    - key: heading
+  icon: hero
+picker_preview:
+  text: CTA Split
+  subtext: Split layout CTA with button stack.
+_inputs_from_glob:
+  - /src/components/page-sections/ctas/cta-split/cta-split.cloudcannon.inputs.yml

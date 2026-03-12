@@ -1,0 +1,18 @@
+label:
+  type: text
+  comment: The label text for the date field.
+name:
+  type: text
+  comment: The name attribute for the date field.
+required:
+  type: switch
+  comment: Whether the field is required.
+value:
+  type: date
+  comment: The default value for the date field (ISO8601 format).
+min:
+  type: date
+  comment: The minimum date allowed (ISO8601 format).
+max:
+  type: date
+  comment: The maximum date allowed (ISO8601 format).

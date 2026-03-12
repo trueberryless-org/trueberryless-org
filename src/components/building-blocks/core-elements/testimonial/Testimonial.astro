@@ -1,0 +1,164 @@
+---
+import Image from "@core-elements/image/Image.astro";
+import MarkdownIt from "markdown-it";
+const {
+  text,
+  authorName,
+  authorDescription,
+  alignX = "center",
+  authorImage = "",
+  class: className,
+  useDefaultEditableBinding = false,
+  "data-prop": customDataProp,
+  "data-prop-author-name": customDataPropAuthorName,
+  "data-prop-author-description": customDataPropAuthorDescription,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const md = MarkdownIt({ html: true });
+const MarkdownText = text ? md.render(text) : "";
+
+const effectiveDataProp = customDataProp ?? (useDefaultEditableBinding ? "text" : null);
+const textDataAttributes = effectiveDataProp
+  ? { "data-editable": "text", "data-prop": effectiveDataProp }
+  : {};
+
+const effectiveAuthorNameProp =
+  customDataPropAuthorName ?? (useDefaultEditableBinding ? "authorName" : null);
+const authorNameDataAttributes = effectiveAuthorNameProp
+  ? { "data-editable": "text", "data-prop": effectiveAuthorNameProp }
+  : {};
+
+const effectiveAuthorDescProp =
+  customDataPropAuthorDescription ?? (useDefaultEditableBinding ? "authorDescription" : null);
+const authorDescriptionDataAttributes = effectiveAuthorDescProp
+  ? { "data-editable": "text", "data-prop": effectiveAuthorDescProp }
+  : {};
+---
+
+<blockquote
+  class:list={["testimonial", className]}
+  {...htmlAttributes}
+>
+  <div class:list={["testimonial-inner", `alignment-${alignX}`]}>
+    <div
+      class="quote"
+      {...textDataAttributes}
+    >
+      <slot>
+        {text && <Fragment set:html={MarkdownText} />}
+      </slot>
+    </div>
+    <div class="author">
+      <Image
+        source={authorImage}
+        alt={authorName}
+        width={100}
+        height={100}
+        class="author-image"
+        data-prop-src="authorImage"
+        data-prop-alt="authorName"
+      />
+      <cite class="author-content">
+        <strong
+          class="name"
+          {...authorNameDataAttributes}
+        >
+          {authorName}
+        </strong>
+        {
+          authorDescription && (
+            <>
+              <br />
+              <span
+                class="description"
+                {...authorDescriptionDataAttributes}
+              >
+                {authorDescription}
+              </span>
+            </>
+          )
+        }
+      </cite>
+    </div>
+  </div>
+</blockquote>
+
+<style>
+  @layer components {
+    .testimonial {
+      border-inline-start: 0;
+      margin: 0;
+      margin-top: var(--spacing-lg);
+      padding-inline-start: 0;
+
+      > .testimonial-inner {
+        background: var(--color-bg);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-em-sm);
+        padding: var(--spacing-md);
+
+        &.alignment-center {
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        }
+
+        > .quote {
+          margin: 0;
+
+          :global(*) {
+            font-size: var(--font-size-2xl);
+          }
+
+          :global(*:first-child) {
+            margin-top: 0;
+          }
+
+          :global(*:last-child) {
+            margin-bottom: 0;
+          }
+
+          :global(*:first-child)::before {
+            content: "\201C";
+          }
+
+          :global(*:last-child)::after {
+            content: "\201D";
+          }
+        }
+
+        > .author {
+          align-items: center;
+          display: flex;
+          gap: var(--spacing-md);
+          margin-top: var(--spacing-md);
+
+          > .author-content {
+            font-style: normal;
+            text-align: start;
+          }
+
+          > :global(.author-image) {
+            aspect-ratio: var(--ratio-square);
+            height: 80px;
+            width: 80px;
+
+            :global(picture) {
+              border-radius: var(--radius-full);
+              overflow: hidden;
+            }
+
+            :global(img) {
+              height: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+</style>

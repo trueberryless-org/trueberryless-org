@@ -1,0 +1,68 @@
+---
+const {
+  title,
+  text,
+  class: className,
+  useDefaultEditableBinding = false,
+  "data-prop-title": customDataPropTitle,
+  "data-prop-content": customDataPropContent,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const effectiveTitleProp = customDataPropTitle ?? (useDefaultEditableBinding ? "title" : null);
+const titleDataAttributes = effectiveTitleProp
+  ? { "data-editable": "text", "data-prop": effectiveTitleProp }
+  : {};
+
+const effectiveContentProp = customDataPropContent ?? (useDefaultEditableBinding ? "text" : null);
+const contentDataAttributes = effectiveContentProp
+  ? { "data-editable": "text", "data-prop": effectiveContentProp }
+  : {};
+
+const hasTitle = title?.trim().length > 0;
+const hasTitleSlotContent = Astro.slots.has("title");
+const hasText = text?.trim().length > 0;
+const hasSlotContent = Astro.slots.has("default");
+
+if (!_component && ((!hasTitle && !hasTitleSlotContent) || (!hasText && !hasSlotContent))) return;
+---
+
+<div
+  class="definition-list-item"
+  {...htmlAttributes}
+>
+  <dt
+    class:list={["title", className]}
+    role="term"
+    {...titleDataAttributes}
+  >
+    <span {...titleDataAttributes}>
+      <slot name="title">
+        {title}
+      </slot>
+    </span>
+  </dt>
+  <dd
+    class:list={["content", className]}
+    role="definition"
+  >
+    <span {...contentDataAttributes}>
+      <slot>
+        {text}
+      </slot>
+    </span>
+  </dd>
+</div>
+
+<style>
+  @layer components {
+    .definition-list-item {
+      display: contents;
+
+      .title {
+        font-weight: var(--font-weight-bold);
+      }
+    }
+  }
+</style>

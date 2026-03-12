@@ -1,0 +1,23 @@
+label: Button
+icon: variables
+description: Clickable button for calls-to-action and navigation.
+value:
+  _component: building-blocks/core-elements/button
+  text: My Button
+  hideText: false
+  link: ""
+  iconName: ""
+  iconPosition: before
+  variant: primary
+  size: md
+preview:
+  text:
+    - Button
+  subtext:
+    - key: text
+  icon: variables
+picker_preview:
+  text: Button
+  subtext: Clickable button for calls-to-action and navigation.
+_inputs_from_glob:
+  - /src/components/building-blocks/core-elements/button/button.cloudcannon.inputs.yml

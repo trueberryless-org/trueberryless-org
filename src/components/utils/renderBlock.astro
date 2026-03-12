@@ -1,0 +1,60 @@
+---
+import { pascalToKebab } from "@components/utils/pascalToKebab";
+import type { ContentBlock } from "../../types";
+
+export interface Props {
+  contentSections: ContentBlock[];
+  useDefaultEditableBinding?: boolean;
+}
+
+type AstroComponent = (_props: Record<string, unknown>) => unknown;
+
+const components: Record<string, AstroComponent> = {};
+const componentImports = import.meta.glob("../**/*.{jsx,astro}", {
+  eager: true,
+});
+
+Object.entries(componentImports).forEach(([path, obj]) => {
+  const parts = path.replace("../", "").split(".")[0].split("/");
+  const filename = parts[parts.length - 1];
+
+  const kebabFilename = pascalToKebab(filename);
+
+  if (parts.length > 1 && kebabFilename === parts[parts.length - 2]) {
+    parts.pop();
+    parts[parts.length - 1] = kebabFilename;
+  } else {
+    parts[parts.length - 1] = kebabFilename;
+  }
+
+  const componentName = parts.join("/");
+
+  components[componentName] = (obj as Record<string, AstroComponent>).default;
+});
+
+const { contentSections, useDefaultEditableBinding = true } = Astro.props;
+---
+
+{
+  // Array-level editable attributes are owned by the caller's container element.
+  // This utility only resolves blocks and marks each rendered block as an array item.
+  contentSections?.map((block) => {
+    const Component = components[block._component];
+
+    if (!Component && block._component) {
+      console.warn(
+        `Component not found: ${block._component}. Available components:`,
+        Object.keys(components)
+      );
+    }
+
+    return Component ? (
+      <Component
+        data-editable={useDefaultEditableBinding ? "array-item" : undefined}
+        data-id={block._component}
+        {...block}
+        useDefaultEditableBinding={useDefaultEditableBinding}
+      />
+    ) : null;
+  })
+}

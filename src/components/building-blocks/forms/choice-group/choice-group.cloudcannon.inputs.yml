@@ -1,0 +1,31 @@
+title:
+  type: text
+  comment: Optional title text for the fieldset.
+name:
+  type: text
+  comment: A unique name attribute for the input group.
+  options:
+    required: true
+    required_message: Only form elements with a name will have their values passed when submitting a form.
+required:
+  type: switch
+  comment: Whether the field is required.
+options:
+  type: array
+  comment: Array of choice options with value, label, and checked state.
+  options:
+    structures: _structures.choiceOptions
+    min_items: 1
+    min_items_message: At least one option is required.
+orientation:
+  type: select
+  comment: The layout orientation - vertical for stacked layout, horizontal for grid layout.
+  options:
+    values:
+      - id: vertical
+        name: Vertical
+      - id: horizontal
+        name: Horizontal
+multiple:
+  type: switch
+  comment: When true, uses checkboxes for multiple selection. When false, uses radio buttons for single selection.

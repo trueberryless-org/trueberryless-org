@@ -1,0 +1,146 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Bar from "@components/navigation/bar/Bar.astro";
+import Button from "@core-elements/button/Button.astro";
+import Divider from "@core-elements/divider/Divider.astro";
+import Image from "@core-elements/image/Image.astro";
+import Text from "@core-elements/text/Text.astro";
+import ButtonGroup from "@wrappers/button-group/ButtonGroup.astro";
+import type { SocialLink } from "../../../../types";
+
+const {
+  links = [],
+  socials = [] as SocialLink[],
+  footerText = "",
+  logoSource,
+  logoAlt,
+  useDefaultEditableBinding: _useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<footer
+  class="footer"
+  {...htmlAttributes}
+>
+  <CustomSection
+    maxContentWidth="2xl"
+    paddingHorizontal="md"
+    paddingVertical="2xl"
+    useDefaultEditableBinding={false}
+  >
+    <div class="footer-content">
+      <div class="content-container">
+        <Image
+          source={logoSource}
+          alt={logoAlt}
+          class="footer-logo"
+          useDefaultEditableBinding={false}
+        />
+      </div>
+      <div class="content-container">
+        <Bar
+          navData={links}
+          useDefaultEditableBinding={false}
+        />
+      </div>
+    </div>
+
+    <Divider />
+
+    <div class="footer-content">
+      <div class="content-container">
+        <Text
+          class="footer-legal-text"
+          text={footerText || ""}
+          data-prop=""
+          useDefaultEditableBinding={false}
+        />
+      </div>
+      <div class="content-container">
+        <ButtonGroup
+          alignX="end"
+          useDefaultEditableBinding={false}
+        >
+          {
+            socials.map((social) => (
+              <Button
+                variant="ghost"
+                size="lg"
+                iconName={social.icon}
+                link={social.link}
+                hideText="true"
+                aria-label={social.label || `Visit our ${social.icon.replace(/^.*\//, "")} page`}
+                target="_blank"
+                rel="noopener noreferrer"
+                useDefaultEditableBinding={false}
+              />
+            ))
+          }
+        </ButtonGroup>
+      </div>
+    </div>
+  </CustomSection>
+</footer>
+
+<style>
+  @layer page-sections {
+    .footer {
+      container-type: inline-size;
+
+      :global(.button-group) {
+        &:global(.align-end) {
+          @container (max-width: 599px) {
+            justify-content: center;
+          }
+        }
+      }
+
+      .footer-content {
+        @container (min-width: 600px) {
+          align-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+        }
+
+        .content-container {
+          flex: 1;
+        }
+      }
+
+      :global(.footer-legal-text) {
+        color: var(--color-text-muted);
+        text-align: center;
+        @container (min-width: 600px) {
+          text-align: start;
+        }
+      }
+
+      :global(.footer-logo) {
+        flex-shrink: 0;
+        margin-top: 0 !important;
+
+        :global(img) {
+          margin-inline: auto;
+          margin-bottom: var(--spacing-md);
+          max-height: 2em;
+          max-width: min(20em, 100%);
+          width: auto;
+          @container (min-width: 600px) {
+            margin: 0;
+          }
+        }
+      }
+
+      :global(.bar) :global(.bar-list) {
+        flex-flow: column wrap;
+        @container (min-width: 600px) {
+          flex-direction: row;
+          justify-content: end;
+        }
+      }
+    }
+  }
+</style>

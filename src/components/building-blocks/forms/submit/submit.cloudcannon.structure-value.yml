@@ -1,0 +1,23 @@
+label: Submit
+icon: check
+description: Button for submitting a form.
+value:
+  _component: building-blocks/forms/submit
+  text: Submit
+  variant: primary
+  size: md
+  iconName: null
+  iconPosition: before
+  hideText: false
+  disabled: false
+preview:
+  text:
+    - Submit
+  subtext:
+    - key: text
+  icon: check
+picker_preview:
+  text: Submit
+  subtext: Button for submitting a form.
+_inputs_from_glob:
+  - /src/components/building-blocks/forms/submit/submit.cloudcannon.inputs.yml

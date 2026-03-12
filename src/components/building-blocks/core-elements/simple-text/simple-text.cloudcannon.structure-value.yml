@@ -1,0 +1,19 @@
+label: Simple Text
+icon: view_headline
+description: Paragraph for plain text content with inline markdown formatting.
+value:
+  _component: building-blocks/core-elements/simple-text
+  text: My text goes here.
+  alignX: start
+  size: md
+preview:
+  text:
+    - Simple Text
+  subtext:
+    - key: text
+  icon: view_headline
+picker_preview:
+  text: Simple Text
+  subtext: Paragraph for plain text content with inline markdown formatting.
+_inputs_from_glob:
+  - /src/components/building-blocks/core-elements/simple-text/simple-text.cloudcannon.inputs.yml

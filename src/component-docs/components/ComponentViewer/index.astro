@@ -1,0 +1,298 @@
+---
+const { component_examples = [], title = "", size = "md" } = Astro.props;
+
+import Button from "@core-elements/button/Button.astro";
+import Segments from "@forms/segments/Segments.astro";
+import { Code } from "astro:components";
+import "./styles.css";
+import { pascalToKebab } from "../../shared/caseUtils";
+import { formatBlocksAstro } from "./utils/astroFormatter";
+import { getBodyPadding } from "./utils/spacing";
+import { formatBlocksYaml } from "./utils/yamlFormatter";
+
+const components: Record<string, Function> = {};
+const componentImports = import.meta.glob("../../../components/**/*.astro", {
+  eager: true,
+});
+
+Object.entries(componentImports).forEach(([path, obj]) => {
+  const relativePath = path.replace("../../../components/", "").replace(/\.astro$/, "");
+  const parts = relativePath.split("/");
+  const filename = parts[parts.length - 1];
+
+  // Convert PascalCase filename to kebab-case
+  const kebabFilename = pascalToKebab(filename);
+
+  // If filename (in kebab-case) matches parent folder, remove it
+  if (parts.length > 1 && kebabFilename === parts[parts.length - 2]) {
+    parts.pop();
+    parts[parts.length - 1] = kebabFilename;
+  } else {
+    parts[parts.length - 1] = kebabFilename;
+  }
+
+  const componentName = parts.join("/");
+  const component = (obj as any).default;
+
+  // Store component with path
+  components[componentName] = component;
+});
+
+const viewerId = title.toLowerCase().replace(/\s+/g, "-");
+
+const formattedCodeCache = await Promise.all(
+  component_examples.map(async (example: any) => {
+    try {
+      const astroCode = await formatBlocksAstro(example.data.blocks);
+      const yamlCode = formatBlocksYaml(
+        example.data.blocks,
+        example.data.title,
+        example.data.spacing
+      );
+
+      return {
+        astro: astroCode,
+        yaml: yamlCode,
+      };
+    } catch (error) {
+      console.error("Error formatting code for example:", example.data?.title, error);
+      return {
+        astro: "// Error generating code",
+        yaml: "# Error generating code",
+      };
+    }
+  })
+);
+---
+
+<div
+  class="component-viewer"
+  data-viewer-id={viewerId}
+>
+  <div class:list={["previews", size && `viewer-size-${size}`]}>
+    {
+      component_examples.map((example: any, idx: number) => {
+        const bodyPadding = getBodyPadding(example.data.spacing);
+        const exampleName = example.data.title;
+        const exampleId = `component-${exampleName.toLowerCase().replace(/\s+/g, "-")}-${idx}`;
+
+        const blocks = example.data.blocks || [];
+        const blocksArray = Array.isArray(blocks) ? blocks : [blocks];
+
+        const formattedCode = formattedCodeCache[idx] || { astro: "", yaml: "" };
+
+        return (
+          <>
+            <div
+              id={exampleId}
+              class:list={[`preview`, `${idx === 0 ? "active" : ""}`]}
+            >
+              <div
+                class="examples"
+                style={bodyPadding}
+              >
+                {blocksArray.map((block) => {
+                  const componentPath = block._component;
+                  const Component = components[componentPath];
+
+                  if (!Component) {
+                    console.warn(`Component not found: ${componentPath}`);
+                    return null;
+                  }
+
+                  return <Component {...block} />;
+                })}
+              </div>
+            </div>
+
+            <div
+              class="code"
+              id={`astro-code-${exampleId}`}
+            >
+              <div
+                class="code-header"
+                data-theme="dark"
+              >
+                <Button
+                  variant="primary"
+                  text="Copy Astro Code"
+                  size="lg"
+                  iconName="document-duplicate"
+                  data-action="copy-code"
+                  hideText={true}
+                  data-code={formattedCode.astro}
+                  element="button"
+                  class="copy-button"
+                />
+              </div>
+              <Code
+                lang="astro"
+                code={formattedCode.astro}
+                style="height: 100%; padding: var(--spacing-sm);"
+              />
+            </div>
+            <div
+              class="code frontmatter-code"
+              id={`frontmatter-code-${exampleId}`}
+            >
+              <div
+                class="code-header"
+                data-theme="dark"
+              >
+                <Button
+                  variant="primary"
+                  text="Copy Frontmatter Code"
+                  size="lg"
+                  iconName="document-duplicate"
+                  data-action="copy-code"
+                  hideText={true}
+                  data-code={formattedCode.yaml}
+                  element="button"
+                  class="copy-button"
+                />
+              </div>
+              <Code
+                lang="yaml"
+                code={formattedCode.yaml}
+                style="height: 100%; padding: var(--spacing-sm);"
+              />
+            </div>
+          </>
+        );
+      })
+    }
+  </div>
+
+  {
+    component_examples.length > 0 && (
+      <nav class="controls">
+        <div
+          class="resize-handle"
+          title="Drag to resize"
+        />
+        <div>
+          {component_examples.length > 1 && (
+            <>
+              <label
+                for={`${viewerId}-examples`}
+                class="visually-hidden"
+              >
+                Examples:
+              </label>
+              <select
+                class="example-select"
+                id={`${viewerId}-examples`}
+              >
+                {component_examples.map((example: any, idx: number) => {
+                  const exampleName = example.data.title;
+                  const exampleId = `component-${exampleName.toLowerCase().replace(/\s+/g, "-")}-${idx}`;
+
+                  return <option value={exampleId}>{exampleName}</option>;
+                })}
+              </select>
+            </>
+          )}
+        </div>
+        <div class="end-segments">
+          <div class="hidden-segments">
+            <Segments
+              name={`device-size-${viewerId}`}
+              options={[
+                {
+                  value: "desktop",
+                  label: "Desktop",
+                  icon: "computer-desktop",
+                  checked: true,
+                },
+                {
+                  value: "tablet",
+                  label: "Tablet",
+                  icon: "device-tablet",
+                  checked: false,
+                },
+                {
+                  value: "mobile",
+                  label: "Mobile",
+                  icon: "device-phone-mobile",
+                  checked: false,
+                },
+              ]}
+              iconOnly={true}
+              class="device-size-segments"
+              data-action="device-size-toggle"
+            />
+            <Segments
+              name={`direction-mode-${viewerId}`}
+              options={[
+                {
+                  value: "ltr",
+                  label: "Left to Right",
+                  icon: "ltr",
+                  checked: true,
+                },
+                {
+                  value: "rtl",
+                  label: "Right to Left",
+                  icon: "rtl",
+                  checked: false,
+                },
+              ]}
+              iconOnly={true}
+              class="direction-segments"
+              data-action="direction-toggle"
+            />
+            <Segments
+              name={`theme-mode-${viewerId}`}
+              options={[
+                {
+                  value: "light",
+                  label: "Light Mode",
+                  icon: "sun",
+                  checked: true,
+                },
+                {
+                  value: "dark",
+                  label: "Dark Mode",
+                  icon: "moon",
+                  checked: false,
+                },
+              ]}
+              iconOnly={true}
+              class="theme-segments"
+              data-action="theme-toggle"
+            />
+          </div>
+          <Segments
+            name={`view-mode-${viewerId}`}
+            keepStateOnRefresh={false}
+            options={[
+              {
+                value: "component",
+                label: "Preview",
+                icon: "cube",
+                checked: true,
+              },
+              {
+                value: "frontmatter",
+                label: "Frontmatter Code",
+                icon: "bars-4",
+                checked: false,
+              },
+              {
+                value: "astro",
+                label: "Astro Code",
+                icon: "code-bracket",
+                checked: false,
+              },
+            ]}
+            iconOnly={true}
+            class="view-segments"
+            data-action="view-toggle"
+          />
+        </div>
+      </nav>
+    )
+  }
+</div>
+
+<script src="./script.js"></script>

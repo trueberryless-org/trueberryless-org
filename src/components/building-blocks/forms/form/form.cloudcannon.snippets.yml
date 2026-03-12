@@ -1,0 +1,20 @@
+form:
+  template: mdx_component
+  inline: false
+  preview:
+    text:
+      - Form
+    subtext:
+      - key: label
+    icon: checklist_rtl
+  definitions:
+    component_name: Form
+    named_args:
+      - editor_key: action
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: formBlocks
+        type: array
+  _inputs_from_glob:
+    - /src/components/building-blocks/forms/form/form.cloudcannon.inputs.yml

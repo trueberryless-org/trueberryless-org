@@ -1,0 +1,137 @@
+---
+import ContentSelectorPanel from "./ContentSelectorPanel.astro";
+import { slugifyLabel } from "@components/utils/slugify";
+import type { ContentSelectorItem } from "../../../../types";
+
+const {
+  items = [] as ContentSelectorItem[],
+  navigationPosition = "start",
+  class: className,
+  label,
+  useDefaultEditableBinding = false,
+  "data-children-prop": childrenDataProp,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+if (!htmlAttributes.id && label) {
+  htmlAttributes.id = slugifyLabel(label);
+}
+
+const uniqueId = crypto.randomUUID();
+const groupName = `tabs-${uniqueId}`;
+
+const effectiveChildrenProp = childrenDataProp ?? (useDefaultEditableBinding ? "items" : null);
+const arrayDataAttributes = effectiveChildrenProp
+  ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
+  : {};
+
+const hasItems = items?.length > 0;
+const hasSlotContent = Astro.slots.has("default");
+
+if (!_component && !hasItems && !hasSlotContent) return;
+---
+
+<section
+  class:list={["content-selector", className]}
+  {...htmlAttributes}
+>
+  <div
+    class:list={["content-selector-items", `nav-${navigationPosition}`]}
+    data-uid={uniqueId}
+    role="tablist"
+    {...arrayDataAttributes}
+  >
+    <slot>
+      {
+        items?.map((item: ContentSelectorItem, index: number) => (
+          <ContentSelectorPanel
+            title={item.title}
+            contentSections={item.contentSections}
+            _component={item._component}
+            checked={index === 0}
+            groupName={groupName}
+            navigationPosition={navigationPosition}
+            useDefaultEditableBinding={!!effectiveChildrenProp}
+            data-editable="array-item"
+          />
+        ))
+      }
+    </slot>
+  </div>
+</section>
+
+<style>
+  @layer components {
+    .content-selector {
+      --content-selector-border-width: 1px;
+      margin-top: var(--spacing-lg);
+
+      > .content-selector-items {
+        border: 0 solid var(--color-bg-muted);
+        width: 100%;
+
+        &:not(:has(:global(.content-selector-item) > :global(.content-selector-input):checked))
+          :global(.content-selector-item):first-of-type
+          > :global(.content-selector-tab)::before {
+          background: var(--color-border-strong);
+        }
+
+        &:not(:has(:global(.content-selector-item) > :global(.content-selector-input):checked))
+          :global(.content-selector-item):first-of-type
+          > :global(.content-selector-panel) {
+          display: block;
+        }
+
+        &.nav-start {
+          column-gap: var(--spacing-em-lg);
+          display: grid;
+          grid-template-columns: minmax(10rem, 20rem) minmax(0, 1fr);
+
+          :global(.content-selector-tab) {
+            border-inline-start: var(--content-selector-border-width) solid var(--color-bg-muted);
+            grid-column: 1;
+
+            &::before {
+              inset-block: 0;
+              inset-inline-start: calc(var(--content-selector-border-width) * -1);
+              width: var(--content-selector-border-width);
+            }
+          }
+
+          :global(.content-selector-panel) {
+            grid-column: 2;
+            grid-row: 1 / span 999;
+            padding: 0 var(--spacing-md);
+            width: 100%;
+          }
+        }
+
+        &.nav-top {
+          border-bottom-width: var(--content-selector-border-width);
+          display: flex;
+          flex-wrap: wrap;
+
+          :global(.content-selector-tab) {
+            order: -1;
+            width: fit-content;
+
+            &::before {
+              height: var(--content-selector-border-width);
+              inset-block: 100%;
+              inset-inline-start: 0;
+              width: 100%;
+            }
+          }
+
+          :global(.content-selector-panel) {
+            flex-basis: 100%;
+            margin-top: var(--spacing-md);
+            padding: 0 var(--spacing-md);
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+</style>

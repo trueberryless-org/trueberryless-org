@@ -1,0 +1,306 @@
+---
+import { Picture } from "astro:assets";
+
+const ASPECT_RATIO_MAP: Record<string, number> = {
+  square: 1,
+  landscape: 4 / 3,
+  portrait: 3 / 4,
+  widescreen: 16 / 9,
+  "horizontal-strip": 16 / 5,
+};
+
+const POSITION_MAP: Record<string, string> = {
+  "top-left": "northwest",
+  "top-center": "north",
+  "top-right": "northeast",
+  "center-left": "west",
+  "center-center": "center",
+  "center-right": "east",
+  "bottom-left": "southwest",
+  "bottom-center": "south",
+  "bottom-right": "southeast",
+};
+
+const {
+  source,
+  alt,
+  sizes = "(max-width: 1280px) 100vw, 1280px",
+  widths = [640, 1280, 2560],
+  rounded = false,
+  priority = false,
+  aspectRatio = null,
+  width,
+  height,
+  positionVertical = "center",
+  positionHorizontal = "center",
+  background = false,
+  useDefaultEditableBinding = false,
+  class: className,
+  "data-prop-src": customDataPropSrc,
+  "data-prop-alt": customDataPropAlt,
+  "data-editable": customDataEditable,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const hasValidSrc = source && typeof source === "string" && source.trim() !== "";
+
+if (!_component && !hasValidSrc) {
+  return;
+}
+
+const normalizedAlt = alt || "";
+const isEditable =
+  useDefaultEditableBinding || customDataPropSrc != null || customDataPropAlt != null;
+const dataAttributes = isEditable
+  ? {
+      "data-editable": customDataEditable || "image",
+      "data-prop-src": customDataPropSrc || "source",
+      "data-prop-alt": customDataPropAlt || "alt",
+    }
+  : {};
+
+const positionClass = `position-${positionVertical}-${positionHorizontal}`;
+const isLocalSource = typeof source === "string" && source.startsWith("/src/");
+
+let imageSrc = source;
+let imageWidth = width;
+let imageHeight = height;
+let shouldRenderOptimizedPicture = false;
+
+if (isLocalSource) {
+  const imageFiles = import.meta.glob("/src/assets/images/**/*", {
+    import: "default",
+    eager: true,
+  }) as Record<string, any>;
+
+  const imageKey = Object.keys(imageFiles).find((key) => key.endsWith(source));
+
+  if (imageKey && imageFiles[imageKey]) {
+    imageSrc = imageFiles[imageKey];
+    imageWidth = imageWidth || imageSrc.width;
+    imageHeight = imageHeight || imageSrc.height;
+    shouldRenderOptimizedPicture = true;
+  } else {
+    console.warn(`Local image not found for path: ${source}`);
+  }
+}
+
+let finalWidth = imageWidth;
+let finalHeight = imageHeight;
+let useFit = undefined;
+let usePosition = undefined;
+let filteredWidths = widths;
+
+if (
+  aspectRatio &&
+  aspectRatio !== "none" &&
+  shouldRenderOptimizedPicture &&
+  imageSrc &&
+  imageWidth
+) {
+  const targetAspect = ASPECT_RATIO_MAP[aspectRatio];
+
+  if (targetAspect) {
+    let maxWidth: number;
+    let maxHeight: number;
+
+    if (targetAspect === 1 && imageHeight) {
+      const dimension = Math.min(imageWidth, imageHeight);
+
+      maxWidth = dimension;
+      maxHeight = dimension;
+    } else if (imageHeight) {
+      const heightFromWidth = imageWidth / targetAspect;
+
+      if (heightFromWidth <= imageHeight) {
+        maxWidth = imageWidth;
+        maxHeight = Math.round(imageWidth / targetAspect);
+      } else {
+        maxWidth = Math.round(imageHeight * targetAspect);
+        maxHeight = imageHeight;
+      }
+    } else {
+      maxWidth = imageWidth;
+      maxHeight = Math.round(imageWidth / targetAspect);
+    }
+
+    finalWidth = maxWidth;
+    finalHeight = maxHeight;
+    filteredWidths = widths.filter((w: number) => w <= maxWidth);
+    useFit = "cover";
+
+    const positionKey = `${positionVertical}-${positionHorizontal}`;
+
+    usePosition = POSITION_MAP[positionKey] || "center";
+  }
+}
+---
+
+<div
+  class:list={["image", className]}
+  {...htmlAttributes}
+>
+  <div
+    class:list={[
+      "image-inner",
+      aspectRatio && "ratio",
+      aspectRatio && `ratio-${aspectRatio}`,
+      positionClass,
+      rounded && "rounded",
+      background && "background",
+    ]}
+  >
+    {
+      shouldRenderOptimizedPicture ? (
+        <Picture
+          src={imageSrc}
+          alt={normalizedAlt}
+          widths={filteredWidths}
+          sizes={sizes}
+          formats={["webp"]}
+          width={finalWidth}
+          height={finalHeight}
+          fit={useFit}
+          position={usePosition}
+          loading={priority ? "eager" : "lazy"}
+          decoding={priority ? "sync" : "async"}
+          fetchpriority={priority ? "high" : undefined}
+          {...dataAttributes}
+        />
+      ) : (
+        <picture>
+          <img
+            src={source}
+            alt={normalizedAlt}
+            loading={priority ? "eager" : "lazy"}
+            decoding={priority ? "sync" : "async"}
+            fetchpriority={priority ? "high" : undefined}
+            width={width}
+            height={height}
+            {...dataAttributes}
+          />
+        </picture>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  @layer components {
+    .image {
+      display: block;
+      margin-top: var(--spacing-lg);
+      overflow: hidden;
+
+      &:has(> .image-inner.background) {
+        inset: 0;
+        margin-top: 0;
+        position: absolute;
+      }
+
+      > .image-inner {
+        overflow: hidden;
+
+        &.ratio-square {
+          aspect-ratio: var(--ratio-square);
+        }
+
+        &.ratio-landscape {
+          aspect-ratio: var(--ratio-landscape);
+        }
+
+        &.ratio-portrait {
+          aspect-ratio: var(--ratio-portrait);
+        }
+
+        &.ratio-widescreen {
+          aspect-ratio: var(--ratio-widescreen);
+        }
+
+        &.ratio-horizontal-strip {
+          aspect-ratio: var(--ratio-horizontal-strip);
+        }
+
+        &.ratio {
+          :global(picture) {
+            height: 100%;
+          }
+
+          :global(img) {
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+          }
+        }
+
+        &.background {
+          height: 100%;
+          width: 100%;
+
+          > :global(picture) {
+            height: 100%;
+          }
+
+          > :global(picture) > :global(img) {
+            height: 100%;
+            object-fit: cover;
+            width: 100%;
+          }
+        }
+
+        :global(picture) {
+          display: block;
+          margin-block: auto;
+          width: 100%;
+        }
+
+        :global(img) {
+          display: block;
+          height: auto;
+          width: 100%;
+        }
+
+        &.position-center-center :global(img) {
+          object-position: center center;
+        }
+
+        &.position-top-center :global(img) {
+          object-position: center top;
+        }
+
+        &.position-bottom-center :global(img) {
+          object-position: center bottom;
+        }
+
+        &.position-center-left :global(img) {
+          object-position: left center;
+        }
+
+        &.position-center-right :global(img) {
+          object-position: right center;
+        }
+
+        &.position-top-left :global(img) {
+          object-position: left top;
+        }
+
+        &.position-top-right :global(img) {
+          object-position: right top;
+        }
+
+        &.position-bottom-left :global(img) {
+          object-position: left bottom;
+        }
+
+        &.position-bottom-right :global(img) {
+          object-position: right bottom;
+        }
+
+        &.rounded {
+          border-radius: var(--radius-lg);
+        }
+      }
+    }
+  }
+</style>

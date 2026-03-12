@@ -1,0 +1,226 @@
+---
+import Icon from "@core-elements/icon/Icon.astro";
+
+const {
+  page,
+  class: className,
+  showArrows = false,
+  useDefaultEditableBinding: _useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+const maxVisiblePages = 5;
+
+if (!page || page.lastPage <= 1) {
+  return null;
+}
+
+const currentPage = page.currentPage;
+const totalPages = page.lastPage;
+const lastPage = totalPages - 1;
+
+const maxVisible = maxVisiblePages - 1; // Convert to 0-based
+let startPage = Math.max(0, currentPage - 2);
+let endPage = Math.min(lastPage, startPage + maxVisible);
+
+// Adjust if we're near the end
+if (endPage === lastPage && startPage > 0) {
+  startPage = Math.max(0, lastPage - maxVisible);
+}
+
+// Calculate how many pages we'll show in total (including first/last if they're separate)
+const showFirst = startPage > 0;
+const showLast = endPage < lastPage;
+const visibleRange = endPage - startPage + 1;
+const totalVisible = visibleRange + (showFirst ? 1 : 0) + (showLast ? 1 : 0);
+
+// If we're showing too many pages, reduce the range
+if (totalVisible > maxVisiblePages) {
+  const excess = totalVisible - maxVisiblePages;
+
+  if (showFirst && showLast) {
+    // If showing both first and last, reduce the middle range
+    endPage = Math.max(startPage, endPage - excess);
+  } else if (showFirst || showLast) {
+    // If showing one of first/last, reduce the range
+    endPage = Math.max(startPage, endPage - excess);
+  }
+}
+
+// Helper function to generate page URL
+const getPageUrl = (pageNum: number) => {
+  // Always use first page URL for page 1
+  if (pageNum === 1) {
+    return page.url.first || page.url.current?.replace(/\/\d+\/?$/, "") || "/blog";
+  }
+
+  // For other pages, construct from the first page URL
+  if (page.url && page.url.first) {
+    const baseUrl = page.url.first.replace(/\/$/, "");
+
+    return `${baseUrl}/${pageNum}`;
+  }
+
+  // Fallback: extract base from current URL
+  if (page.url && page.url.current) {
+    const baseUrl = page.url.current.replace(/\/\d+\/?$/, "").replace(/\/$/, "");
+
+    return `${baseUrl}/${pageNum}`;
+  }
+
+  // Final fallback
+  return pageNum === 1 ? "/blog" : `/blog/${pageNum}`;
+};
+---
+
+<nav
+  class:list={["pagination", className]}
+  aria-label="Pagination Navigation"
+  {...htmlAttributes}
+>
+  {
+    showArrows && currentPage > 1 && (
+      <a
+        href={getPageUrl(currentPage - 1)}
+        class="pagination-arrow pagination-prev"
+        aria-label="Go to previous page"
+      >
+        <Icon
+          name="arrow-left"
+          size="sm"
+        />
+      </a>
+    )
+  }
+
+  {startPage > 0 && <a href={getPageUrl(1)}>1</a>}
+
+  {startPage > 1 && <span aria-hidden="true">…</span>}
+
+  {
+    Array.from({ length: endPage - startPage + 1 }, (_, i) => {
+      const pageNum = startPage + i + 1;
+
+      return pageNum === currentPage ? (
+        <span
+          class="current"
+          aria-current="page"
+          aria-label={`Page ${pageNum}, current page`}
+        >
+          {pageNum}
+        </span>
+      ) : (
+        <a
+          href={getPageUrl(pageNum)}
+          aria-label={`Go to page ${pageNum}`}
+        >
+          {pageNum}
+        </a>
+      );
+    })
+  }
+
+  {
+    endPage < lastPage && (
+      <>
+        <span aria-hidden="true">…</span>
+        <a href={getPageUrl(totalPages)}>{totalPages}</a>
+      </>
+    )
+  }
+
+  {
+    showArrows && currentPage < totalPages && (
+      <a
+        href={getPageUrl(currentPage + 1)}
+        class="pagination-arrow pagination-next"
+        aria-label="Go to next page"
+      >
+        <Icon
+          name="arrow-right"
+          size="sm"
+        />
+      </a>
+    )
+  }
+</nav>
+
+<style>
+  @layer components {
+    .pagination {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: var(--spacing-lg);
+
+      a,
+      span {
+        background-color: var(--color-bg);
+        border: 1px solid var(--color-border);
+        border-inline-start: none;
+        color: var(--color-text-strong);
+        font-weight: var(--font-weight-semibold);
+        padding: var(--spacing-sm) var(--spacing-md);
+        text-decoration: none;
+        transition: background-color var(--animation-normal) ease-in-out;
+
+        &:hover {
+          background-color: var(--color-state-hover);
+          color: var(--color-text-strong);
+        }
+
+        &:first-child:not(.pagination-arrow) {
+          border-bottom-left-radius: var(--radius-sm);
+          border-inline-start: 1px solid var(--color-border);
+          border-top-left-radius: var(--radius-sm);
+        }
+
+        &:last-child:not(.pagination-arrow) {
+          border-bottom-right-radius: var(--radius-sm);
+          border-top-right-radius: var(--radius-sm);
+        }
+
+        &[aria-hidden="true"] {
+          cursor: default;
+
+          &:hover {
+            background-color: var(--color-bg);
+            color: var(--color-text-strong);
+          }
+        }
+      }
+
+      .current,
+      .current:hover {
+        background-color: var(--color-bg-brand);
+        border-color: var(--color-bg-brand);
+        color: var(--color-text-on-brand);
+        cursor: default;
+      }
+
+      .pagination-arrow {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        min-width: 2.5rem;
+
+        :global(.icon) {
+          align-items: center;
+          display: flex;
+          justify-content: center;
+        }
+      }
+
+      .pagination-prev {
+        border-bottom-left-radius: var(--radius-sm);
+        border-inline-start: 1px solid var(--color-border);
+        border-top-left-radius: var(--radius-sm);
+      }
+
+      .pagination-next {
+        border-bottom-right-radius: var(--radius-sm);
+        border-top-right-radius: var(--radius-sm);
+      }
+    }
+  }
+</style>
