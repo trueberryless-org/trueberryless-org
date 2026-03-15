@@ -1,72 +1,75 @@
-# Astro Component Starter
+# trueberryless-org 🚂
 
-A starter template with 40+ Astro components, each built for visual editing in [CloudCannon](https://cloudcannon.com/). You clone it, you own it. Every component is your source code to modify, extend, or delete.
+[![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ef82cd33-cb29-4d86-909c-71798c49ee16/deploy-status)](https://app.netlify.com/projects/trueberryless-org/deploys)
 
-All the source code and content is yours, it lives in your repository and you decide when (or if) to pull in future improvements from the core repo.
+Welcome to the central station of the **trueberryless-org** ecosystem. This repository powers our official landing page and serves as a showcase for our specialized Starlight plugins, modular themes, and technical infrastructure.
 
-The design is intentionally unbranded so it can morph into any brand you want. Update CSS variables and the entire site shifts to match your colors, fonts, and identity. Components are built on web fundamentals: vanilla CSS, semantic HTML, and a sprinkling of vanilla JS only when something can't be done with CSS alone. Performance and accessibility are baked in from the start.
+Originally built to manage complex deployments on Rocky Linux via ArgoCD, this project has evolved into a streamlined, open-source hub. By migrating our pipeline to **Netlify**, we’ve moved away from manual server management and complex manifest files in favor of a high-velocity, automated track.
 
-## Quick Start
+## 🛠 Built with Purpose
+
+This site is built using a highly customized version of the **Astro Component Starter**. It leverages a modular "train-and-wagon" architecture where every UI element is engineered for momentum and visual editing via [CloudCannon](https://cloudcannon.com/).
+
+### Key Engineering Features:
+* **Starlight Integration:** Seamlessly connects to our fleet of Starlight plugins.
+* **Automated Sync:** Managed via our `template-files` engine to ensure standardized workflows and configurations across the org.
+* **Unbranded Foundation:** While the theme is currently "Train-focused," the underlying system is built on CSS variables, allowing for rapid identity shifts.
+
+## 🚀 Quick Start
+
+To get this "locomotive" running locally:
 
 ```bash
-npx create-astro-component-starter my-site-name
-cd my-site-name
+# Clone the repository
+git clone https://github.com/trueberryless-org/trueberryless-org
+
+# Install dependencies
+npm install
+
+# Start the engine
 npm run dev
 ```
 
 Your site is now running at `http://localhost:4321`.
 
-This command scaffolds the latest starter into a local project folder, sets the starter repo as `upstream`, and installs dependencies automatically.
+**Component Docs:** Access the visual builder and documentation at `http://localhost:4321/component-docs/`.
 
-**Make your first change:** Open `src/content/pages/index.md`, change the hero heading, and watch it update in your browser.
+## 📦 The Blueprint
 
-## What You'll See
-
-- **Your site** at [localhost:4321](http://localhost:4321), a fully working demo with pages, blog, and navigation
-- **Component docs** at [localhost:4321/component-docs/](http://localhost:4321/component-docs/), documentation, examples, and a visual builder for every component
-
-## The Three-File Pattern
-
-Every component in this starter ships with three files. This is what makes the system work: developers build components, editors visually manage content.
+We follow the **Three-File Pattern**, ensuring that developers keep control of the code while editors can visually manage content.
 
 ```
-src/components/.../button/
-├── Button.astro                          # The component
-├── button.cloudcannon.inputs.yml         # What editors see and can change
-└── button.cloudcannon.structure-value.yml # Defaults and picker metadata
+src/components/.../train-hero/
+├── TrainHero.astro                   # The locomotive (Logic/Markup)
+├── train-hero.cloudcannon.inputs.yml # The control panel (Editor inputs)
+└── train-hero.cloudcannon.structure-value.yml # The manifest (Defaults)
 ```
 
-## Key Directories
+### Directory Map
 
 ```
 src/
-├── components/          # All 40+ components (yours to edit)
-│   ├── building-blocks/ # Core UI: buttons, headings, forms, layout wrappers
-│   ├── page-sections/   # Full-width sections: heroes, features, CTAs
-│   └── navigation/      # Header, footer, mobile nav
-├── content/             # Your pages and blog posts (Markdown/MDX)
-├── styles/              # Design tokens, themes, base styles
-│   ├── variables/       # Colors, fonts, spacing, widths
-│   └── themes/          # Light and dark theme definitions
-└── component-docs/   # Built-in docs (can be excluded from production builds)
+├── components/          # 40+ modular wagons (Hero, Features, Projects)
+│   ├── building-blocks/ # Core UI: buttons, headings, layout
+│   └── page-sections/   # Full-width train sections
+├── content/             # Markdown-driven pages and blog posts
+├── styles/              # Design tokens and theme variables
+└── component-docs/      # Built-in visual component library
 ```
 
-## Dev and Build Commands
+## 🛠 Dev and Build Commands
 
-| Command                      | Description                                       |
-| ---------------------------- | ------------------------------------------------- |
-| `npm run dev`                | Start the development server                      |
-| `npm run build`              | Build for production (component docs excluded)    |
-| `npm run build:with-library` | Build for production with component docs included |
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run build` | Production build (Excludes component docs) |
+| `npm run build:with-library` | Production build (Includes component docs) |
 
-## Prerequisites
+## 🤝 Contributions & Maintenance
 
-- Node.js >= 24.0.0
+This organization is maintained by [trueberryless](https://trueberryless.org). We are always looking for contributors to help maintain and scale our ecosystem. Whether you are fixing a bug in a Starlight plugin or improving a component wagon, your help keeps this project on the right track.
 
-## Learn More
+## 📜 License
 
-Head to the [component docs](http://localhost:4321/component-docs/) in your dev server for a guided tour, examples for every component, and a visual component builder.
-
-## License
-
-MIT
+This project is licensed under the [MIT License](https://github.com/trueberryless-org/trueberryless-org/blob/main/LICENSE).
