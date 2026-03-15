@@ -108,7 +108,7 @@ const wagonColors = [
         max-width: none !important;
         overflow: visible !important;
       }
-      :global(.inner-content) {
+      :global(.content) {
         padding: 0 !important;
         max-width: none !important;
         overflow: visible !important;
@@ -192,6 +192,7 @@ const wagonColors = [
     function updateOverlaySize() {
       if (!mainEl || !overlay || !svg) return;
       const mainRect = mainEl.getBoundingClientRect();
+      // No extra height needed - track ends inside the CTA section
       const mainHeight = mainEl.scrollHeight;
 
       overlay.style.position = "absolute";
@@ -242,9 +243,28 @@ const wagonColors = [
     function buildTrackPath(sections: SectionInfo[], pageWidth: number): string {
       if (sections.length < 2) return "";
 
-      const margin = 120;
-      const leftX = margin;
-      const rightX = pageWidth - margin;
+      // Measure the actual content area from a reference section so the track
+      // aligns with the grid columns regardless of screen size.
+      // Fall back to a calculation if no reference element is found.
+      let contentLeft = 0;
+      let contentRight = pageWidth;
+
+      const refSection = document.getElementById("about") || document.getElementById("community");
+      if (refSection && mainEl) {
+        const contentEl = refSection.querySelector(":scope > .outer-content > .content");
+        if (contentEl) {
+          const contentRect = contentEl.getBoundingClientRect();
+          const mainRect = mainEl.getBoundingClientRect();
+          contentLeft = contentRect.left - mainRect.left;
+          contentRight = contentRect.right - mainRect.left;
+        }
+      }
+
+      // The track-space columns are 200px wide inside the content area.
+      // Position the track at the center of those columns.
+      const trackColCenter = 100; // half of 200px track-space column
+      const leftX = contentLeft + trackColCenter;
+      const rightX = contentRight - trackColCenter;
       const curveRadius = 150;
 
       const points: { x: number; y: number }[] = [];
@@ -254,7 +274,8 @@ const wagonColors = [
         const id = s.id;
 
         if (id === "hero") {
-          points.push({ x: -50, y: s.top + s.height });
+          // Start off-screen to the left so engine enters from outside the viewport
+          points.push({ x: -200, y: s.top + s.height });
         } else if (id === "about") {
           points.push({ x: leftX, y: s.top + 40 });
           points.push({ x: leftX, y: s.top + s.height - 40 });
@@ -268,8 +289,9 @@ const wagonColors = [
           points.push({ x: leftX, y: s.top + 40 });
           points.push({ x: leftX, y: s.top + s.height - 40 });
         } else if (id === "cta") {
-          const centerX = pageWidth / 2;
-          points.push({ x: centerX, y: s.top + 60 });
+          const centerX = (contentLeft + contentRight) / 2;
+          // End inside the CTA card area - just let the diagonal slope carry in
+          points.push({ x: centerX, y: s.top + s.height * 0.5 });
         }
       }
 
@@ -508,8 +530,8 @@ const wagonColors = [
           continue;
         }
 
-        // Target Y: near the top of the section (where the wagon waits)
-        const targetY = section.top + 40;
+        // Target Y: near the vertical center of the section (aligned with heading)
+        const targetY = section.top + section.height * 0.35;
 
         // Binary-search-ish: sample along path to find closest Y
         let bestDist = 0;
@@ -600,8 +622,8 @@ const wagonColors = [
       let rawProgress = scrollRange > 0 ? (scrollTop - mainTop) / scrollRange : 0;
       rawProgress = Math.max(0, Math.min(1, rawProgress));
 
-      const trainStart = 0.20;
-      const trainEnd = 0.95;
+      const trainStart = 0.15;
+      const trainEnd = 1.05;
       let progress = (rawProgress - trainStart) / (trainEnd - trainStart);
       progress = Math.max(0, Math.min(1, progress));
 
