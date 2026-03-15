@@ -91,7 +91,484 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
 
     <slot name="head" />
   </head>
-  <body>
+  <body class="loading">
+    <!-- Loading Screen -->
+    <div id="loading-screen" aria-hidden="true">
+      <div id="loader-train" class="loader-train">
+        <!-- Wagon 2 (yellow) -->
+        <svg class="loader-wagon" viewBox="0 0 64 44" xmlns="http://www.w3.org/2000/svg">
+          <!-- Left connector -->
+          <rect x="0" y="18" width="4" height="8" rx="1" fill="#9ca3af"/>
+          <!-- Body -->
+          <rect x="6" y="12" width="52" height="26" rx="4" fill="#fbbf24"/>
+          <!-- Detail stripe -->
+          <rect x="10" y="26" width="44" height="8" rx="2" fill="#fde68a"/>
+          <!-- Dots -->
+          <circle cx="18" cy="20" r="3" fill="#fde68a" opacity="0.6"/>
+          <circle cx="32" cy="20" r="3" fill="#fde68a" opacity="0.6"/>
+          <circle cx="46" cy="20" r="3" fill="#fde68a" opacity="0.6"/>
+          <!-- Wheels (bottom) -->
+          <circle cx="18" cy="40" r="6" fill="#4b5563"/>
+          <circle cx="18" cy="40" r="3" fill="#9ca3af"/>
+          <circle cx="46" cy="40" r="6" fill="#4b5563"/>
+          <circle cx="46" cy="40" r="3" fill="#9ca3af"/>
+          <!-- Right connector -->
+          <rect x="58" y="18" width="6" height="8" rx="1" fill="#9ca3af"/>
+        </svg>
+        <!-- Wagon 1 (red) -->
+        <svg class="loader-wagon" viewBox="0 0 64 44" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="18" width="4" height="8" rx="1" fill="#9ca3af"/>
+          <rect x="6" y="12" width="52" height="26" rx="4" fill="#ef4444"/>
+          <rect x="10" y="26" width="44" height="8" rx="2" fill="#ff8a80"/>
+          <circle cx="18" cy="20" r="3" fill="#ff8a80" opacity="0.6"/>
+          <circle cx="32" cy="20" r="3" fill="#ff8a80" opacity="0.6"/>
+          <circle cx="46" cy="20" r="3" fill="#ff8a80" opacity="0.6"/>
+          <circle cx="18" cy="40" r="6" fill="#4b5563"/>
+          <circle cx="18" cy="40" r="3" fill="#9ca3af"/>
+          <circle cx="46" cy="40" r="6" fill="#4b5563"/>
+          <circle cx="46" cy="40" r="3" fill="#9ca3af"/>
+          <rect x="58" y="18" width="6" height="8" rx="1" fill="#9ca3af"/>
+        </svg>
+        <!-- Engine (mirrored so chimney/headlight face right = direction of travel) -->
+        <svg class="loader-engine" viewBox="0 0 80 44" xmlns="http://www.w3.org/2000/svg">
+          <g transform="scale(-1,1) translate(-80,0)">
+            <!-- Cab (rear side, now facing left toward wagons) -->
+            <rect x="50" y="2" width="26" height="30" rx="3" fill="#6b7280"/>
+            <!-- Window -->
+            <rect x="54" y="5" width="16" height="10" rx="2" fill="rgba(255,255,255,0.85)"/>
+            <!-- Main body -->
+            <rect x="4" y="12" width="72" height="24" rx="4" fill="#4b5563"/>
+            <!-- Chimney (now faces right after mirror) -->
+            <rect x="12" y="2" width="8" height="10" rx="2" fill="#7c8494"/>
+            <!-- Studs -->
+            <circle cx="20" cy="22" r="3" fill="#9ca3af" opacity="0.7"/>
+            <circle cx="30" cy="22" r="3" fill="#9ca3af" opacity="0.7"/>
+            <circle cx="40" cy="22" r="3" fill="#9ca3af" opacity="0.7"/>
+            <!-- Headlight (now faces right after mirror) -->
+            <circle cx="6" cy="24" r="3" fill="#fbbf24"/>
+            <!-- Wheels (bottom) -->
+            <circle cx="18" cy="40" r="6" fill="#4b5563"/>
+            <circle cx="18" cy="40" r="3" fill="#9ca3af"/>
+            <circle cx="38" cy="40" r="6" fill="#4b5563"/>
+            <circle cx="38" cy="40" r="3" fill="#9ca3af"/>
+            <circle cx="62" cy="40" r="6" fill="#4b5563"/>
+            <circle cx="62" cy="40" r="3" fill="#9ca3af"/>
+            <!-- Bumper (front, now on right after mirror) -->
+            <rect x="0" y="18" width="4" height="6" rx="1" fill="#ef4444"/>
+            <!-- Rear connector (now on left toward wagons after mirror) -->
+            <rect x="76" y="20" width="4" height="8" rx="1" fill="#9ca3af"/>
+          </g>
+        </svg>
+      </div>
+      <!-- Steam puffs from chimney -->
+      <div id="loader-steam" class="loader-steam">
+        <div class="steam-puff steam-puff-1"></div>
+        <div class="steam-puff steam-puff-2"></div>
+        <div class="steam-puff steam-puff-3"></div>
+      </div>
+    </div>
+    <!-- Colorful backdrop layers revealed when blue screen slides up -->
+    <div id="loader-backdrops" aria-hidden="true">
+      <div class="loader-backdrop" style="background:#ab47bc; z-index:9004"></div>
+      <div class="loader-backdrop" style="background:#66bb6a; z-index:9003"></div>
+      <div class="loader-backdrop" style="background:#ef4444; z-index:9002"></div>
+      <div class="loader-backdrop" style="background:#fbbf24; z-index:9001"></div>
+      <div class="loader-backdrop" style="background:#2563eb; z-index:9000"></div>
+    </div>
+
+    <style is:inline>
+      body.loading {
+        overflow: hidden !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+      }
+
+      #loading-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        background: #2563eb;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        overflow: hidden;
+        will-change: transform;
+      }
+
+      #loading-screen.loader-dismiss {
+        animation: loader-slide-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+
+      @keyframes loader-slide-up {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-100%);
+        }
+      }
+
+      /* Train container — sits at the very bottom */
+      .loader-train {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        will-change: transform;
+      }
+
+      .loader-wagon,
+      .loader-engine {
+        display: block;
+        flex-shrink: 0;
+      }
+
+      .loader-engine {
+        width: 240px;
+        height: 132px;
+      }
+      .loader-wagon {
+        width: 192px;
+        height: 132px;
+      }
+
+      /* Steam puffs */
+      .loader-steam {
+        position: absolute;
+        bottom: 132px;
+        left: 0;
+        pointer-events: none;
+        will-change: transform;
+      }
+
+      .steam-puff {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      .steam-puff-1 {
+        width: 24px;
+        height: 24px;
+        top: -16px;
+        left: 8px;
+        animation: steam-rise 1.2s ease-out infinite;
+      }
+      .steam-puff-2 {
+        width: 32px;
+        height: 32px;
+        top: -32px;
+        left: -8px;
+        animation: steam-rise 1.2s ease-out 0.3s infinite;
+      }
+      .steam-puff-3 {
+        width: 20px;
+        height: 20px;
+        top: -44px;
+        left: 16px;
+        animation: steam-rise 1.2s ease-out 0.6s infinite;
+      }
+
+      @keyframes steam-rise {
+        0% {
+          opacity: 0.5;
+          transform: translateY(0) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-40px) scale(2);
+        }
+      }
+
+      /* Reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        #loading-screen.loader-dismiss {
+          animation: none !important;
+          display: none;
+        }
+        .steam-puff {
+          animation: none !important;
+        }
+        .loader-backdrop.backdrop-dismiss {
+          animation: none !important;
+          display: none;
+        }
+      }
+
+      /* Colorful backdrop layers */
+      .loader-backdrop {
+        position: fixed;
+        inset: 0;
+        will-change: transform;
+      }
+
+      .loader-backdrop.backdrop-dismiss {
+        animation-name: backdrop-slide-away;
+        animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes backdrop-slide-away {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-100%);
+        }
+      }
+    </style>
+
+    <script is:inline>
+      (function() {
+        var screen = document.getElementById('loading-screen');
+        var train = document.getElementById('loader-train');
+        var steam = document.getElementById('loader-steam');
+        if (!screen || !train || !steam) return;
+
+        // Train pixel dimensions: 2 wagons (192px each) + engine (240px) + 2 gaps (10px) = 644px
+        var trainWidth = 644;
+        var displayProgress = 0;
+        var targetProgress = 0;
+        var velocity = 0;
+        var maxVelocity = 0.018;        // Higher max speed
+        var acceleration = 0.0006;
+        var deceleration = 0.001;
+        var dismissed = false;
+        var exiting = false;
+        var exitProgress = 0;
+        var exitVelocity = 0;
+        var exitMaxVelocity = 0.025;
+        var exitAcceleration = 0.0008;
+        var minDisplayTime = 600;
+        var startTime = Date.now();
+        var lastTimestamp = 0;
+
+        // Optimistic prediction: assume load finishes fast.
+        // Train starts at full speed toward 0.7, then slows down if loading hasn't caught up.
+        // Once loading completes, it speeds back up to 1.0 and exits.
+        var optimisticTarget = 0.7;     // How far the train drives optimistically
+        var loadingFinished = false;
+
+        function getTrainX(progress) {
+          var vw = window.innerWidth;
+          var startX = -trainWidth - 30;
+          var endX = vw * 0.8;
+          return startX + (endX - startX) * progress;
+        }
+
+        function updateTrainPosition(xPos) {
+          train.style.transform = 'translateX(' + xPos + 'px)';
+          // Steam follows engine chimney: engine left = xPos + 2*192 + 2*10 = xPos + 404
+          // Chimney is mirrored: original x=12..20 flips to x=60..68, center ~64/80 * 240 = 192px from engine left
+          var chimneyX = xPos + 404 + 192;
+          steam.style.transform = 'translateX(' + chimneyX + 'px)';
+        }
+
+        function animateProgress(timestamp) {
+          if (exiting || dismissed) return;
+
+          if (!lastTimestamp) lastTimestamp = timestamp;
+          var dt = Math.min((timestamp - lastTimestamp) / 16.667, 3);
+          lastTimestamp = timestamp;
+
+          // Determine effective target:
+          // If loading is done, head straight to 1.0.
+          // Otherwise, race to optimisticTarget but brake before it.
+          var effectiveTarget = loadingFinished ? 1.0 : Math.min(targetProgress, optimisticTarget);
+
+          var distance = effectiveTarget - displayProgress;
+
+          if (distance > 0.001) {
+            velocity = Math.min(velocity + acceleration * dt, maxVelocity);
+
+            // Brake zone: if loading isn't done and we're approaching the optimistic limit,
+            // slow down so we don't stop abruptly.
+            if (!loadingFinished) {
+              var brakingZone = 0.2;
+              var distToLimit = optimisticTarget - displayProgress;
+              if (distToLimit < brakingZone && distToLimit > 0) {
+                var brakeFactor = distToLimit / brakingZone;
+                brakeFactor = brakeFactor * brakeFactor;
+                velocity = Math.min(velocity, maxVelocity * Math.max(brakeFactor, 0.02));
+              }
+            } else {
+              // Loading is done — brake gently approaching 1.0
+              var brakingZone2 = 0.1;
+              if (distance < brakingZone2) {
+                var bf2 = distance / brakingZone2;
+                bf2 = bf2 * bf2;
+                velocity = Math.min(velocity, maxVelocity * Math.max(bf2, 0.05));
+              }
+            }
+
+            displayProgress = Math.min(displayProgress + velocity * dt, effectiveTarget);
+          } else {
+            // At the effective target — coast/crawl
+            if (!loadingFinished) {
+              // Crawl very slowly so it doesn't look stuck
+              velocity = Math.max(velocity - deceleration * dt, 0.0005);
+              displayProgress = Math.min(displayProgress + velocity * dt, optimisticTarget);
+            } else {
+              velocity = Math.max(velocity - deceleration * dt, 0);
+              displayProgress = Math.min(displayProgress + velocity * dt, 1);
+            }
+          }
+
+          // Snap when close
+          if (loadingFinished && displayProgress > 0.998 && velocity < 0.001) {
+            displayProgress = 1;
+          }
+
+          updateTrainPosition(getTrainX(displayProgress));
+
+          if (displayProgress >= 1 && loadingFinished) {
+            startExit();
+          } else {
+            requestAnimationFrame(animateProgress);
+          }
+        }
+
+        function startExit() {
+          if (exiting) return;
+          exiting = true;
+          exitProgress = 0;
+          exitVelocity = velocity;
+          lastTimestamp = 0;
+          requestAnimationFrame(animateExit);
+        }
+
+        function animateExit(timestamp) {
+          if (dismissed) return;
+
+          if (!lastTimestamp) lastTimestamp = timestamp;
+          var dt = Math.min((timestamp - lastTimestamp) / 16.667, 3);
+          lastTimestamp = timestamp;
+
+          exitVelocity = Math.min(exitVelocity + exitAcceleration * dt, exitMaxVelocity);
+          exitProgress = Math.min(exitProgress + exitVelocity * dt, 1);
+
+          var vw = window.innerWidth;
+          var arrivalX = getTrainX(1);
+          var exitX = vw + 20;
+          var currentX = arrivalX + (exitX - arrivalX) * exitProgress;
+
+          updateTrainPosition(currentX);
+
+          if (exitProgress >= 1) {
+            dismiss();
+          } else {
+            requestAnimationFrame(animateExit);
+          }
+        }
+
+        function dismiss() {
+          if (dismissed) return;
+          dismissed = true;
+          var elapsed = Date.now() - startTime;
+          var delay = Math.max(0, minDisplayTime - elapsed);
+          delay += 150;
+          setTimeout(function() {
+            screen.classList.add('loader-dismiss');
+            // Trigger colorful backdrop animations with random staggered delays
+            triggerBackdrops();
+            screen.addEventListener('animationend', function handler() {
+              screen.removeEventListener('animationend', handler);
+              screen.remove();
+            });
+            setTimeout(function() {
+              if (screen.parentNode) {
+                screen.remove();
+              }
+            }, 1500);
+          }, delay);
+        }
+
+        function triggerBackdrops() {
+          var container = document.getElementById('loader-backdrops');
+          if (!container) return;
+          var panels = container.querySelectorAll('.loader-backdrop');
+          if (!panels.length) return;
+
+          // Short random delays (0-150ms) so they start almost together
+          // Random durations (400-700ms) so they move at different speeds,
+          // causing some to overtake others for a playful effect
+          var maxEndTime = 0;
+          for (var i = 0; i < panels.length; i++) {
+            var randomDelay = Math.floor(Math.random() * 150);
+            var randomDuration = 700 + Math.floor(Math.random() * 100);
+            var endTime = randomDelay + randomDuration;
+            if (endTime > maxEndTime) maxEndTime = endTime;
+            (function(panel, d, dur) {
+              panel.style.animationDuration = dur + 'ms';
+              setTimeout(function() {
+                panel.classList.add('backdrop-dismiss');
+              }, d);
+            })(panels[i], randomDelay, randomDuration);
+          }
+
+          // Clean up after all animations finish + buffer
+          setTimeout(function() {
+            document.body.classList.remove('loading');
+            if (container.parentNode) {
+              container.remove();
+            }
+          }, maxEndTime + 200);
+        }
+
+        // Track loading progress
+        var resourcesLoaded = false;
+        var domReady = false;
+
+        function checkProgress() {
+          if (dismissed) return;
+          if (domReady && resourcesLoaded) {
+            loadingFinished = true;
+            targetProgress = 1;
+          } else if (domReady) {
+            targetProgress = 0.6;
+          } else {
+            targetProgress = 0.2;
+          }
+        }
+
+        // Start animation — immediately go at full speed
+        targetProgress = 0.7;
+        requestAnimationFrame(animateProgress);
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function() {
+            domReady = true;
+            checkProgress();
+          });
+        } else {
+          domReady = true;
+          checkProgress();
+        }
+
+        if (document.readyState === 'complete') {
+          resourcesLoaded = true;
+          checkProgress();
+        } else {
+          window.addEventListener('load', function() {
+            resourcesLoaded = true;
+            checkProgress();
+          });
+        }
+
+        // Safety timeout
+        setTimeout(function() {
+          if (!dismissed) {
+            loadingFinished = true;
+            targetProgress = 1;
+          }
+        }, 8000);
+
+        updateTrainPosition(getTrainX(0));
+      })();
+    </script>
+
     <div>
       <slot />
     </div>
