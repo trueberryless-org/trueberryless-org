@@ -30,6 +30,217 @@ const {
   id="about"
   {...htmlAttributes}
 >
+  <!-- Mobile floating engine + purple wagon paired -->
+  <div
+    class="train-mobile-float train-mobile-float-pair"
+    aria-hidden="true"
+  >
+    <svg
+      width="80"
+      height="44"
+      viewBox="0 0 80 44"
+      xmlns="http://www.w3.org/2000/svg"
+      style="transform: scaleY(-1);"
+    >
+      <rect
+        x="4"
+        y="12"
+        width="72"
+        height="24"
+        rx="4"
+        fill="var(--train-blue)"
+      ></rect>
+      <rect
+        x="50"
+        y="26"
+        width="26"
+        height="16"
+        rx="3"
+        fill="var(--train-blue-light)"
+      ></rect>
+      <rect
+        x="56"
+        y="30"
+        width="14"
+        height="8"
+        rx="2"
+        fill="rgba(255,255,255,0.85)"
+      ></rect>
+      <rect
+        x="12"
+        y="32"
+        width="8"
+        height="10"
+        rx="2"
+        fill="var(--train-dark)"
+      ></rect>
+      <circle
+        cx="20"
+        cy="24"
+        r="3"
+        fill="var(--train-blue-light)"
+        opacity="0.7"
+      ></circle>
+      <circle
+        cx="30"
+        cy="24"
+        r="3"
+        fill="var(--train-blue-light)"
+        opacity="0.7"
+      ></circle>
+      <circle
+        cx="40"
+        cy="24"
+        r="3"
+        fill="var(--train-blue-light)"
+        opacity="0.7"
+      ></circle>
+      <circle
+        cx="6"
+        cy="20"
+        r="3"
+        fill="var(--train-yellow)"
+      ></circle>
+      <circle
+        cx="18"
+        cy="6"
+        r="6"
+        fill="var(--train-dark)"
+      ></circle>
+      <circle
+        cx="18"
+        cy="6"
+        r="3"
+        fill="var(--train-gray)"
+      ></circle>
+      <circle
+        cx="38"
+        cy="6"
+        r="6"
+        fill="var(--train-dark)"
+      ></circle>
+      <circle
+        cx="38"
+        cy="6"
+        r="3"
+        fill="var(--train-gray)"
+      ></circle>
+      <circle
+        cx="62"
+        cy="6"
+        r="6"
+        fill="var(--train-dark)"
+      ></circle>
+      <circle
+        cx="62"
+        cy="6"
+        r="3"
+        fill="var(--train-gray)"
+      ></circle>
+      <rect
+        x="0"
+        y="14"
+        width="4"
+        height="6"
+        rx="1"
+        fill="var(--train-red)"
+      ></rect>
+      <rect
+        x="76"
+        y="18"
+        width="4"
+        height="8"
+        rx="1"
+        fill="var(--train-gray)"
+      ></rect>
+    </svg>
+    <svg
+      width="64"
+      height="44"
+      viewBox="0 0 64 44"
+      xmlns="http://www.w3.org/2000/svg"
+      style="transform: scaleY(-1); margin-left: -2px;"
+    >
+      <rect
+        x="0"
+        y="18"
+        width="4"
+        height="8"
+        rx="1"
+        fill="var(--train-gray)"
+      ></rect>
+      <rect
+        x="6"
+        y="12"
+        width="52"
+        height="26"
+        rx="4"
+        fill="#ab47bc"
+      ></rect>
+      <rect
+        x="10"
+        y="26"
+        width="44"
+        height="8"
+        rx="2"
+        fill="#ce93d8"
+      ></rect>
+      <circle
+        cx="18"
+        cy="20"
+        r="3"
+        fill="#ce93d8"
+        opacity="0.6"
+      ></circle>
+      <circle
+        cx="32"
+        cy="20"
+        r="3"
+        fill="#ce93d8"
+        opacity="0.6"
+      ></circle>
+      <circle
+        cx="46"
+        cy="20"
+        r="3"
+        fill="#ce93d8"
+        opacity="0.6"
+      ></circle>
+      <circle
+        cx="18"
+        cy="6"
+        r="6"
+        fill="var(--train-dark)"
+      ></circle>
+      <circle
+        cx="18"
+        cy="6"
+        r="3"
+        fill="var(--train-gray)"
+      ></circle>
+      <circle
+        cx="46"
+        cy="6"
+        r="6"
+        fill="var(--train-dark)"
+      ></circle>
+      <circle
+        cx="46"
+        cy="6"
+        r="3"
+        fill="var(--train-gray)"
+      ></circle>
+      <rect
+        x="58"
+        y="18"
+        width="6"
+        height="8"
+        rx="1"
+        fill="var(--train-gray)"
+      ></rect>
+    </svg>
+  </div>
+
   <div class="train-about-inner">
     <div class="train-about-track-space"></div>
     <div class="train-about-content">
@@ -105,6 +316,40 @@ const {
       }
       .train-about-track-space {
         display: none;
+      }
+    }
+
+    .train-mobile-float {
+      display: none;
+    }
+
+    @media (width < 768px) {
+      .train-mobile-float {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 4%;
+        margin-bottom: var(--spacing-sm);
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
+        animation: train-piece-float 5s ease-in-out infinite;
+      }
+
+      .train-mobile-float svg {
+        display: inline-block;
+        flex-shrink: 0;
+      }
+    }
+
+    @keyframes train-piece-float {
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      33% {
+        transform: translateY(-10px) rotate(1.5deg);
+      }
+      66% {
+        transform: translateY(-6px) rotate(-0.5deg);
       }
     }
   }
