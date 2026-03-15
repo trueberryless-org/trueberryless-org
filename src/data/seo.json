@@ -3,6 +3,7 @@
   "url": "https://trueberryless-org.trueberryless.org",
   "description": "Open source tools and libraries for the modern developer ecosystem.",
   "logoSource": "/images/logo.svg",
+  "ogImage": "/images/og-image.png",
   "titleFormat": "{title} | trueberryless-org",
   "twitterHandle": "@trueberryless"
 }
