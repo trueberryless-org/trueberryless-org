@@ -594,32 +594,47 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
     <script is:inline>
       (function () {
         var screen = document.getElementById("loading-screen");
+        var backdrops = document.getElementById("loader-backdrops");
+
+        // Check if this is a Back/Forward navigation
+        var isBackNav = false;
+        try {
+          isBackNav =
+            window.performance &&
+            window.performance.getEntriesByType("navigation")[0].type === "back_forward";
+        } catch (e) {}
+
+        if (isBackNav) {
+          document.body.classList.remove("loading");
+          if (screen) screen.remove();
+          if (backdrops) backdrops.remove();
+          return;
+        }
+
         var train = document.getElementById("loader-train");
         var steam = document.getElementById("loader-steam");
         if (!screen || !train || !steam) return;
 
-        // Train pixel dimensions: 2 wagons (192px each) + engine (240px) + 2 gaps (10px) = 644px
         var trainWidth = 644;
         var displayProgress = 0;
         var targetProgress = 0;
         var velocity = 0;
-        var maxVelocity = 0.018; // Higher max speed
-        var acceleration = 0.0006;
-        var deceleration = 0.001;
+
+        var maxVelocity = 0.035;
+        var acceleration = 0.0015;
+        var deceleration = 0.002;
+        var minDisplayTime = 200;
+
         var dismissed = false;
         var exiting = false;
         var exitProgress = 0;
         var exitVelocity = 0;
-        var exitMaxVelocity = 0.025;
-        var exitAcceleration = 0.0008;
-        var minDisplayTime = 600;
+        var exitMaxVelocity = 0.045;
+        var exitAcceleration = 0.002;
         var startTime = Date.now();
         var lastTimestamp = 0;
 
-        // Optimistic prediction: assume load finishes fast.
-        // Train starts at full speed toward 0.7, then slows down if loading hasn't caught up.
-        // Once loading completes, it speeds back up to 1.0 and exits.
-        var optimisticTarget = 0.7; // How far the train drives optimistically
+        var optimisticTarget = 0.7;
         var loadingFinished = false;
 
         function getTrainX(progress) {
@@ -631,8 +646,6 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
 
         function updateTrainPosition(xPos) {
           train.style.transform = "translateX(" + xPos + "px)";
-          // Steam follows engine chimney: engine left = xPos + 2*192 + 2*10 = xPos + 404
-          // Chimney is mirrored: original x=12..20 flips to x=60..68, center ~64/80 * 240 = 192px from engine left
           var chimneyX = xPos + 404 + 192;
           steam.style.transform = "translateX(" + chimneyX + "px)";
         }
@@ -644,42 +657,34 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
           var dt = Math.min((timestamp - lastTimestamp) / 16.667, 3);
           lastTimestamp = timestamp;
 
-          // Determine effective target:
-          // If loading is done, head straight to 1.0.
-          // Otherwise, race to optimisticTarget but brake before it.
           var effectiveTarget = loadingFinished ? 1.0 : Math.min(targetProgress, optimisticTarget);
-
           var distance = effectiveTarget - displayProgress;
 
           if (distance > 0.001) {
             velocity = Math.min(velocity + acceleration * dt, maxVelocity);
 
-            // Brake zone: if loading isn't done and we're approaching the optimistic limit,
-            // slow down so we don't stop abruptly.
             if (!loadingFinished) {
-              var brakingZone = 0.2;
+              var brakingZone = 0.15;
               var distToLimit = optimisticTarget - displayProgress;
               if (distToLimit < brakingZone && distToLimit > 0) {
                 var brakeFactor = distToLimit / brakingZone;
-                brakeFactor = brakeFactor * brakeFactor;
-                velocity = Math.min(velocity, maxVelocity * Math.max(brakeFactor, 0.02));
+                velocity = Math.min(
+                  velocity,
+                  maxVelocity * Math.max(brakeFactor * brakeFactor, 0.1)
+                );
               }
             } else {
-              // Loading is done — brake gently approaching 1.0
-              var brakingZone2 = 0.1;
+              var brakingZone2 = 0.05;
               if (distance < brakingZone2) {
                 var bf2 = distance / brakingZone2;
-                bf2 = bf2 * bf2;
-                velocity = Math.min(velocity, maxVelocity * Math.max(bf2, 0.05));
+                velocity = Math.min(velocity, maxVelocity * Math.max(bf2 * bf2, 0.1));
               }
             }
 
             displayProgress = Math.min(displayProgress + velocity * dt, effectiveTarget);
           } else {
-            // At the effective target — coast/crawl
             if (!loadingFinished) {
-              // Crawl very slowly so it doesn't look stuck
-              velocity = Math.max(velocity - deceleration * dt, 0.0005);
+              velocity = Math.max(velocity - deceleration * dt, 0.001);
               displayProgress = Math.min(displayProgress + velocity * dt, optimisticTarget);
             } else {
               velocity = Math.max(velocity - deceleration * dt, 0);
@@ -687,8 +692,7 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
             }
           }
 
-          // Snap when close
-          if (loadingFinished && displayProgress > 0.998 && velocity < 0.001) {
+          if (loadingFinished && displayProgress > 0.99) {
             displayProgress = 1;
           }
 
@@ -739,20 +743,17 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
           dismissed = true;
           var elapsed = Date.now() - startTime;
           var delay = Math.max(0, minDisplayTime - elapsed);
-          delay += 150;
+
           setTimeout(function () {
             screen.classList.add("loader-dismiss");
-            // Trigger colorful backdrop animations with random staggered delays
             triggerBackdrops();
             screen.addEventListener("animationend", function handler() {
               screen.removeEventListener("animationend", handler);
               screen.remove();
             });
             setTimeout(function () {
-              if (screen.parentNode) {
-                screen.remove();
-              }
-            }, 1500);
+              if (screen.parentNode) screen.remove();
+            }, 1000);
           }, delay);
         }
 
@@ -762,13 +763,10 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
           var panels = container.querySelectorAll(".loader-backdrop");
           if (!panels.length) return;
 
-          // Short random delays (0-150ms) so they start almost together
-          // Random durations (400-700ms) so they move at different speeds,
-          // causing some to overtake others for a playful effect
           var maxEndTime = 0;
           for (var i = 0; i < panels.length; i++) {
-            var randomDelay = Math.floor(Math.random() * 150);
-            var randomDuration = 700 + Math.floor(Math.random() * 100);
+            var randomDelay = Math.floor(Math.random() * 80);
+            var randomDuration = 700 + Math.floor(Math.random() * 150);
             var endTime = randomDelay + randomDuration;
             if (endTime > maxEndTime) maxEndTime = endTime;
             (function (panel, d, dur) {
@@ -779,16 +777,12 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
             })(panels[i], randomDelay, randomDuration);
           }
 
-          // Clean up after all animations finish + buffer
           setTimeout(function () {
             document.body.classList.remove("loading");
-            if (container.parentNode) {
-              container.remove();
-            }
-          }, maxEndTime + 200);
+            if (container.parentNode) container.remove();
+          }, maxEndTime + 100);
         }
 
-        // Track loading progress
         var resourcesLoaded = false;
         var domReady = false;
 
@@ -804,7 +798,6 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
           }
         }
 
-        // Start animation — immediately go at full speed
         targetProgress = 0.7;
         requestAnimationFrame(animateProgress);
 
@@ -828,13 +821,12 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
           });
         }
 
-        // Safety timeout
         setTimeout(function () {
           if (!dismissed) {
             loadingFinished = true;
             targetProgress = 1;
           }
-        }, 8000);
+        }, 3000);
 
         updateTrainPosition(getTrainX(0));
       })();
