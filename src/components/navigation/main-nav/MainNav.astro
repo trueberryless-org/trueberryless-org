@@ -26,7 +26,7 @@ const mobileNavData = [
   ...navData,
   ...buttonSections.map((button: NavButton) => ({
     name: button.text || "Button",
-    path: button.href || "#",
+    path: button.link || button.href || "#",
     children: [],
   })),
 ];

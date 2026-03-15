@@ -88,6 +88,12 @@ const {
 
         .content-container {
           flex: 1;
+
+          &:last-child {
+            @container (max-width: 599px) {
+              display: none;
+            }
+          }
         }
 
         :global(.text),

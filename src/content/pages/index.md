@@ -94,7 +94,7 @@ pageSections:
         text: Join the Discord
         hideText: false
         link: https://discord.gg/Hkbh69dBfC
-        iconName: ''
+        iconName: 'social/discord'
         iconPosition: before
         variant: primary
         size: md
@@ -102,7 +102,7 @@ pageSections:
         text: Contribute on GitHub
         hideText: false
         link: https://github.com/trueberryless-org
-        iconName: ''
+        iconName: 'social/github'
         iconPosition: before
         variant: outline
         size: md

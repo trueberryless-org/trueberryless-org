@@ -373,6 +373,16 @@ function createNavItemData(item, level, parentGroupId) {
           handleNavToggle(false);
         }
       });
+
+      // Close menu when clicking a fragment link (same-page anchor)
+      nav.querySelectorAll("a[href*='#']").forEach((link) => {
+        link.addEventListener("click", () => {
+          if (toggle?.checked) {
+            toggle.checked = false;
+            handleNavToggle(false);
+          }
+        });
+      });
     });
   }
 
