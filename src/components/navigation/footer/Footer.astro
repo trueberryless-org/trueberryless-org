@@ -1,6 +1,6 @@
 ---
 import CustomSection from "@builders/custom-section/CustomSection.astro";
-import Bar from "@components/navigation/bar/Bar.astro";
+
 import Button from "@core-elements/button/Button.astro";
 import Divider from "@core-elements/divider/Divider.astro";
 import Image from "@core-elements/image/Image.astro";
@@ -30,25 +30,6 @@ const {
     paddingVertical="2xl"
     useDefaultEditableBinding={false}
   >
-    <div class="footer-content">
-      <div class="content-container">
-        <Image
-          source={logoSource}
-          alt={logoAlt}
-          class="footer-logo"
-          useDefaultEditableBinding={false}
-        />
-      </div>
-      <div class="content-container">
-        <Bar
-          navData={links}
-          useDefaultEditableBinding={false}
-        />
-      </div>
-    </div>
-
-    <Divider />
-
     <div class="footer-content">
       <div class="content-container">
         <Text
@@ -131,14 +112,6 @@ const {
           @container (min-width: 600px) {
             margin: 0;
           }
-        }
-      }
-
-      :global(.bar) :global(.bar-list) {
-        flex-flow: column wrap;
-        @container (min-width: 600px) {
-          flex-direction: row;
-          justify-content: end;
         }
       }
     }

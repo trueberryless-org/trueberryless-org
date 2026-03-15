@@ -41,6 +41,7 @@ const {
         <!-- Track groups rendered by JS -->
         <g id="track-ties-group"></g>
         <g id="track-rails-group"></g>
+        <g id="track-buffers-group"></g>
       </svg>
 
       <!-- Lego Technic Train (engine + wagon) -->
@@ -173,9 +174,10 @@ const {
     const svg = document.getElementById("train-track-svg") as unknown as SVGSVGElement;
     const tiesGroup = document.getElementById("track-ties-group");
     const railsGroup = document.getElementById("track-rails-group");
+    const buffersGroup = document.getElementById("track-buffers-group");
     const trainContainer = document.getElementById("train-container");
 
-    if (!svg || !tiesGroup || !railsGroup || !trainContainer) return;
+    if (!svg || !tiesGroup || !railsGroup || !trainContainer || !buffersGroup) return;
 
     // Get the main content container - the parent that holds all sections
     const mainEl = document.querySelector("main");
@@ -237,7 +239,7 @@ const {
       const margin = 120; // distance from page edge
       const leftX = margin;
       const rightX = pageWidth - margin;
-      const curveRadius = 100; // radius for round corners
+      const curveRadius = 150; // radius for round corners
 
       // Track starts off-screen left, enters at about section
       // Pattern: about = track on left (content right), features = centered,
@@ -253,13 +255,15 @@ const {
           // Track starts from left off-screen, at the bottom of hero
           points.push({ x: -50, y: s.top + s.height });
         } else if (id === "about") {
-          // Left side
+          // Left side - run down the about section
           points.push({ x: leftX, y: s.top + 40 });
           points.push({ x: leftX, y: s.top + s.height - 40 });
         } else if (id === "features") {
-          // Center pass-through
-          const centerX = pageWidth / 2;
-          points.push({ x: centerX, y: s.midY });
+          // Flat horizontal transition from left to right at the top,
+          // then straight down the right side through the whole section.
+          // This keeps the track clear of the centered heading.
+          points.push({ x: rightX, y: s.top + 40 });
+          points.push({ x: rightX, y: s.top + s.height - 40 });
         } else if (id === "projects") {
           // Right side
           points.push({ x: rightX, y: s.top + 40 });
@@ -269,10 +273,9 @@ const {
           points.push({ x: leftX, y: s.top + 40 });
           points.push({ x: leftX, y: s.top + s.height - 40 });
         } else if (id === "cta") {
-          // Center, goes off right
+          // Center, and end here
           const centerX = pageWidth / 2;
-          points.push({ x: centerX, y: s.midY });
-          points.push({ x: pageWidth + 50, y: s.midY });
+          points.push({ x: centerX, y: s.top + 60 });
         }
       }
 
@@ -324,9 +327,10 @@ const {
     }
 
     function renderTracks(pathD: string) {
-      if (!tiesGroup || !railsGroup) return;
+      if (!tiesGroup || !railsGroup || !buffersGroup) return;
       tiesGroup.innerHTML = "";
       railsGroup.innerHTML = "";
+      buffersGroup.innerHTML = "";
 
       if (!pathD) return;
 
@@ -419,6 +423,43 @@ const {
       railsGroup.appendChild(rightRail);
       railsGroup.appendChild(leftShine);
       railsGroup.appendChild(rightShine);
+
+      renderEndBuffer(pathD);
+    }
+
+function renderEndBuffer(pathD: string) {
+      if (!buffersGroup) return;
+      const ns = "http://www.w3.org/2000/svg";
+      const pathEl = document.createElementNS(ns, "path");
+      pathEl.setAttribute("d", pathD);
+
+      const len = pathEl.getTotalLength();
+      if (len < 2) return;
+
+      const endPt = pathEl.getPointAtLength(len);
+      const preEndPt = pathEl.getPointAtLength(len - 2);
+
+      const angle = Math.atan2(endPt.y - preEndPt.y, endPt.x - preEndPt.x);
+      const perpAngle = angle + Math.PI / 2;
+
+      const bufferWidth = 30;
+      const bufferHeight = 12;
+
+      const x = endPt.x;
+      const y = endPt.y;
+
+const buffer = document.createElementNS(ns, "rect");
+      buffer.setAttribute("x", String(-bufferWidth / 2));
+      buffer.setAttribute("y", String(-bufferHeight / 2));
+      buffer.setAttribute("width", String(bufferWidth));
+      buffer.setAttribute("height", String(bufferHeight));
+      buffer.setAttribute("rx", "3");
+      buffer.setAttribute("fill", "var(--train-red)");
+      buffer.setAttribute(
+        "transform",
+        `translate(${x}, ${y}) rotate(${((angle * 180) / Math.PI) + 90})`
+      );
+      buffersGroup.appendChild(buffer);
     }
 
     function offsetPath(pathD: string, offset: number, svgEl: SVGSVGElement): string | null {
@@ -504,9 +545,16 @@ const {
       const mainHeight = mainEl.scrollHeight;
       const viewportHeight = window.innerHeight;
 
-      // Progress: 0 at top of hero, 1 at bottom of page
+      // Calculate raw scroll fraction (0 = top, 1 = bottom)
       const scrollRange = mainHeight - viewportHeight;
-      let progress = scrollRange > 0 ? (scrollTop - mainTop) / scrollRange : 0;
+      let rawProgress = scrollRange > 0 ? (scrollTop - mainTop) / scrollRange : 0;
+      rawProgress = Math.max(0, Math.min(1, rawProgress));
+
+      // Remap: train starts later and moves faster so it stays on-screen.
+      // Train begins at 120 scroll and finishes at 95% scroll.
+      const trainStart = 0.20;
+      const trainEnd = 0.95;
+      let progress = (rawProgress - trainStart) / (trainEnd - trainStart);
       progress = Math.max(0, Math.min(1, progress));
 
       // Map scroll progress to path position
@@ -523,10 +571,10 @@ const {
       const mainScrollRect = mainEl.getBoundingClientRect();
       const overlayLeft = mainScrollRect.left;
 
-      trainContainer.style.transform = `translate(${pt.x - 72}px, ${pt.y - 22}px) rotate(${angle}deg)`;
+      trainContainer.style.transform = `translate(${pt.x - 72}px, ${pt.y - 22}px) rotate(${angle}deg) rotate(180deg)`;
 
-      // Show train only after some scroll (not in hero)
-      if (progress > 0.02) {
+      // Show train only when it's actively on the track
+      if (progress > 0.01 && progress < 0.98) {
         trainContainer.classList.add("visible");
       } else {
         trainContainer.classList.remove("visible");
