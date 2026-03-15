@@ -1,7 +1,7 @@
 ---
 _schema: default
 title: trueberryless-org
-description: High-performance engines and modular wagons for the modern developer ecosystem.
+description: High-performance engines and modular blueprints for the modern developer ecosystem.
 pageSections:
   - _component: page-sections/train/train-track
     enabled: true
@@ -11,7 +11,7 @@ pageSections:
     eyebrow: Engineering Excellence
     heading: Powering the
     headingGradient: Developer Journey
-    subtext: We build the specialized engines and modular plugins that keep your Astro and Starlight projects moving forward on the right track.
+    subtext: We architect specialized Starlight plugins and standardized infrastructure, now streamlined via Netlify for global performance and reliability.
     buttonSections:
       - _component: building-blocks/core-elements/button
         text: Explore the Fleet
@@ -32,69 +32,72 @@ pageSections:
     colorScheme: inherit
     backgroundColor: none
   - _component: page-sections/train/train-about
-    eyebrow: The Depot
+    eyebrow: The Foundation
     heading: Organized for Momentum
     subtext: trueberryless-org was established to decouple personal identity from technical infrastructure.
-    description: Think of us as the central station for specialized web tools. By separating our projects into a dedicated organization, we provide a more stable track for maintenance and documentation, ensuring each "wagon" — from sidebar utilities to visual themes — is built to carry its weight in production.
+    description: Originally designed to manage deployments on Rocky Linux, our organization has evolved into a specialized open-source hub. By migrating our deployment pipeline to Netlify and utilizing ArgoCD for manifest management, we provide a stable, high-velocity track for web utilities, ensuring every "wagon" in our ecosystem is built for production-grade performance.
     colorScheme: inherit
     backgroundColor: none
   - _component: page-sections/train/train-features
     eyebrow: Core Mechanics
     heading: Built to Pull
-    subtext: Our tools are engineered to integrate seamlessly into your existing stack without friction.
+    subtext: Engineered to integrate seamlessly into your stack. Click a card to explore our specialized documentation and infrastructure tools.
     features:
       - title: Starlight Locomotives
-        description: Custom-built engines for the Starlight ecosystem, designed to drive better documentation experiences.
+        description: A specialized collection of engines designed to drive better documentation. Explore our full range of Starlight plugins.
+        link: https://github.com/search?q=trueberryless-org%2Fstarlight-+in%3Aname&type=repositories&s=stars&o=desc
         icon: ''
-      - title: Streamlined Structure
-        description: A clean organizational track that separates individual focus from project reliability.
+      - title: The Blueprint Engine
+        description: Our central synchronization hub. Standardizing LICENSE, GitHub Workflows, and Renovate configs across the entire organization.
+        link: https://github.com/trueberryless-org/template-files
         icon: ''
-      - title: Frictionless Tooling
-        description: Tools designed to remove bottlenecks, ensuring your development workflow never hits a standstill.
+      - title: The Conductor's Blog
+        description: Technical deep-dives and Starlight insights from the maintainer. A personal log of development, architecture, and OSS.
+        link: https://blog.trueberryless.org
         icon: ''
     colorScheme: inherit
     backgroundColor: surface
   - _component: page-sections/train/train-projects
     eyebrow: Rolling Stock
     heading: Featured Projects
-    subtext: The most powerful wagons currently attached to our organization.
+    subtext: The most powerful modules currently driving the Starlight ecosystem.
     projects:
       - name: Starlight Sidebar Topics Dropdown
         description: The leading engine for managing complex documentation hierarchies with a sleek dropdown interface.
         link: https://github.com/trueberryless-org/starlight-sidebar-topics-dropdown
         stars: '44'
       - name: Starlight View Modes
-        description: A versatile plugin adding essential view mode capabilities to drive better accessibility and user choice.
+        description: A versatile plugin adding essential accessibility and user-choice capabilities to the documentation experience.
         link: https://github.com/trueberryless-org/starlight-view-modes
         stars: '36'
       - name: Awesome Starlight
-        description: A curated list of awesome things related to Astro Starlight.
+        description: A curated list of high-quality resources and plugins related to the Astro Starlight framework.
         link: https://github.com/trueberryless-org/awesome-starlight
         stars: '12'
     colorScheme: inherit
     backgroundColor: none
   - _component: page-sections/train/train-community
-    eyebrow: Real-Time Stats
-    heading: Full Steam Ahead
-    subtext: Measuring the impact of our code across the global developer ecosystem.
+    eyebrow: Ecosystem Impact
+    heading: Tracking Progress
+    subtext: Measuring the reach and reliability of our code across the global developer community.
     stats:
       - value: '2.5k+'
         label: Weekly NPM Downloads
       - value: '65+'
         label: Total Repositories
       - value: '2024'
-        label: Established
+        label: Year Established
     colorScheme: inherit
     backgroundColor: none
   - _component: page-sections/train/train-cta
     heading: Ready to Board?
-    subtext: Connect with us on Discord to discuss new features or get help with our existing tools.
+    subtext: We are looking for contributors to help maintain and scale our ecosystem. Join the organization to help build the future of modular documentation.
     buttonSections:
       - _component: building-blocks/core-elements/button
-        text: Join the Discord
+        text: Meet the Maintainer
         hideText: false
-        link: https://discord.gg/Hkbh69dBfC
-        iconName: 'social/discord'
+        link: https://trueberryless.org
+        iconName: 'user'
         iconPosition: before
         variant: primary
         size: md
