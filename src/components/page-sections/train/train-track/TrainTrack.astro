@@ -11,6 +11,14 @@ const {
   _component,
   ...htmlAttributes
 } = Astro.props;
+
+// Wagon colors for variety
+const wagonColors = [
+  { body: "var(--train-yellow)", detail: "var(--train-yellow-light)", dots: "var(--train-yellow-light)" },
+  { body: "var(--train-red)", detail: "#ff8a80", dots: "#ff8a80" },
+  { body: "#66bb6a", detail: "#a5d6a7", dots: "#a5d6a7" },
+  { body: "#ab47bc", detail: "#ce93d8", dots: "#ce93d8" },
+];
 ---
 
 {enabled && (
@@ -44,59 +52,47 @@ const {
         <g id="track-buffers-group"></g>
       </svg>
 
-      <!-- Lego Technic Train (engine + wagon) -->
-      <div id="train-container" class="train-container">
-        <!-- Engine (mirrored horizontally) -->
+      <!-- Wagons: one per section pickup (about, features, projects, community) -->
+      {wagonColors.map((colors, i) => (
+        <div class="train-piece" id={`wagon-${i}`} data-wagon-index={i}>
+          <svg class="train-wagon" width="64" height="44" viewBox="0 0 64 44" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(0,44) scale(1,-1)">
+              <rect x="0" y="18" width="4" height="8" rx="1" fill="var(--train-gray)" />
+              <rect x="6" y="6" width="52" height="26" rx="4" fill={colors.body} />
+              <rect x="10" y="10" width="44" height="8" rx="2" fill={colors.detail} />
+              <circle cx="18" cy="24" r="3" fill={colors.dots} opacity="0.6" />
+              <circle cx="32" cy="24" r="3" fill={colors.dots} opacity="0.6" />
+              <circle cx="46" cy="24" r="3" fill={colors.dots} opacity="0.6" />
+              <circle cx="18" cy="36" r="6" fill="var(--train-dark)" />
+              <circle cx="18" cy="36" r="3" fill="var(--train-gray)" />
+              <circle cx="46" cy="36" r="6" fill="var(--train-dark)" />
+              <circle cx="46" cy="36" r="3" fill="var(--train-gray)" />
+              <rect x="58" y="18" width="6" height="8" rx="1" fill="var(--train-gray)" />
+            </g>
+          </svg>
+        </div>
+      ))}
+
+      <!-- Engine (at the back, pushing wagons) -->
+      <div class="train-piece" id="train-engine">
         <svg class="train-engine" width="80" height="44" viewBox="0 0 80 44" xmlns="http://www.w3.org/2000/svg">
           <g transform="translate(0,44) scale(1,-1)">
-            <!-- Body -->
             <rect x="4" y="8" width="72" height="24" rx="4" fill="var(--train-blue)" />
-            <!-- Cab -->
             <rect x="50" y="2" width="26" height="16" rx="3" fill="var(--train-blue-light)" />
-            <!-- Window -->
             <rect x="56" y="5" width="14" height="8" rx="2" fill="rgba(255,255,255,0.85)" />
-            <!-- Chimney -->
             <rect x="12" y="2" width="8" height="10" rx="2" fill="var(--train-dark)" />
-            <!-- Technic dots (studs) -->
             <circle cx="20" cy="16" r="3" fill="var(--train-blue-light)" opacity="0.7" />
             <circle cx="30" cy="16" r="3" fill="var(--train-blue-light)" opacity="0.7" />
             <circle cx="40" cy="16" r="3" fill="var(--train-blue-light)" opacity="0.7" />
-            <!-- Headlight -->
             <circle cx="6" cy="20" r="3" fill="var(--train-yellow)" />
-            <!-- Wheels -->
             <circle cx="18" cy="36" r="6" fill="var(--train-dark)" />
             <circle cx="18" cy="36" r="3" fill="var(--train-gray)" />
             <circle cx="38" cy="36" r="6" fill="var(--train-dark)" />
             <circle cx="38" cy="36" r="3" fill="var(--train-gray)" />
             <circle cx="62" cy="36" r="6" fill="var(--train-dark)" />
             <circle cx="62" cy="36" r="3" fill="var(--train-gray)" />
-            <!-- Bumper -->
             <rect x="0" y="26" width="4" height="6" rx="1" fill="var(--train-red)" />
-            <!-- Connector (back) -->
             <rect x="76" y="18" width="4" height="8" rx="1" fill="var(--train-gray)" />
-          </g>
-        </svg>
-
-        <!-- Wagon (mirrored horizontally) -->
-        <svg class="train-wagon" width="64" height="44" viewBox="0 0 64 44" xmlns="http://www.w3.org/2000/svg">
-          <g transform="translate(0,44) scale(1,-1)">
-            <!-- Connector (front) -->
-            <rect x="0" y="18" width="4" height="8" rx="1" fill="var(--train-gray)" />
-            <!-- Body -->
-            <rect x="6" y="6" width="52" height="26" rx="4" fill="var(--train-yellow)" />
-            <!-- Side detail -->
-            <rect x="10" y="10" width="44" height="8" rx="2" fill="var(--train-yellow-light)" />
-            <!-- Technic dots -->
-            <circle cx="18" cy="24" r="3" fill="var(--train-yellow-light)" opacity="0.6" />
-            <circle cx="32" cy="24" r="3" fill="var(--train-yellow-light)" opacity="0.6" />
-            <circle cx="46" cy="24" r="3" fill="var(--train-yellow-light)" opacity="0.6" />
-            <!-- Wheels -->
-            <circle cx="18" cy="36" r="6" fill="var(--train-dark)" />
-            <circle cx="18" cy="36" r="3" fill="var(--train-gray)" />
-            <circle cx="46" cy="36" r="6" fill="var(--train-dark)" />
-            <circle cx="46" cy="36" r="3" fill="var(--train-gray)" />
-            <!-- Connector (back) -->
-            <rect x="58" y="18" width="6" height="8" rx="1" fill="var(--train-gray)" />
           </g>
         </svg>
       </div>
@@ -139,21 +135,13 @@ const {
       overflow: visible;
     }
 
-    .train-container {
+    .train-piece {
       position: absolute;
       top: 0;
       left: 0;
-      display: flex;
-      align-items: center;
       transform-origin: center center;
       will-change: transform;
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .train-container.visible {
-      opacity: 1;
     }
 
     .train-engine,
@@ -179,20 +167,31 @@ const {
     const tiesGroup = document.getElementById("track-ties-group");
     const railsGroup = document.getElementById("track-rails-group");
     const buffersGroup = document.getElementById("track-buffers-group");
-    const trainContainer = document.getElementById("train-container");
+    const engineEl = document.getElementById("train-engine");
 
-    if (!svg || !tiesGroup || !railsGroup || !trainContainer || !buffersGroup) return;
+    // Collect wagon elements
+    const wagonEls: HTMLElement[] = [];
+    for (let i = 0; i < 4; i++) {
+      const w = document.getElementById(`wagon-${i}`);
+      if (w) wagonEls.push(w);
+    }
 
-    // Get the main content container - the parent that holds all sections
+    if (!svg || !tiesGroup || !railsGroup || !engineEl || !buffersGroup) return;
+
     const mainEl = document.querySelector("main");
     if (!mainEl) return;
 
-    // Set overlay to cover the full main area
+    // Spacing between pieces along the path (in path-length pixels)
+    const pieceSpacing = 72;
+    // Wagon width for centering
+    const wagonHalfW = 32;
+    const wagonHalfH = 22;
+    const engineHalfW = 40;
+    const engineHalfH = 22;
+
     function updateOverlaySize() {
       if (!mainEl || !overlay || !svg) return;
       const mainRect = mainEl.getBoundingClientRect();
-      const scrollTop = window.scrollY;
-      const mainTop = mainRect.top + scrollTop;
       const mainHeight = mainEl.scrollHeight;
 
       overlay.style.position = "absolute";
@@ -206,8 +205,11 @@ const {
       svg.setAttribute("viewBox", `0 0 ${mainRect.width} ${mainHeight}`);
     }
 
-    // Section IDs we look for
     const sectionIds = ["hero", "about", "features", "projects", "community", "cta"];
+
+    // Sections that have a wagon waiting to be picked up
+    // (in order along the track: about=wagon0, features=wagon1, projects=wagon2, community=wagon3)
+    const pickupSections = ["about", "features", "projects", "community"];
 
     interface SectionInfo {
       id: string;
@@ -240,14 +242,10 @@ const {
     function buildTrackPath(sections: SectionInfo[], pageWidth: number): string {
       if (sections.length < 2) return "";
 
-      const margin = 120; // distance from page edge
+      const margin = 120;
       const leftX = margin;
       const rightX = pageWidth - margin;
-      const curveRadius = 150; // radius for round corners
-
-      // Track starts off-screen left, enters at about section
-      // Pattern: about = track on left (content right), features = centered,
-      // projects = track on right (content left), community = track on left
+      const curveRadius = 150;
 
       const points: { x: number; y: number }[] = [];
 
@@ -256,28 +254,20 @@ const {
         const id = s.id;
 
         if (id === "hero") {
-          // Track starts from left off-screen, at the bottom of hero
           points.push({ x: -50, y: s.top + s.height });
         } else if (id === "about") {
-          // Left side - run down the about section
           points.push({ x: leftX, y: s.top + 40 });
           points.push({ x: leftX, y: s.top + s.height - 40 });
         } else if (id === "features") {
-          // Flat horizontal transition from left to right at the top,
-          // then straight down the right side through the whole section.
-          // This keeps the track clear of the centered heading.
           points.push({ x: rightX, y: s.top + 40 });
           points.push({ x: rightX, y: s.top + s.height - 40 });
         } else if (id === "projects") {
-          // Right side
           points.push({ x: rightX, y: s.top + 40 });
           points.push({ x: rightX, y: s.top + s.height - 40 });
         } else if (id === "community") {
-          // Left side
           points.push({ x: leftX, y: s.top + 40 });
           points.push({ x: leftX, y: s.top + s.height - 40 });
         } else if (id === "cta") {
-          // Center, and end here
           const centerX = pageWidth / 2;
           points.push({ x: centerX, y: s.top + 60 });
         }
@@ -285,7 +275,6 @@ const {
 
       if (points.length < 2) return "";
 
-      // Build smooth SVG path with rounded corners
       let d = `M ${points[0].x} ${points[0].y}`;
 
       for (let i = 1; i < points.length; i++) {
@@ -295,7 +284,6 @@ const {
         if (i < points.length - 1) {
           const next = points[i + 1];
 
-          // Calculate direction vectors
           const dx1 = curr.x - prev.x;
           const dy1 = curr.y - prev.y;
           const dx2 = next.x - curr.x;
@@ -309,14 +297,10 @@ const {
             continue;
           }
 
-          // Limit radius to half the shortest segment
           const r = Math.min(curveRadius, len1 / 2, len2 / 2);
 
-          // Point where curve begins (before the corner)
           const startX = curr.x - (dx1 / len1) * r;
           const startY = curr.y - (dy1 / len1) * r;
-
-          // Point where curve ends (after the corner)
           const endX = curr.x + (dx2 / len2) * r;
           const endY = curr.y + (dy2 / len2) * r;
 
@@ -339,9 +323,8 @@ const {
       if (!pathD) return;
 
       const ns = "http://www.w3.org/2000/svg";
-      const railGap = 12; // half-gap between the two rails
+      const railGap = 12;
 
-      // Create a temporary path to measure and place sleepers
       const measurePath = document.createElementNS(ns, "path");
       measurePath.setAttribute("d", pathD);
       measurePath.setAttribute("fill", "none");
@@ -350,7 +333,6 @@ const {
       const totalLen = measurePath.getTotalLength();
       const sleeperSpacing = 20;
 
-      // Draw sleepers (ties)
       for (let dist = 0; dist < totalLen; dist += sleeperSpacing) {
         const pt = measurePath.getPointAtLength(dist);
         const pt2 = measurePath.getPointAtLength(Math.min(dist + 1, totalLen));
@@ -378,12 +360,6 @@ const {
 
       svg.removeChild(measurePath);
 
-      // Draw two parallel rails
-      // We'll offset the main path perpendicularly for each rail
-      // For simplicity, use stroke-dasharray trick with two paths offset by translation
-      // Actually, let's draw them properly by offsetting points
-
-      // Left rail
       const leftRail = document.createElementNS(ns, "path");
       leftRail.setAttribute("d", pathD);
       leftRail.setAttribute("fill", "none");
@@ -392,7 +368,6 @@ const {
       leftRail.setAttribute("stroke-linecap", "round");
       leftRail.setAttribute("stroke-linejoin", "round");
 
-      // Right rail (we'll create offset paths by shifting)
       const rightRail = document.createElementNS(ns, "path");
       rightRail.setAttribute("d", pathD);
       rightRail.setAttribute("fill", "none");
@@ -401,14 +376,12 @@ const {
       rightRail.setAttribute("stroke-linecap", "round");
       rightRail.setAttribute("stroke-linejoin", "round");
 
-      // To create two parallel rails, we build offset paths
       const leftPath = offsetPath(pathD, -railGap, svg);
       const rightPath = offsetPath(pathD, railGap, svg);
 
       if (leftPath) leftRail.setAttribute("d", leftPath);
       if (rightPath) rightRail.setAttribute("d", rightPath);
 
-      // Rail shine highlights
       const leftShine = document.createElementNS(ns, "path");
       leftShine.setAttribute("d", leftRail.getAttribute("d") || "");
       leftShine.setAttribute("fill", "none");
@@ -431,7 +404,7 @@ const {
       renderEndBuffer(pathD);
     }
 
-function renderEndBuffer(pathD: string) {
+    function renderEndBuffer(pathD: string) {
       if (!buffersGroup) return;
       const ns = "http://www.w3.org/2000/svg";
       const pathEl = document.createElementNS(ns, "path");
@@ -444,15 +417,11 @@ function renderEndBuffer(pathD: string) {
       const preEndPt = pathEl.getPointAtLength(len - 2);
 
       const angle = Math.atan2(endPt.y - preEndPt.y, endPt.x - preEndPt.x);
-      const perpAngle = angle + Math.PI / 2;
 
       const bufferWidth = 30;
       const bufferHeight = 12;
 
-      const x = endPt.x;
-      const y = endPt.y;
-
-const buffer = document.createElementNS(ns, "rect");
+      const buffer = document.createElementNS(ns, "rect");
       buffer.setAttribute("x", String(-bufferWidth / 2));
       buffer.setAttribute("y", String(-bufferHeight / 2));
       buffer.setAttribute("width", String(bufferWidth));
@@ -461,7 +430,7 @@ const buffer = document.createElementNS(ns, "rect");
       buffer.setAttribute("fill", "var(--train-red)");
       buffer.setAttribute(
         "transform",
-        `translate(${x}, ${y}) rotate(${((angle * 180) / Math.PI) + 90})`
+        `translate(${endPt.x}, ${endPt.y}) rotate(${((angle * 180) / Math.PI) + 90})`
       );
       buffersGroup.appendChild(buffer);
     }
@@ -511,6 +480,67 @@ const buffer = document.createElementNS(ns, "rect");
     let trackPathD = "";
     let trackTotalLength = 0;
 
+    // Pickup distances: the path distance where each wagon gets picked up.
+    // Computed after building the path, based on section positions.
+    let pickupDistances: number[] = [];
+
+    function computePickupDistances(sections: SectionInfo[]) {
+      if (!trackPathD || trackTotalLength === 0) return;
+
+      const ns = "http://www.w3.org/2000/svg";
+      const tempPath = document.createElementNS(ns, "path");
+      tempPath.setAttribute("d", trackPathD);
+      tempPath.setAttribute("fill", "none");
+      svg.appendChild(tempPath);
+
+      if (!mainEl) {
+        svg.removeChild(tempPath);
+        return;
+      }
+      const mainTop = mainEl.getBoundingClientRect().top + window.scrollY;
+
+      // For each pickup section, find the path distance closest to its top
+      pickupDistances = [];
+      for (const sectionId of pickupSections) {
+        const section = sections.find(s => s.id === sectionId);
+        if (!section) {
+          pickupDistances.push(0);
+          continue;
+        }
+
+        // Target Y: near the top of the section (where the wagon waits)
+        const targetY = section.top + 40;
+
+        // Binary-search-ish: sample along path to find closest Y
+        let bestDist = 0;
+        let bestDelta = Infinity;
+        const step = 20;
+        for (let d = 0; d <= trackTotalLength; d += step) {
+          const pt = tempPath.getPointAtLength(d);
+          const delta = Math.abs(pt.y - targetY);
+          if (delta < bestDelta) {
+            bestDelta = delta;
+            bestDist = d;
+          }
+        }
+        // Refine
+        const start = Math.max(0, bestDist - step);
+        const end = Math.min(trackTotalLength, bestDist + step);
+        for (let d = start; d <= end; d += 2) {
+          const pt = tempPath.getPointAtLength(d);
+          const delta = Math.abs(pt.y - targetY);
+          if (delta < bestDelta) {
+            bestDelta = delta;
+            bestDist = d;
+          }
+        }
+
+        pickupDistances.push(bestDist);
+      }
+
+      svg.removeChild(tempPath);
+    }
+
     function computeTrack() {
       if (!mainEl || !svg) return;
       const mainRect = mainEl.getBoundingClientRect();
@@ -521,7 +551,6 @@ const buffer = document.createElementNS(ns, "rect");
       trackPathD = buildTrackPath(sections, mainRect.width);
       renderTracks(trackPathD);
 
-      // Compute total length for animation
       if (trackPathD) {
         const ns = "http://www.w3.org/2000/svg";
         const tempPath = document.createElementNS(ns, "path");
@@ -531,10 +560,28 @@ const buffer = document.createElementNS(ns, "rect");
         trackTotalLength = tempPath.getTotalLength();
         svg.removeChild(tempPath);
       }
+
+      computePickupDistances(sections);
+    }
+
+    function positionPiece(
+      el: HTMLElement,
+      tempPath: SVGPathElement,
+      dist: number,
+      halfW: number,
+      halfH: number,
+    ) {
+      const clampedDist = Math.max(0, Math.min(dist, trackTotalLength));
+      const pt = tempPath.getPointAtLength(clampedDist);
+      const pt2 = tempPath.getPointAtLength(Math.min(clampedDist + 1, trackTotalLength));
+      const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * (180 / Math.PI);
+
+      el.style.transform =
+        `translate(${pt.x - halfW}px, ${pt.y - halfH}px) rotate(${angle}deg) rotate(180deg)`;
     }
 
     function animateTrain() {
-      if (!trackPathD || trackTotalLength === 0 || !trainContainer || !mainEl || !svg) return;
+      if (!trackPathD || trackTotalLength === 0 || !engineEl || !mainEl || !svg) return;
 
       const ns = "http://www.w3.org/2000/svg";
       const tempPath = document.createElementNS(ns, "path");
@@ -549,39 +596,78 @@ const buffer = document.createElementNS(ns, "rect");
       const mainHeight = mainEl.scrollHeight;
       const viewportHeight = window.innerHeight;
 
-      // Calculate raw scroll fraction (0 = top, 1 = bottom)
       const scrollRange = mainHeight - viewportHeight;
       let rawProgress = scrollRange > 0 ? (scrollTop - mainTop) / scrollRange : 0;
       rawProgress = Math.max(0, Math.min(1, rawProgress));
 
-      // Remap: train starts later and moves faster so it stays on-screen.
-      // Train begins at 120 scroll and finishes at 95% scroll.
       const trainStart = 0.20;
       const trainEnd = 0.95;
       let progress = (rawProgress - trainStart) / (trainEnd - trainStart);
       progress = Math.max(0, Math.min(1, progress));
 
-      // Map scroll progress to path position
-      const dist = progress * trackTotalLength;
+      // Engine distance along path (engine is at the very back, pushing)
+      const engineDist = progress * trackTotalLength;
 
-      // Get engine position
-      const engineDist = Math.max(0, dist);
-      const pt = tempPath.getPointAtLength(engineDist);
-      const pt2 = tempPath.getPointAtLength(Math.min(engineDist + 1, trackTotalLength));
+      // Determine which wagons are collected.
+      // The engine pushes wagons ahead of it. New wagons are prepended at the
+      // FRONT of the whole train (furthest from the engine). So the order on
+      // the path from front to back is: wagon0, wagon1, wagon2, ..., engine.
+      //
+      // The front of the train (where it would contact the next wagon) is at:
+      //   engineDist + attachedCount * pieceSpacing
+      //
+      // A wagon i is picked up when the front of the growing train reaches it:
+      //   engineDist + (alreadyAttached) * pieceSpacing >= pickupDist[i]
+      //
+      // We process wagons in order (0, 1, 2, 3). Each one that's already been
+      // picked up means the train is one slot longer when approaching the next.
 
-      const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * (180 / Math.PI);
+      let attachedCount = 0;
+      const collected: boolean[] = [];
 
-      // Position relative to the overlay/main
-      const mainScrollRect = mainEl.getBoundingClientRect();
-      const overlayLeft = mainScrollRect.left;
+      for (let i = 0; i < wagonEls.length; i++) {
+        const pickupDist = pickupDistances[i] ?? 0;
+        // The front of the train including already-attached wagons
+        const trainFront = engineDist + (attachedCount + 1) * pieceSpacing;
 
-      trainContainer.style.transform = `translate(${pt.x - 72}px, ${pt.y - 22}px) rotate(${angle}deg) rotate(180deg)`;
+        if (trainFront >= pickupDist) {
+          collected.push(true);
+          attachedCount++;
+        } else {
+          collected.push(false);
+        }
+      }
 
-      // Show train only when it's actively on the track
-      if (progress > 0.01 && progress < 0.98) {
-        trainContainer.classList.add("visible");
-      } else {
-        trainContainer.classList.remove("visible");
+      // Position engine
+      positionPiece(engineEl, tempPath, engineDist, engineHalfW, engineHalfH);
+
+      // Position wagons
+      // Collected wagons are stacked ahead of the engine.
+      // The OLDEST collected wagon (i=0) stays closest to the engine (slot 1).
+      // Each newly collected wagon is pushed to the FRONT of the train
+      // (furthest from engine), so colors never swap.
+
+      let slot = 1; // start from closest to engine
+      for (let i = 0; i < wagonEls.length; i++) {
+        const wagonEl = wagonEls[i];
+        if (!wagonEl) continue;
+
+        const pickupDist = pickupDistances[i] ?? 0;
+
+        if (collected[i]) {
+          const wagonDist = engineDist + slot * pieceSpacing;
+          positionPiece(
+            wagonEl,
+            tempPath,
+            Math.min(wagonDist, trackTotalLength),
+            wagonHalfW,
+            wagonHalfH,
+          );
+          slot++;
+        } else {
+          // Wagon is waiting stationary at its pickup point
+          positionPiece(wagonEl, tempPath, pickupDist, wagonHalfW, wagonHalfH);
+        }
       }
 
       svg.removeChild(tempPath);
