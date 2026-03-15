@@ -93,87 +93,358 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
   </head>
   <body class="loading">
     <!-- Loading Screen -->
-    <div id="loading-screen" aria-hidden="true">
-      <div id="loader-train" class="loader-train">
+    <div
+      id="loading-screen"
+      aria-hidden="true"
+    >
+      <div
+        id="loader-train"
+        class="loader-train"
+      >
         <!-- Wagon 2 (yellow) -->
-        <svg class="loader-wagon" viewBox="0 0 64 44" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          class="loader-wagon"
+          viewBox="0 0 64 44"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <!-- Left connector -->
-          <rect x="0" y="18" width="4" height="8" rx="1" fill="#9ca3af"/>
+          <rect
+            x="0"
+            y="18"
+            width="4"
+            height="8"
+            rx="1"
+            fill="#9ca3af"
+          ></rect>
           <!-- Body -->
-          <rect x="6" y="12" width="52" height="26" rx="4" fill="#fbbf24"/>
+          <rect
+            x="6"
+            y="12"
+            width="52"
+            height="26"
+            rx="4"
+            fill="#fbbf24"
+          ></rect>
           <!-- Detail stripe -->
-          <rect x="10" y="26" width="44" height="8" rx="2" fill="#fde68a"/>
+          <rect
+            x="10"
+            y="26"
+            width="44"
+            height="8"
+            rx="2"
+            fill="#fde68a"
+          ></rect>
           <!-- Dots -->
-          <circle cx="18" cy="20" r="3" fill="#fde68a" opacity="0.6"/>
-          <circle cx="32" cy="20" r="3" fill="#fde68a" opacity="0.6"/>
-          <circle cx="46" cy="20" r="3" fill="#fde68a" opacity="0.6"/>
+          <circle
+            cx="18"
+            cy="20"
+            r="3"
+            fill="#fde68a"
+            opacity="0.6"
+          ></circle>
+          <circle
+            cx="32"
+            cy="20"
+            r="3"
+            fill="#fde68a"
+            opacity="0.6"
+          ></circle>
+          <circle
+            cx="46"
+            cy="20"
+            r="3"
+            fill="#fde68a"
+            opacity="0.6"
+          ></circle>
           <!-- Wheels (bottom) -->
-          <circle cx="18" cy="40" r="6" fill="#4b5563"/>
-          <circle cx="18" cy="40" r="3" fill="#9ca3af"/>
-          <circle cx="46" cy="40" r="6" fill="#4b5563"/>
-          <circle cx="46" cy="40" r="3" fill="#9ca3af"/>
+          <circle
+            cx="18"
+            cy="40"
+            r="6"
+            fill="#4b5563"
+          ></circle>
+          <circle
+            cx="18"
+            cy="40"
+            r="3"
+            fill="#9ca3af"
+          ></circle>
+          <circle
+            cx="46"
+            cy="40"
+            r="6"
+            fill="#4b5563"
+          ></circle>
+          <circle
+            cx="46"
+            cy="40"
+            r="3"
+            fill="#9ca3af"
+          ></circle>
           <!-- Right connector -->
-          <rect x="58" y="18" width="6" height="8" rx="1" fill="#9ca3af"/>
+          <rect
+            x="58"
+            y="18"
+            width="6"
+            height="8"
+            rx="1"
+            fill="#9ca3af"
+          ></rect>
         </svg>
         <!-- Wagon 1 (red) -->
-        <svg class="loader-wagon" viewBox="0 0 64 44" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="18" width="4" height="8" rx="1" fill="#9ca3af"/>
-          <rect x="6" y="12" width="52" height="26" rx="4" fill="#ef4444"/>
-          <rect x="10" y="26" width="44" height="8" rx="2" fill="#ff8a80"/>
-          <circle cx="18" cy="20" r="3" fill="#ff8a80" opacity="0.6"/>
-          <circle cx="32" cy="20" r="3" fill="#ff8a80" opacity="0.6"/>
-          <circle cx="46" cy="20" r="3" fill="#ff8a80" opacity="0.6"/>
-          <circle cx="18" cy="40" r="6" fill="#4b5563"/>
-          <circle cx="18" cy="40" r="3" fill="#9ca3af"/>
-          <circle cx="46" cy="40" r="6" fill="#4b5563"/>
-          <circle cx="46" cy="40" r="3" fill="#9ca3af"/>
-          <rect x="58" y="18" width="6" height="8" rx="1" fill="#9ca3af"/>
+        <svg
+          class="loader-wagon"
+          viewBox="0 0 64 44"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="0"
+            y="18"
+            width="4"
+            height="8"
+            rx="1"
+            fill="#9ca3af"
+          ></rect>
+          <rect
+            x="6"
+            y="12"
+            width="52"
+            height="26"
+            rx="4"
+            fill="#ef4444"
+          ></rect>
+          <rect
+            x="10"
+            y="26"
+            width="44"
+            height="8"
+            rx="2"
+            fill="#ff8a80"
+          ></rect>
+          <circle
+            cx="18"
+            cy="20"
+            r="3"
+            fill="#ff8a80"
+            opacity="0.6"
+          ></circle>
+          <circle
+            cx="32"
+            cy="20"
+            r="3"
+            fill="#ff8a80"
+            opacity="0.6"
+          ></circle>
+          <circle
+            cx="46"
+            cy="20"
+            r="3"
+            fill="#ff8a80"
+            opacity="0.6"
+          ></circle>
+          <circle
+            cx="18"
+            cy="40"
+            r="6"
+            fill="#4b5563"
+          ></circle>
+          <circle
+            cx="18"
+            cy="40"
+            r="3"
+            fill="#9ca3af"
+          ></circle>
+          <circle
+            cx="46"
+            cy="40"
+            r="6"
+            fill="#4b5563"
+          ></circle>
+          <circle
+            cx="46"
+            cy="40"
+            r="3"
+            fill="#9ca3af"
+          ></circle>
+          <rect
+            x="58"
+            y="18"
+            width="6"
+            height="8"
+            rx="1"
+            fill="#9ca3af"
+          ></rect>
         </svg>
         <!-- Engine (mirrored so chimney/headlight face right = direction of travel) -->
-        <svg class="loader-engine" viewBox="0 0 80 44" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          class="loader-engine"
+          viewBox="0 0 80 44"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <g transform="scale(-1,1) translate(-80,0)">
             <!-- Cab (rear side, now facing left toward wagons) -->
-            <rect x="50" y="2" width="26" height="30" rx="3" fill="#6b7280"/>
+            <rect
+              x="50"
+              y="2"
+              width="26"
+              height="30"
+              rx="3"
+              fill="#6b7280"
+            ></rect>
             <!-- Window -->
-            <rect x="54" y="5" width="16" height="10" rx="2" fill="rgba(255,255,255,0.85)"/>
+            <rect
+              x="54"
+              y="5"
+              width="16"
+              height="10"
+              rx="2"
+              fill="rgba(255,255,255,0.85)"
+            ></rect>
             <!-- Main body -->
-            <rect x="4" y="12" width="72" height="24" rx="4" fill="#4b5563"/>
+            <rect
+              x="4"
+              y="12"
+              width="72"
+              height="24"
+              rx="4"
+              fill="#4b5563"
+            ></rect>
             <!-- Chimney (now faces right after mirror) -->
-            <rect x="12" y="2" width="8" height="10" rx="2" fill="#7c8494"/>
+            <rect
+              x="12"
+              y="2"
+              width="8"
+              height="10"
+              rx="2"
+              fill="#7c8494"
+            ></rect>
             <!-- Studs -->
-            <circle cx="20" cy="22" r="3" fill="#9ca3af" opacity="0.7"/>
-            <circle cx="30" cy="22" r="3" fill="#9ca3af" opacity="0.7"/>
-            <circle cx="40" cy="22" r="3" fill="#9ca3af" opacity="0.7"/>
+            <circle
+              cx="20"
+              cy="22"
+              r="3"
+              fill="#9ca3af"
+              opacity="0.7"
+            ></circle>
+            <circle
+              cx="30"
+              cy="22"
+              r="3"
+              fill="#9ca3af"
+              opacity="0.7"
+            ></circle>
+            <circle
+              cx="40"
+              cy="22"
+              r="3"
+              fill="#9ca3af"
+              opacity="0.7"
+            ></circle>
             <!-- Headlight (now faces right after mirror) -->
-            <circle cx="6" cy="24" r="3" fill="#fbbf24"/>
+            <circle
+              cx="6"
+              cy="24"
+              r="3"
+              fill="#fbbf24"
+            ></circle>
             <!-- Wheels (bottom) -->
-            <circle cx="18" cy="40" r="6" fill="#4b5563"/>
-            <circle cx="18" cy="40" r="3" fill="#9ca3af"/>
-            <circle cx="38" cy="40" r="6" fill="#4b5563"/>
-            <circle cx="38" cy="40" r="3" fill="#9ca3af"/>
-            <circle cx="62" cy="40" r="6" fill="#4b5563"/>
-            <circle cx="62" cy="40" r="3" fill="#9ca3af"/>
+            <circle
+              cx="18"
+              cy="40"
+              r="6"
+              fill="#4b5563"
+            ></circle>
+            <circle
+              cx="18"
+              cy="40"
+              r="3"
+              fill="#9ca3af"
+            ></circle>
+            <circle
+              cx="38"
+              cy="40"
+              r="6"
+              fill="#4b5563"
+            ></circle>
+            <circle
+              cx="38"
+              cy="40"
+              r="3"
+              fill="#9ca3af"
+            ></circle>
+            <circle
+              cx="62"
+              cy="40"
+              r="6"
+              fill="#4b5563"
+            ></circle>
+            <circle
+              cx="62"
+              cy="40"
+              r="3"
+              fill="#9ca3af"
+            ></circle>
             <!-- Bumper (front, now on right after mirror) -->
-            <rect x="0" y="18" width="4" height="6" rx="1" fill="#ef4444"/>
+            <rect
+              x="0"
+              y="18"
+              width="4"
+              height="6"
+              rx="1"
+              fill="#ef4444"
+            ></rect>
             <!-- Rear connector (now on left toward wagons after mirror) -->
-            <rect x="76" y="20" width="4" height="8" rx="1" fill="#9ca3af"/>
+            <rect
+              x="76"
+              y="20"
+              width="4"
+              height="8"
+              rx="1"
+              fill="#9ca3af"
+            ></rect>
           </g>
         </svg>
       </div>
       <!-- Steam puffs from chimney -->
-      <div id="loader-steam" class="loader-steam">
+      <div
+        id="loader-steam"
+        class="loader-steam"
+      >
         <div class="steam-puff steam-puff-1"></div>
         <div class="steam-puff steam-puff-2"></div>
         <div class="steam-puff steam-puff-3"></div>
       </div>
     </div>
     <!-- Colorful backdrop layers revealed when blue screen slides up -->
-    <div id="loader-backdrops" aria-hidden="true">
-      <div class="loader-backdrop" style="background:#ab47bc; z-index:9004"></div>
-      <div class="loader-backdrop" style="background:#66bb6a; z-index:9003"></div>
-      <div class="loader-backdrop" style="background:#ef4444; z-index:9002"></div>
-      <div class="loader-backdrop" style="background:#fbbf24; z-index:9001"></div>
-      <div class="loader-backdrop" style="background:#2563eb; z-index:9000"></div>
+    <div
+      id="loader-backdrops"
+      aria-hidden="true"
+    >
+      <div
+        class="loader-backdrop"
+        style="background:#ab47bc; z-index:9004"
+      >
+      </div>
+      <div
+        class="loader-backdrop"
+        style="background:#66bb6a; z-index:9003"
+      >
+      </div>
+      <div
+        class="loader-backdrop"
+        style="background:#ef4444; z-index:9002"
+      >
+      </div>
+      <div
+        class="loader-backdrop"
+        style="background:#fbbf24; z-index:9001"
+      >
+      </div>
+      <div
+        class="loader-backdrop"
+        style="background:#2563eb; z-index:9000"
+      >
+      </div>
     </div>
 
     <style is:inline>
@@ -321,10 +592,10 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
     </style>
 
     <script is:inline>
-      (function() {
-        var screen = document.getElementById('loading-screen');
-        var train = document.getElementById('loader-train');
-        var steam = document.getElementById('loader-steam');
+      (function () {
+        var screen = document.getElementById("loading-screen");
+        var train = document.getElementById("loader-train");
+        var steam = document.getElementById("loader-steam");
         if (!screen || !train || !steam) return;
 
         // Train pixel dimensions: 2 wagons (192px each) + engine (240px) + 2 gaps (10px) = 644px
@@ -332,7 +603,7 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
         var displayProgress = 0;
         var targetProgress = 0;
         var velocity = 0;
-        var maxVelocity = 0.018;        // Higher max speed
+        var maxVelocity = 0.018; // Higher max speed
         var acceleration = 0.0006;
         var deceleration = 0.001;
         var dismissed = false;
@@ -348,7 +619,7 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
         // Optimistic prediction: assume load finishes fast.
         // Train starts at full speed toward 0.7, then slows down if loading hasn't caught up.
         // Once loading completes, it speeds back up to 1.0 and exits.
-        var optimisticTarget = 0.7;     // How far the train drives optimistically
+        var optimisticTarget = 0.7; // How far the train drives optimistically
         var loadingFinished = false;
 
         function getTrainX(progress) {
@@ -359,11 +630,11 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
         }
 
         function updateTrainPosition(xPos) {
-          train.style.transform = 'translateX(' + xPos + 'px)';
+          train.style.transform = "translateX(" + xPos + "px)";
           // Steam follows engine chimney: engine left = xPos + 2*192 + 2*10 = xPos + 404
           // Chimney is mirrored: original x=12..20 flips to x=60..68, center ~64/80 * 240 = 192px from engine left
           var chimneyX = xPos + 404 + 192;
-          steam.style.transform = 'translateX(' + chimneyX + 'px)';
+          steam.style.transform = "translateX(" + chimneyX + "px)";
         }
 
         function animateProgress(timestamp) {
@@ -469,15 +740,15 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
           var elapsed = Date.now() - startTime;
           var delay = Math.max(0, minDisplayTime - elapsed);
           delay += 150;
-          setTimeout(function() {
-            screen.classList.add('loader-dismiss');
+          setTimeout(function () {
+            screen.classList.add("loader-dismiss");
             // Trigger colorful backdrop animations with random staggered delays
             triggerBackdrops();
-            screen.addEventListener('animationend', function handler() {
-              screen.removeEventListener('animationend', handler);
+            screen.addEventListener("animationend", function handler() {
+              screen.removeEventListener("animationend", handler);
               screen.remove();
             });
-            setTimeout(function() {
+            setTimeout(function () {
               if (screen.parentNode) {
                 screen.remove();
               }
@@ -486,9 +757,9 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
         }
 
         function triggerBackdrops() {
-          var container = document.getElementById('loader-backdrops');
+          var container = document.getElementById("loader-backdrops");
           if (!container) return;
-          var panels = container.querySelectorAll('.loader-backdrop');
+          var panels = container.querySelectorAll(".loader-backdrop");
           if (!panels.length) return;
 
           // Short random delays (0-150ms) so they start almost together
@@ -500,17 +771,17 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
             var randomDuration = 700 + Math.floor(Math.random() * 100);
             var endTime = randomDelay + randomDuration;
             if (endTime > maxEndTime) maxEndTime = endTime;
-            (function(panel, d, dur) {
-              panel.style.animationDuration = dur + 'ms';
-              setTimeout(function() {
-                panel.classList.add('backdrop-dismiss');
+            (function (panel, d, dur) {
+              panel.style.animationDuration = dur + "ms";
+              setTimeout(function () {
+                panel.classList.add("backdrop-dismiss");
               }, d);
             })(panels[i], randomDelay, randomDuration);
           }
 
           // Clean up after all animations finish + buffer
-          setTimeout(function() {
-            document.body.classList.remove('loading');
+          setTimeout(function () {
+            document.body.classList.remove("loading");
             if (container.parentNode) {
               container.remove();
             }
@@ -537,8 +808,8 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
         targetProgress = 0.7;
         requestAnimationFrame(animateProgress);
 
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', function() {
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", function () {
             domReady = true;
             checkProgress();
           });
@@ -547,18 +818,18 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
           checkProgress();
         }
 
-        if (document.readyState === 'complete') {
+        if (document.readyState === "complete") {
           resourcesLoaded = true;
           checkProgress();
         } else {
-          window.addEventListener('load', function() {
+          window.addEventListener("load", function () {
             resourcesLoaded = true;
             checkProgress();
           });
         }
 
         // Safety timeout
-        setTimeout(function() {
+        setTimeout(function () {
           if (!dismissed) {
             loadingFinished = true;
             targetProgress = 1;
