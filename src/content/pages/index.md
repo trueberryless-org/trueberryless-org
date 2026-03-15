@@ -16,8 +16,8 @@ pageSections:
       - _component: building-blocks/core-elements/button
         text: Explore the Fleet
         hideText: false
-        link: "#projects"
-        iconName: ""
+        link: '#projects'
+        iconName: ''
         iconPosition: before
         variant: primary
         size: md
@@ -25,7 +25,7 @@ pageSections:
         text: View on GitHub
         hideText: false
         link: https://github.com/trueberryless-org
-        iconName: ""
+        iconName: ''
         iconPosition: before
         variant: outline
         size: md
@@ -45,13 +45,13 @@ pageSections:
     features:
       - title: Starlight Locomotives
         description: Custom-built engines for the Starlight ecosystem, designed to drive better documentation experiences.
-        icon: ""
+        icon: ''
       - title: Streamlined Structure
         description: A clean organizational track that separates individual focus from project reliability.
-        icon: ""
+        icon: ''
       - title: Frictionless Tooling
         description: Tools designed to remove bottlenecks, ensuring your development workflow never hits a standstill.
-        icon: ""
+        icon: ''
     colorScheme: inherit
     backgroundColor: surface
   - _component: page-sections/train/train-projects
@@ -62,15 +62,15 @@ pageSections:
       - name: Starlight Sidebar Topics Dropdown
         description: The leading engine for managing complex documentation hierarchies with a sleek dropdown interface.
         link: https://github.com/trueberryless-org/starlight-sidebar-topics-dropdown
-        stars: "44"
+        stars: '44'
       - name: Starlight View Modes
         description: A versatile plugin adding essential view mode capabilities to drive better accessibility and user choice.
         link: https://github.com/trueberryless-org/starlight-view-modes
-        stars: "36"
+        stars: '36'
       - name: Awesome Starlight
         description: A curated list of awesome things related to Astro Starlight.
         link: https://github.com/trueberryless-org/awesome-starlight
-        stars: "12"
+        stars: '12'
     colorScheme: inherit
     backgroundColor: none
   - _component: page-sections/train/train-community
@@ -78,11 +78,11 @@ pageSections:
     heading: Full Steam Ahead
     subtext: Measuring the impact of our code across the global developer ecosystem.
     stats:
-      - value: "2.5k+"
+      - value: '2.5k+'
         label: Weekly NPM Downloads
-      - value: "65+"
+      - value: '65+'
         label: Total Repositories
-      - value: "2024"
+      - value: '2024'
         label: Established
     colorScheme: inherit
     backgroundColor: none
@@ -94,7 +94,7 @@ pageSections:
         text: Join the Discord
         hideText: false
         link: https://discord.gg/Hkbh69dBfC
-        iconName: ""
+        iconName: ''
         iconPosition: before
         variant: primary
         size: md
@@ -102,7 +102,7 @@ pageSections:
         text: Contribute on GitHub
         hideText: false
         link: https://github.com/trueberryless-org
-        iconName: ""
+        iconName: ''
         iconPosition: before
         variant: outline
         size: md

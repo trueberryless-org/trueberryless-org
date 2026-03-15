@@ -53,6 +53,7 @@ function getPoint(t) {
     3 * u * u * localT * p1[1] +
     3 * u * localT * localT * p2[1] +
     localT ** 3 * p3[1];
+
   return [x, y];
 }
 
@@ -63,11 +64,13 @@ function getTangent(t) {
   const dx = x2 - x1;
   const dy = y2 - y1;
   const len = Math.hypot(dx, dy) || 1;
+
   return [dx / len, dy / len];
 }
 
 function getAngle(t) {
   const [dx, dy] = getTangent(t);
+
   return (Math.atan2(dy, dx) * 180) / Math.PI;
 }
 
@@ -75,6 +78,7 @@ const samples = 360;
 const trackPoints = Array.from({ length: samples }, (_, i) => {
   const t = i / (samples - 1);
   const [x, y] = getPoint(t);
+
   return `${x.toFixed(2)},${y.toFixed(2)}`;
 }).join(" ");
 
@@ -87,6 +91,7 @@ function offsetPath(offset) {
     const [dx, dy] = getTangent(t);
     const ox = -dy * offset;
     const oy = dx * offset;
+
     return `${(x + ox).toFixed(2)},${(y + oy).toFixed(2)}`;
   }).join(" ");
 }
@@ -99,6 +104,7 @@ const sleepers = Array.from({ length: sleeperCount }, (_, i) => {
   const t = sleeperCount === 1 ? 0 : i / (sleeperCount - 1);
   const [x, y] = getPoint(t);
   const angle = getAngle(t) + 90;
+
   return `<rect x="${x - 4}" y="${y - 28}" width="8" height="56" rx="3" fill="${trackWood}" stroke="${trackWoodDark}" stroke-width="1" transform="rotate(${angle}, ${x}, ${y})" opacity="0.75" />`;
 }).join("");
 

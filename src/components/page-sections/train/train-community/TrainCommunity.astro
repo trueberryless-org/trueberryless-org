@@ -56,13 +56,21 @@ const {
         text={subtext}
       />
 
-      <div class="train-community-stats" data-children-prop="stats">
-        {stats.map((stat: StatItem) => (
-          <div class="train-stat-card" data-editable="array-item">
-            <span class="train-stat-value">{stat.value}</span>
-            <span class="train-stat-label">{stat.label}</span>
-          </div>
-        ))}
+      <div
+        class="train-community-stats"
+        data-children-prop="stats"
+      >
+        {
+          stats.map((stat: StatItem) => (
+            <div
+              class="train-stat-card"
+              data-editable="array-item"
+            >
+              <span class="train-stat-value">{stat.value}</span>
+              <span class="train-stat-label">{stat.label}</span>
+            </div>
+          ))
+        }
       </div>
     </div>
   </div>

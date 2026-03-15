@@ -59,16 +59,29 @@ const {
       />
     </div>
 
-    <div class="train-features-grid" data-children-prop="features">
-      {features.map((feature: FeatureItem) => (
-        <div class="train-feature-card" data-editable="array-item">
-          <div class="train-feature-icon">
-            <Fragment set:html={feature.icon || `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="var(--blue-100)"/><path d="M16 8l6 10H10l6-10z" fill="var(--blue-500)"/></svg>`} />
+    <div
+      class="train-features-grid"
+      data-children-prop="features"
+    >
+      {
+        features.map((feature: FeatureItem) => (
+          <div
+            class="train-feature-card"
+            data-editable="array-item"
+          >
+            <div class="train-feature-icon">
+              <Fragment
+                set:html={
+                  feature.icon ||
+                  `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="var(--blue-100)"/><path d="M16 8l6 10H10l6-10z" fill="var(--blue-500)"/></svg>`
+                }
+              />
+            </div>
+            <h3 class="train-feature-title">{feature.title}</h3>
+            <p class="train-feature-desc">{feature.description}</p>
           </div>
-          <h3 class="train-feature-title">{feature.title}</h3>
-          <p class="train-feature-desc">{feature.description}</p>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </div>
 </CustomSection>
@@ -115,7 +128,9 @@ const {
       border: 1px solid var(--color-border);
       border-radius: 12px;
       padding: var(--spacing-xl);
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
     }
 
     .train-feature-card:hover {
