@@ -1,0 +1,28 @@
+label:
+  comment: Optional label for the button group to help identify it in the editor.
+  type: text
+buttonSections:
+  type: array
+  comment: Array of button components to render within the group.
+  options:
+    structures: _structures.buttonSections
+direction:
+  comment: Direction of button layout.
+  type: select
+  options:
+    values:
+      - id: row
+        name: Row
+      - id: column
+        name: Column
+alignX:
+  comment: The horizontal alignment of the buttons within the group.
+  type: select
+  options:
+    values:
+      - id: start
+        name: Start
+      - id: center
+        name: Center
+      - id: end
+        name: End

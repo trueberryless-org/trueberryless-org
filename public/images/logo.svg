@@ -1,0 +1,49 @@
+<svg width="280" height="36" viewBox="0 0 280 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Locomotive icon -->
+  <g>
+    <!-- Track rail under the train -->
+    <line x1="0" y1="32" x2="38" y2="32" stroke="#8b919e" stroke-width="2" stroke-linecap="round"/>
+    <!-- Sleepers -->
+    <rect x="4" y="30" width="3" height="5" rx="0.5" fill="#c4956a"/>
+    <rect x="11" y="30" width="3" height="5" rx="0.5" fill="#c4956a"/>
+    <rect x="18" y="30" width="3" height="5" rx="0.5" fill="#c4956a"/>
+    <rect x="25" y="30" width="3" height="5" rx="0.5" fill="#c4956a"/>
+    <rect x="32" y="30" width="3" height="5" rx="0.5" fill="#c4956a"/>
+
+    <!-- Engine body -->
+    <rect x="4" y="12" width="30" height="16" rx="3" fill="#2563eb"/>
+    <!-- Cab -->
+    <rect x="22" y="6" width="14" height="12" rx="2.5" fill="#60a5fa"/>
+    <!-- Window -->
+    <rect x="25" y="8.5" width="8" height="6" rx="1.5" fill="rgba(255,255,255,0.9)"/>
+    <!-- Window reflection -->
+    <rect x="26" y="9.5" width="2.5" height="4" rx="0.8" fill="rgba(255,255,255,0.4)"/>
+    <!-- Chimney -->
+    <rect x="8" y="6" width="5" height="8" rx="1.5" fill="#1f2937"/>
+    <!-- Steam puff -->
+    <circle cx="10.5" cy="4" r="2" fill="#9ca3af" opacity="0.4"/>
+    <circle cx="8" cy="2.5" r="1.5" fill="#9ca3af" opacity="0.25"/>
+    <!-- Technic studs -->
+    <circle cx="14" cy="18" r="2" fill="#60a5fa" opacity="0.6"/>
+    <circle cx="20" cy="18" r="2" fill="#60a5fa" opacity="0.6"/>
+    <!-- Headlight -->
+    <circle cx="5.5" cy="20" r="2" fill="#fbbf24"/>
+    <circle cx="5.5" cy="20" r="1" fill="#fde68a"/>
+    <!-- Wheels -->
+    <circle cx="11" cy="30" r="4" fill="#1f2937"/>
+    <circle cx="11" cy="30" r="2" fill="#6b7280"/>
+    <circle cx="11" cy="30" r="0.8" fill="#9ca3af"/>
+    <circle cx="24" cy="30" r="4" fill="#1f2937"/>
+    <circle cx="24" cy="30" r="2" fill="#6b7280"/>
+    <circle cx="24" cy="30" r="0.8" fill="#9ca3af"/>
+    <!-- Bumper -->
+    <rect x="1" y="22" width="3" height="4" rx="1" fill="#ef4444"/>
+    <!-- Connector -->
+    <rect x="34" y="18" width="3" height="5" rx="0.8" fill="#6b7280"/>
+  </g>
+
+  <!-- Text: trueberryless-org -->
+  <g>
+    <text x="46" y="25" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="19" font-weight="700" letter-spacing="-0.3"><tspan fill="#1f2937">trueberryless</tspan><tspan fill="#2563eb">-org</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,25 @@
+enabled:
+  type: switch
+  comment: Enable or disable the train animation overlay.
+colorScheme:
+  type: select
+  comment: Color scheme theme.
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+backgroundColor:
+  type: select
+  comment: Background color (should be none for overlay).
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface

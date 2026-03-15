@@ -1,0 +1,18 @@
+label:
+  type: text
+  comment: The label text for the file upload field.
+name:
+  type: text
+  comment: A unique name attribute for the file upload field.
+  options:
+    required: true
+    required_message: Only form elements with a name will have their values passed when submitting a form.
+required:
+  type: switch
+  comment: Whether the field is required.
+accept:
+  type: text
+  comment: Comma-separated list of accepted file types (eg. '.jpg,.png,.pdf').
+multiple:
+  type: switch
+  comment: Whether multiple files can be selected.

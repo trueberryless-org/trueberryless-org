@@ -1,0 +1,22 @@
+label: Date
+icon: calendar
+description: Form field for selecting a date.
+value:
+  _component: building-blocks/forms/date
+  label: My date
+  name: my_date
+  required: false
+  value: "2026-01-01T15:30:00"
+  min: null
+  max: null
+preview:
+  text:
+    - Date
+  subtext:
+    - key: label
+  icon: calendar
+picker_preview:
+  text: Date
+  subtext: Form field for selecting a date.
+_inputs_from_glob:
+  - /src/components/building-blocks/forms/date/date.cloudcannon.inputs.yml

@@ -1,0 +1,29 @@
+{
+  "logoSource": "/images/logo.svg",
+  "logoAlt": "trueberryless-org Logo",
+  "links": [
+    {
+      "name": "About",
+      "path": "/#about"
+    },
+    {
+      "name": "Features",
+      "path": "/#features"
+    },
+    {
+      "name": "Projects",
+      "path": "/#projects"
+    },
+    {
+      "name": "Community",
+      "path": "/#community"
+    }
+  ],
+  "socials": [
+    {
+      "icon": "social/github",
+      "link": "https://github.com/trueberryless-org"
+    }
+  ],
+  "footerText": "© 2026 trueberryless-org. All rights reserved."
+}

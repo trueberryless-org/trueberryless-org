@@ -1,0 +1,56 @@
+label: Train Features
+icon: apps
+description: Feature cards section with track integration.
+value:
+  _component: page-sections/train/train-features
+  eyebrow: Features
+  heading: What We Offer
+  subtext: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt.
+  features:
+    - title: Open Source First
+      description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.
+      icon: ""
+    - title: Developer Experience
+      description: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+      icon: ""
+    - title: Community Driven
+      description: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      icon: ""
+  colorScheme: inherit
+  backgroundColor: surface
+preview:
+  text:
+    - Train Features
+  subtext:
+    - key: heading
+  icon: apps
+picker_preview:
+  text: Train Features
+  subtext: Feature cards with track integration.
+_inputs_from_glob:
+  - /src/components/page-sections/train/train-features/train-features.cloudcannon.inputs.yml
+_structures:
+  trainFeatureItems:
+    values:
+      - label: Feature
+        icon: apps
+        value:
+          title: Feature title
+          description: Feature description placeholder text.
+          icon: ""
+        preview:
+          text:
+            - key: title
+            - Feature
+          subtext:
+            - key: description
+        _inputs:
+          title:
+            type: text
+            comment: Name of the feature.
+          description:
+            type: textarea
+            comment: Short description of the feature.
+          icon:
+            type: html
+            comment: Optional SVG icon markup.

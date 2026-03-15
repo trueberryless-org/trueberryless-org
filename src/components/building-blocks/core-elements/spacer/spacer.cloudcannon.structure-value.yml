@@ -1,0 +1,17 @@
+label: Spacer
+icon: space_bar
+description: Adds adjustable spacing between content sections.
+value:
+  _component: building-blocks/core-elements/spacer
+  size: md
+preview:
+  text:
+    - Spacer
+  subtext:
+    - key: size
+  icon: space_bar
+picker_preview:
+  text: Spacer
+  subtext: Adds adjustable spacing between content sections.
+_inputs_from_glob:
+  - /src/components/building-blocks/core-elements/spacer/spacer.cloudcannon.inputs.yml

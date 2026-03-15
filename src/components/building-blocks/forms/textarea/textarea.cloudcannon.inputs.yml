@@ -1,0 +1,18 @@
+label:
+  type: text
+  comment: The label text for the textarea field.
+name:
+  type: text
+  comment: A unique name attribute for the textarea field.
+  options:
+    required: true
+    required_message: Only form elements with a name will have their values passed when submitting a form.
+required:
+  type: switch
+  comment: Whether the field is required.
+placeholder:
+  type: text
+  comment: Placeholder text for the textarea field.
+value:
+  type: text
+  comment: The default value for the textarea field.

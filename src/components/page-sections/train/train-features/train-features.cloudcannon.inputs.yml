@@ -1,0 +1,52 @@
+eyebrow:
+  type: text
+  comment: Label displayed above the heading.
+heading:
+  type: text
+  comment: Main heading for the features section.
+subtext:
+  type: markdown
+  comment: Supporting text beneath the heading.
+  options:
+    blockquote: false
+    bold: true
+    format:
+    italic: true
+    link: true
+    strike: false
+    subscript: true
+    superscript: true
+    underline: false
+    bulletedlist: false
+    numberedlist: false
+features:
+  type: array
+  comment: List of feature items.
+  options:
+    structures: _structures.trainFeatureItems
+colorScheme:
+  type: select
+  comment: Color scheme theme.
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+backgroundColor:
+  type: select
+  comment: Background color.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

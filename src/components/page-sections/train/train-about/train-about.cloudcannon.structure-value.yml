@@ -1,0 +1,22 @@
+label: Train About
+icon: info
+description: About section with content on the right, track space on the left.
+value:
+  _component: page-sections/train/train-about
+  eyebrow: About Us
+  heading: Who We Are
+  subtext: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+  description: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  colorScheme: inherit
+  backgroundColor: none
+preview:
+  text:
+    - Train About
+  subtext:
+    - key: heading
+  icon: info
+picker_preview:
+  text: Train About
+  subtext: About section with track space on the left.
+_inputs_from_glob:
+  - /src/components/page-sections/train/train-about/train-about.cloudcannon.inputs.yml

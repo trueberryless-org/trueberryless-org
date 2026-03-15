@@ -1,0 +1,104 @@
+---
+import { slugifyLabel } from "@components/utils/slugify";
+import GridItem from "./GridItem.astro";
+
+type ItemProps = Record<string, unknown>;
+
+const {
+  layout = "center",
+  minItemWidth = 200,
+  maxItemWidth = 320,
+  class: className,
+  style: userStyle,
+  items = [],
+  label,
+  gap = "md",
+  useDefaultEditableBinding = false,
+  _component,
+  "data-children-prop": childrenDataProp,
+  ...htmlAttributes
+} = Astro.props;
+
+if (!htmlAttributes.id && label) {
+  htmlAttributes.id = slugifyLabel(label);
+}
+
+const gridStyles = [
+  `--min-item-width: ${minItemWidth}px`,
+  `--max-item-width: ${maxItemWidth}px`,
+  `--grid-spacing: var(--spacing-${gap})`,
+  userStyle,
+]
+  .filter(Boolean)
+  .join("; ");
+
+const effectiveChildrenProp = childrenDataProp ?? (useDefaultEditableBinding ? "items" : null);
+const arrayDataAttributes = effectiveChildrenProp
+  ? { "data-editable": "array", "data-prop": effectiveChildrenProp, "data-direction": "row" }
+  : {};
+
+const hasItems = items?.length > 0;
+const hasSlotContent = Astro.slots.has("default");
+
+if (!_component && !hasItems && !hasSlotContent) return;
+---
+
+<div
+  class:list={["grid", className]}
+  {...htmlAttributes}
+>
+  <div
+    {...arrayDataAttributes}
+    class:list={["grid-inner", `layout-${layout}`]}
+    style={gridStyles}
+  >
+    <slot>
+      {
+        items?.map((item: ItemProps) => (
+          <GridItem
+            data-id="building-blocks/wrappers/grid/grid-item"
+            data-editable="array-item"
+            class:list={`layout-${layout}`}
+            useDefaultEditableBinding={!!effectiveChildrenProp}
+            {...item}
+          />
+        ))
+      }
+    </slot>
+  </div>
+</div>
+
+<style>
+  @layer components {
+    .grid {
+      margin-top: var(--spacing-lg);
+      width: 100%;
+
+      > .grid-inner {
+        &.layout-start {
+          align-items: stretch;
+          display: grid;
+          gap: var(--grid-spacing, var(--spacing-md));
+          grid-template-columns: repeat(auto-fill, minmax(min(var(--min-item-width), 100%), 1fr));
+          justify-content: start;
+          width: 100%;
+        }
+
+        &.layout-center {
+          align-items: stretch;
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--grid-spacing, var(--spacing-md));
+          justify-content: center;
+          width: 100%;
+
+          > :global(.grid-item) {
+            flex: 1 1 var(--min-item-width, 200px);
+            max-width: var(--max-item-width, 320px);
+            min-width: min(var(--min-item-width, 200px), 100%);
+          }
+        }
+      }
+    }
+  }
+</style>

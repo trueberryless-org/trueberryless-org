@@ -1,42 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Astro Component Starter
 
-## Getting Started
+A starter template with 40+ Astro components, each built for visual editing in [CloudCannon](https://cloudcannon.com/). You clone it, you own it. Every component is your source code to modify, extend, or delete.
 
-First, run the development server:
+All the source code and content is yours, it lives in your repository and you decide when (or if) to pull in future improvements from the core repo.
+
+The design is intentionally unbranded so it can morph into any brand you want. Update CSS variables and the entire site shifts to match your colors, fonts, and identity. Components are built on web fundamentals: vanilla CSS, semantic HTML, and a sprinkling of vanilla JS only when something can't be done with CSS alone. Performance and accessibility are baked in from the start.
+
+## Quick Start
 
 ```bash
+npx create-astro-component-starter my-site-name
+cd my-site-name
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Your site is now running at `http://localhost:4321`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This command scaffolds the latest starter into a local project folder, sets the starter repo as `upstream`, and installs dependencies automatically.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Make your first change:** Open `src/content/pages/index.md`, change the hero heading, and watch it update in your browser.
+
+## What You'll See
+
+- **Your site** at [localhost:4321](http://localhost:4321), a fully working demo with pages, blog, and navigation
+- **Component docs** at [localhost:4321/component-docs/](http://localhost:4321/component-docs/), documentation, examples, and a visual builder for every component
+
+## The Three-File Pattern
+
+Every component in this starter ships with three files. This is what makes the system work: developers build components, editors visually manage content.
+
+```
+src/components/.../button/
+├── Button.astro                          # The component
+├── button.cloudcannon.inputs.yml         # What editors see and can change
+└── button.cloudcannon.structure-value.yml # Defaults and picker metadata
+```
+
+## Key Directories
+
+```
+src/
+├── components/          # All 40+ components (yours to edit)
+│   ├── building-blocks/ # Core UI: buttons, headings, forms, layout wrappers
+│   ├── page-sections/   # Full-width sections: heroes, features, CTAs
+│   └── navigation/      # Header, footer, mobile nav
+├── content/             # Your pages and blog posts (Markdown/MDX)
+├── styles/              # Design tokens, themes, base styles
+│   ├── variables/       # Colors, fonts, spacing, widths
+│   └── themes/          # Light and dark theme definitions
+└── component-docs/   # Built-in docs (can be excluded from production builds)
+```
+
+## Dev and Build Commands
+
+| Command                      | Description                                       |
+| ---------------------------- | ------------------------------------------------- |
+| `npm run dev`                | Start the development server                      |
+| `npm run build`              | Build for production (component docs excluded)    |
+| `npm run build:with-library` | Build for production with component docs included |
+
+## Prerequisites
+
+- Node.js >= 24.0.0
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Head to the [component docs](http://localhost:4321/component-docs/) in your dev server for a guided tour, examples for every component, and a visual component builder.
 
 ## License
 
-Licensed under the MIT license, Copyright © trueberryless-org.
-
-See [LICENSE](/LICENSE) for more information.
+MIT

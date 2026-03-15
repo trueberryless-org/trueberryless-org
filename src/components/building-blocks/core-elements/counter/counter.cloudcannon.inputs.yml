@@ -1,0 +1,39 @@
+number:
+  type: number
+  comment: The number to count to.
+prefix:
+  comment: Text immediately before the number.
+suffix:
+  comment: Text immediately after the number.
+alignX:
+  comment: The horizontal alignment of the counter.
+  type: select
+  options:
+    values:
+      - id: start
+        name: Start
+      - id: center
+        name: Center
+      - id: end
+        name: End
+size:
+  type: select
+  comment: The font size of the counter.
+  options:
+    values:
+      - id: xs
+        name: Extra Small
+      - id: sm
+        name: Small
+      - id: md
+        name: Medium
+      - id: lg
+        name: Large
+      - id: xl
+        name: Extra Large
+      - id: 2xl
+        name: 2xl
+      - id: 3xl
+        name: 3xl
+      - id: 4xl
+        name: 4xl

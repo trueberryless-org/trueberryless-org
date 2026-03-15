@@ -1,0 +1,63 @@
+label: Train Projects
+icon: library_books
+description: Projects section with repository list, content on left, track on right.
+value:
+  _component: page-sections/train/train-projects
+  eyebrow: Projects
+  heading: Our Open Source Work
+  subtext: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam.
+  projects:
+    - name: starlight-utils
+      description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      link: "#"
+      stars: "1.2k"
+    - name: mutaction
+      description: Ut enim ad minim veniam, quis nostrud exercitation.
+      link: "#"
+      stars: "856"
+    - name: purista-sdk
+      description: Duis aute irure dolor in reprehenderit in voluptate.
+      link: "#"
+      stars: "432"
+  colorScheme: inherit
+  backgroundColor: none
+preview:
+  text:
+    - Train Projects
+  subtext:
+    - key: heading
+  icon: library_books
+picker_preview:
+  text: Train Projects
+  subtext: Project list with track on the right.
+_inputs_from_glob:
+  - /src/components/page-sections/train/train-projects/train-projects.cloudcannon.inputs.yml
+_structures:
+  trainProjectItems:
+    values:
+      - label: Project
+        icon: code
+        value:
+          name: project-name
+          description: Project description placeholder text.
+          link: "#"
+          stars: "0"
+        preview:
+          text:
+            - key: name
+            - Project
+          subtext:
+            - key: description
+        _inputs:
+          name:
+            type: text
+            comment: Repository name.
+          description:
+            type: text
+            comment: Short project description.
+          link:
+            type: url
+            comment: Link to the project.
+          stars:
+            type: text
+            comment: Star count display text.

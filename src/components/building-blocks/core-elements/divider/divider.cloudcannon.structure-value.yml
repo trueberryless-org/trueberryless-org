@@ -1,0 +1,15 @@
+label: Divider
+icon: horizontal_rule
+description: Visual separator for dividing content sections.
+value:
+  _component: building-blocks/core-elements/divider
+  paddingVertical: lg
+preview:
+  text:
+    - Divider
+  icon: horizontal_rule
+picker_preview:
+  text: Divider
+  subtext: Visual separator for dividing content sections.
+_inputs_from_glob:
+  - /src/components/building-blocks/core-elements/divider/divider.cloudcannon.inputs.yml

@@ -1,0 +1,16 @@
+items:
+  type: array
+  label: List Items
+  options:
+    structures: _structures.definitionListItems
+alignX:
+  type: select
+  comment: The horizontal alignment of the definition list items.
+  options:
+    values:
+      - id: start
+        name: Start
+      - id: center
+        name: Center
+      - id: end
+        name: End

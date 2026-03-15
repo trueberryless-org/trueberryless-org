@@ -1,0 +1,90 @@
+---
+import DefinitionListItem from "./DefinitionListItem.astro";
+
+type ItemProps = Record<string, unknown>;
+
+const {
+  items,
+  alignX = "start",
+  class: className,
+  "data-children-prop": childrenDataProp,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const effectiveChildrenProp = childrenDataProp ?? (useDefaultEditableBinding ? "items" : null);
+const arrayDataAttributes = effectiveChildrenProp
+  ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
+  : {};
+const hasItems = items?.length > 0;
+const hasSlotContent = Astro.slots.has("default");
+
+if (!_component && !hasItems && !hasSlotContent) return;
+---
+
+<div
+  class:list={["definition-list", className]}
+  {...htmlAttributes}
+>
+  <dl
+    class:list={[`alignment-${alignX}`]}
+    {...arrayDataAttributes}
+  >
+    <slot>
+      {
+        items?.map((item: ItemProps) => (
+          <DefinitionListItem
+            data-id="building-blocks/core-elements/definition-list/definition-list-item"
+            data-editable="array-item"
+            useDefaultEditableBinding={!!effectiveChildrenProp}
+            {...item}
+          />
+        ))
+      }
+    </slot>
+  </dl>
+</div>
+
+<style>
+  @layer components {
+    .definition-list {
+      margin-top: var(--spacing-lg);
+
+      > dl {
+        display: grid;
+        gap: var(--spacing-em-sm) var(--spacing-em-md);
+        grid-template-columns: auto 1fr;
+        margin: 0;
+
+        &.alignment-center {
+          align-items: center;
+          grid-template-columns: 1fr 1fr;
+          justify-content: center;
+
+          > :global(.definition-list-item) > :global(.title) {
+            text-align: end;
+          }
+        }
+
+        &.alignment-end {
+          align-items: end;
+          grid-template-columns: auto auto;
+          justify-content: end;
+
+          > :global(.definition-list-item) > :global(.title) {
+            text-align: start;
+          }
+
+          > :global(.definition-list-item) > :global(.content) {
+            text-align: end;
+          }
+        }
+
+        > :global(.definition-list-item) > :global(.content) {
+          margin: 0;
+        }
+      }
+    }
+  }
+</style>

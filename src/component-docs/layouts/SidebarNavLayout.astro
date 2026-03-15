@@ -1,0 +1,47 @@
+---
+import Side from "@components/navigation/side/Side.astro";
+import Button from "@core-elements/button/Button.astro";
+import Icon from "@core-elements/icon/Icon.astro";
+import navData from "../data/nav.json";
+import { generateNavData } from "../utils/navGenerator.js";
+
+const sideNavData = await generateNavData(navData);
+---
+
+<div class="library-sidebar">
+  <div class="sidebar-logo-container">
+    <Icon
+      name="library/logo"
+      size="none"
+      class="sidebar-logo"
+    />
+    <Button
+      variant="ghost"
+      size="sm"
+      iconName="arrow-right"
+      iconPosition="after"
+      text="Back to site"
+      link="/"
+    />
+  </div>
+  <Side navData={sideNavData} />
+</div>
+
+<style is:global>
+  .sidebar-logo-container {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+
+    .icon {
+      flex: 1;
+      max-width: 138px;
+
+      svg {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+</style>

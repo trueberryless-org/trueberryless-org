@@ -1,0 +1,37 @@
+label: Definition List
+icon: dns
+description: Lists term/definition pairs for structured content.
+value:
+  _component: building-blocks/core-elements/definition-list
+  items: []
+  alignX: start
+preview:
+  text:
+    - Definition List
+  icon: dns
+picker_preview:
+  text: Definition List
+  subtext: Lists term/definition pairs for structured content.
+_inputs_from_glob:
+  - /src/components/building-blocks/core-elements/definition-list/definition-list.cloudcannon.inputs.yml
+_structures:
+  definitionListItems:
+    values:
+      - label: Definition List Item
+        value:
+          title: "My definition title"
+          text: "My definition content"
+        preview:
+          icon: list
+          text:
+            - key: title
+            - Definition List Item
+          subtext:
+            - key: text
+        _inputs:
+          title:
+            type: text
+            comment: A bolded title for the list item.
+          text:
+            type: textarea
+            comment: The text content of the list item.

@@ -1,0 +1,53 @@
+label: Choice Group
+icon: check_box
+description: Form field for selecting one or more options.
+value:
+  _component: building-blocks/forms/choice-group
+  title: null
+  name: null
+  required: false
+  options:
+    - value: item 1
+      label: Item 1
+      checked: false
+    - value: item 2
+      label: Item 2
+      checked: false
+  orientation: vertical
+  multiple: true
+preview:
+  text:
+    - Choice Group
+  subtext:
+    - key: title
+  icon: check_box
+picker_preview:
+  text: Choice Group
+  subtext: Form field for selecting one or more options.
+_inputs_from_glob:
+  - /src/components/building-blocks/forms/choice-group/choice-group.cloudcannon.inputs.yml
+_structures:
+  choiceOptions:
+    values:
+      - value:
+          value: null
+          label: null
+          checked: null
+        preview:
+          icon: check_box
+          text:
+            - key: label
+            - Choice Option
+          subtext:
+            - key: value
+            - Add a value for the option.
+        _inputs:
+          value:
+            type: text
+            comment: The value entered by the user when the option is selected.
+          label:
+            type: text
+            comment: The label text for the option.
+          checked:
+            type: switch
+            comment: Whether the field is checked by default.

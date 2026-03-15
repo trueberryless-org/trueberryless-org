@@ -1,0 +1,30 @@
+label: Image
+icon: image
+description: Optimized image component for local and remote sources.
+value:
+  _component: building-blocks/core-elements/image
+  source: /src/assets/images/placeholder.png
+  alt: ""
+  sizes: "(max-width: 1280px) 100vw, 1280px"
+  widths:
+    - 640
+    - 1280
+    - 2560
+  width:
+  height:
+  rounded: false
+  aspectRatio: none
+  positionVertical: center
+  positionHorizontal: center
+  priority: false
+preview:
+  text:
+    - Image
+  subtext:
+    - key: alt
+  icon: image
+picker_preview:
+  text: Image
+  subtext: Optimized image component for local and remote sources.
+_inputs_from_glob:
+  - /src/components/building-blocks/core-elements/image/image.cloudcannon.inputs.yml

@@ -1,0 +1,202 @@
+---
+import Icon from "@core-elements/icon/Icon.astro";
+import type { SegmentOption } from "../../../../types";
+
+const {
+  name,
+  options = [] as SegmentOption[],
+  title,
+  required = false,
+  iconOnly = false,
+  multiple = false,
+  keepStateOnRefresh = false,
+  class: className,
+  useDefaultEditableBinding: _useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const groupId = htmlAttributes.id || `segments-${crypto.randomUUID()}`;
+const inputType = multiple ? "checkbox" : "radio";
+---
+
+<fieldset
+  class:list={["segments", className]}
+  role={multiple ? "group" : "radiogroup"}
+  aria-labelledby={title ? `${groupId}-legend` : undefined}
+  {...htmlAttributes}
+>
+  {
+    title && (
+      <legend
+        id={`${groupId}-legend`}
+        class="legend"
+      >
+        {title}
+        {required && (
+          <span
+            class="segments-required"
+            aria-label="required"
+          >
+            *
+          </span>
+        )}
+      </legend>
+    )
+  }
+  <div
+    class:list={["segments-options", iconOnly && "icon-only", multiple && "multiple"]}
+    role="presentation"
+  >
+    {
+      options.map((option, index: number) => (
+        <label class="segments-option">
+          <input
+            type={inputType}
+            name={multiple ? `${name}[]` : name}
+            value={option.value}
+            checked={option.checked ? "checked" : undefined}
+            data-checked={option.checked}
+            required={required && index === 0}
+            aria-required={required && index === 0}
+            autocomplete={keepStateOnRefresh ? "on" : "off"}
+            class="segments-field"
+          />
+          <span
+            class="segment"
+            role="button"
+            tabindex="-1"
+            title={iconOnly && option.label ? option.label : undefined}
+          >
+            {option.icon && (
+              <Icon
+                name={option.icon}
+                size="none"
+                class="segment-icon"
+                aria-hidden="true"
+              />
+            )}
+            {option.label && !iconOnly && <span class="segment-label">{option.label}</span>}
+          </span>
+        </label>
+      ))
+    }
+  </div>
+</fieldset>
+
+<style>
+  @layer components {
+    .segments {
+      border: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin: 0;
+      padding: 0;
+
+      .segments-required {
+        color: var(--color-error);
+        margin-inline-end: var(--spacing-em-xs);
+      }
+
+      .legend {
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .segments-options {
+        display: flex;
+      }
+
+      .segments-option {
+        align-items: center;
+        display: flex;
+        flex-shrink: 0;
+        position: relative;
+
+        .segments-field {
+          display: none;
+        }
+
+        .segment {
+          align-items: center;
+          background-color: var(--color-bg-surface);
+          border: 1px solid var(--color-border);
+          color: var(--color-text-muted);
+          cursor: pointer;
+          display: inline-flex;
+          flex: 1;
+          height: 100%;
+          justify-content: center;
+          padding: var(--spacing-xs) var(--spacing-sm);
+          position: relative;
+          transition: background-color var(--animation-normal) ease;
+          vertical-align: middle;
+
+          &:hover {
+            background-color: var(--color-bg-muted);
+
+            &,
+            :global(.segment-icon) {
+              color: var(--color-text-strong);
+            }
+          }
+
+          :global(.segment-icon) {
+            flex-shrink: 0;
+            height: 1em;
+            width: 1em;
+          }
+
+          :global(.segment-icon) + .segment-label {
+            margin-inline-start: var(--spacing-em-xs);
+          }
+
+          .segment-label {
+            white-space: nowrap;
+          }
+        }
+
+        .segments-field:checked + .segment {
+          &,
+          &:hover {
+            background-color: var(--color-bg);
+            border: 1px solid var(--color-brand);
+            color: var(--color-text-strong);
+            z-index: 1;
+          }
+
+          :global(.segment-icon) {
+            color: var(--color-text-strong);
+          }
+        }
+
+        .segments-field:focus + .segment {
+          outline: 2px solid var(--color-focus-ring);
+          outline-offset: 2px;
+        }
+      }
+
+      .segments-option:first-of-type .segment {
+        border-end-start-radius: var(--radius-sm);
+        border-start-start-radius: var(--radius-sm);
+      }
+
+      .segments-option:last-of-type .segment {
+        border-end-end-radius: var(--radius-sm);
+        border-start-end-radius: var(--radius-sm);
+      }
+
+      .segments-option:not(:last-of-type) .segment {
+        border-inline-end: none;
+      }
+
+      .segments-option:not(:last-of-type):has(.segments-field:checked) + .segments-option .segment {
+        border-inline-start: 0;
+      }
+
+      > .segments-options.icon-only .segments-option .segment :global(.segment-icon) {
+        margin-block: var(--spacing-xs);
+      }
+    }
+  }
+</style>

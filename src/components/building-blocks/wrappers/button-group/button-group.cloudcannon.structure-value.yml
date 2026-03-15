@@ -1,0 +1,28 @@
+label: Button Group
+icon: rectangle
+description: Arranges buttons side by side with consistent spacing.
+value:
+  _component: building-blocks/wrappers/button-group
+  label: null
+  buttonSections:
+    - _component: building-blocks/core-elements/button
+      text: My Button
+      hideText: false
+      link: ""
+      iconName: ""
+      iconPosition: before
+      variant: primary
+      size: md
+  direction: row
+  alignX: start
+preview:
+  text:
+    - Button Group
+  subtext:
+    - key: label
+  icon: rectangle
+picker_preview:
+  text: Button Group
+  subtext: Arranges buttons side by side with consistent spacing.
+_inputs_from_glob:
+  - /src/components/building-blocks/wrappers/button-group/button-group.cloudcannon.inputs.yml

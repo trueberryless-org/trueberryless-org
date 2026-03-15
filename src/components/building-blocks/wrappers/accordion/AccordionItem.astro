@@ -1,0 +1,110 @@
+---
+import RenderBlock from "@components/utils/renderBlock.astro";
+import Icon from "@core-elements/icon/Icon.astro";
+
+const {
+  title,
+  contentSections,
+  useDefaultEditableBinding = false,
+  isOpen = false,
+  accordionName,
+  _component,
+  "data-children-prop": childrenDataProp,
+  ...htmlAttributes
+} = Astro.props;
+
+const effectiveChildrenProp =
+  childrenDataProp ?? (useDefaultEditableBinding ? "contentSections" : null);
+const arrayDataAttributes = effectiveChildrenProp
+  ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
+  : {};
+---
+
+<details
+  class="accordion-item"
+  open={isOpen}
+  name={accordionName}
+  {...htmlAttributes}
+>
+  <summary class="accordion-item-title">
+    <span class="accordion-item-title-text">{title}</span>
+    <Icon
+      name="chevron-down"
+      size="none"
+      class="accordion-item-icon"
+    />
+  </summary>
+  <div
+    class="accordion-item-detail"
+    {...arrayDataAttributes}
+  >
+    <slot>
+      {
+        contentSections && (
+          <RenderBlock
+            contentSections={contentSections}
+            useDefaultEditableBinding={!!effectiveChildrenProp}
+          />
+        )
+      }
+    </slot>
+  </div>
+</details>
+
+<style>
+  @layer components {
+    .accordion-item {
+      border-bottom: 1px solid var(--color-border-subtle);
+      container-type: inline-size;
+
+      > .accordion-item-title {
+        align-items: center;
+        cursor: pointer;
+        display: flex;
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-bold);
+        justify-content: space-between;
+        padding: var(--spacing-md);
+        transition: background-color var(--animation-normal) ease-out;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        &:first-of-type {
+          list-style-type: none;
+        }
+
+        &:hover {
+          background-color: var(--color-bg-surface);
+        }
+
+        &::-webkit-details-marker {
+          display: none;
+        }
+
+        :global(.accordion-item-icon) {
+          transition: transform var(--animation-normal) ease-out;
+        }
+      }
+
+      > .accordion-item-detail {
+        padding-inline: var(--spacing-md);
+        padding-bottom: var(--spacing-md);
+
+        > :global(*:first-child) {
+          margin-top: 0 !important;
+        }
+      }
+    }
+
+    .accordion-item[open] {
+      > .accordion-item-title :global(.accordion-item-icon) {
+        transform: rotate(180deg);
+      }
+
+      > .accordion-item-detail {
+        animation: grow-out 300ms ease-out;
+      }
+    }
+  }
+</style>

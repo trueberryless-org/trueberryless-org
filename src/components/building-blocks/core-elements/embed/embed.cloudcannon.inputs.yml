@@ -1,0 +1,17 @@
+html:
+  type: code
+  comment: The raw HTML content to render.
+  syntax: html
+aspectRatio:
+  type: select
+  comment: The aspect ratio of the embed.
+  options:
+    values:
+      - id: square
+        name: Square (1:1)
+      - id: landscape
+        name: Landscape (4:3)
+      - id: portrait
+        name: Portrait (3:4)
+      - id: widescreen
+        name: Widescreen (16:9)

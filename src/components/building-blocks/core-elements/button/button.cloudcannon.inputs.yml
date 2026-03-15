@@ -1,0 +1,57 @@
+text:
+  type: text
+  comment: The text that goes inside the button.
+  hidden: hideText
+link:
+  type: url
+  comment: The URL to which the button should link.
+iconName:
+  type: select
+  comment: The name of the icon to display. See the Icon component documentation for more information.
+  options:
+    values: _select_data.icons
+    preview:
+      text:
+        - key: name
+      image:
+        - template: src/icons/{id}.svg
+iconPosition:
+  type: select
+  comment: The position of the icon relative to the text.
+  hidden: "!iconName"
+  options:
+    values:
+      - id: before
+        name: Before
+      - id: after
+        name: After
+hideText:
+  type: switch
+  hidden: "!iconName"
+  comment: Whether to hide the button text and show only the icon.
+variant:
+  type: select
+  comment: The presentation of button.
+  options:
+    values:
+      - id: primary
+        name: Primary
+      - id: secondary
+        name: Secondary
+      - id: tertiary
+        name: Tertiary
+      - id: ghost
+        name: Ghost
+      - id: text
+        name: Text
+size:
+  type: select
+  comment: The size of the button.
+  options:
+    values:
+      - id: sm
+        name: Small
+      - id: md
+        name: Medium
+      - id: lg
+        name: Large

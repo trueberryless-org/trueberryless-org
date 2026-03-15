@@ -1,0 +1,63 @@
+---
+import Button from "@core-elements/button/Button.astro";
+
+const {
+  text = "Submit",
+  variant = "primary",
+  size = "md",
+  iconName,
+  iconPosition = "before",
+  hideText = false,
+  disabled = false,
+  class: className,
+  useDefaultEditableBinding: _useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const hasSlot = Astro.slots.has("default");
+---
+
+{
+  hasSlot ? (
+    <Button
+      element="button"
+      type="submit"
+      text={text}
+      variant={variant}
+      size={size}
+      iconName={iconName}
+      iconPosition={iconPosition}
+      hideText={hideText}
+      disabled={disabled}
+      data-prop="text"
+      class:list={["submit", className]}
+      {...htmlAttributes}
+    >
+      <slot />
+    </Button>
+  ) : (
+    <Button
+      element="button"
+      type="submit"
+      text={text}
+      variant={variant}
+      size={size}
+      iconName={iconName}
+      iconPosition={iconPosition}
+      hideText={hideText}
+      disabled={disabled}
+      data-prop="text"
+      class:list={["submit", className]}
+      {...htmlAttributes}
+    />
+  )
+}
+
+<style>
+  @layer components {
+    :global(.submit) {
+      margin-top: var(--spacing-md);
+    }
+  }
+</style>

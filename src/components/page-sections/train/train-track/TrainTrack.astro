@@ -1,0 +1,702 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+
+const {
+  enabled = true,
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "none",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+// Wagon colors for variety
+const wagonColors = [
+  { body: "var(--train-yellow)", detail: "var(--train-yellow-light)", dots: "var(--train-yellow-light)" },
+  { body: "var(--train-red)", detail: "#ff8a80", dots: "#ff8a80" },
+  { body: "#66bb6a", detail: "#a5d6a7", dots: "#a5d6a7" },
+  { body: "#ab47bc", detail: "#ce93d8", dots: "#ce93d8" },
+];
+---
+
+{enabled && (
+  <CustomSection
+    class:list={["train-track-section", className]}
+    maxContentWidth="2xl"
+    paddingHorizontal="none"
+    paddingVertical="none"
+    colorScheme={colorScheme}
+    backgroundColor="none"
+    useDefaultEditableBinding={useDefaultEditableBinding}
+    {...htmlAttributes}
+  >
+    <div class="train-track-overlay" id="train-track-overlay" aria-hidden="true">
+      <svg
+        id="train-track-svg"
+        class="train-track-svg"
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <!-- Sleeper/tie pattern -->
+          <pattern id="sleeper-pattern" patternUnits="userSpaceOnUse" width="20" height="20">
+            <rect x="7" y="0" width="6" height="20" rx="1" fill="var(--track-wood)" />
+          </pattern>
+        </defs>
+
+        <!-- Track groups rendered by JS -->
+        <g id="track-ties-group"></g>
+        <g id="track-rails-group"></g>
+        <g id="track-buffers-group"></g>
+      </svg>
+
+      <!-- Wagons: one per section pickup (about, features, projects, community) -->
+      {wagonColors.map((colors, i) => (
+        <div class="train-piece" id={`wagon-${i}`} data-wagon-index={i}>
+          <svg class="train-wagon" width="64" height="44" viewBox="0 0 64 44" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(0,44) scale(1,-1)">
+              <rect x="0" y="18" width="4" height="8" rx="1" fill="var(--train-gray)" />
+              <rect x="6" y="6" width="52" height="26" rx="4" fill={colors.body} />
+              <rect x="10" y="10" width="44" height="8" rx="2" fill={colors.detail} />
+              <circle cx="18" cy="24" r="3" fill={colors.dots} opacity="0.6" />
+              <circle cx="32" cy="24" r="3" fill={colors.dots} opacity="0.6" />
+              <circle cx="46" cy="24" r="3" fill={colors.dots} opacity="0.6" />
+              <circle cx="18" cy="36" r="6" fill="var(--train-dark)" />
+              <circle cx="18" cy="36" r="3" fill="var(--train-gray)" />
+              <circle cx="46" cy="36" r="6" fill="var(--train-dark)" />
+              <circle cx="46" cy="36" r="3" fill="var(--train-gray)" />
+              <rect x="58" y="18" width="6" height="8" rx="1" fill="var(--train-gray)" />
+            </g>
+          </svg>
+        </div>
+      ))}
+
+      <!-- Engine (at the back, pushing wagons) -->
+      <div class="train-piece" id="train-engine">
+        <svg class="train-engine" width="80" height="44" viewBox="0 0 80 44" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(0,44) scale(1,-1)">
+            <rect x="4" y="8" width="72" height="24" rx="4" fill="var(--train-blue)" />
+            <rect x="50" y="2" width="26" height="16" rx="3" fill="var(--train-blue-light)" />
+            <rect x="56" y="5" width="14" height="8" rx="2" fill="rgba(255,255,255,0.85)" />
+            <rect x="12" y="2" width="8" height="10" rx="2" fill="var(--train-dark)" />
+            <circle cx="20" cy="16" r="3" fill="var(--train-blue-light)" opacity="0.7" />
+            <circle cx="30" cy="16" r="3" fill="var(--train-blue-light)" opacity="0.7" />
+            <circle cx="40" cy="16" r="3" fill="var(--train-blue-light)" opacity="0.7" />
+            <circle cx="6" cy="20" r="3" fill="var(--train-yellow)" />
+            <circle cx="18" cy="36" r="6" fill="var(--train-dark)" />
+            <circle cx="18" cy="36" r="3" fill="var(--train-gray)" />
+            <circle cx="38" cy="36" r="6" fill="var(--train-dark)" />
+            <circle cx="38" cy="36" r="3" fill="var(--train-gray)" />
+            <circle cx="62" cy="36" r="6" fill="var(--train-dark)" />
+            <circle cx="62" cy="36" r="3" fill="var(--train-gray)" />
+            <rect x="0" y="26" width="4" height="6" rx="1" fill="var(--train-red)" />
+            <rect x="76" y="18" width="4" height="8" rx="1" fill="var(--train-gray)" />
+          </g>
+        </svg>
+      </div>
+    </div>
+  </CustomSection>
+)}
+
+<style>
+  @layer page-sections {
+    .train-track-section {
+      :global(.outer-content) {
+        padding: 0 !important;
+        max-width: none !important;
+        overflow: visible !important;
+      }
+      :global(.inner-content) {
+        padding: 0 !important;
+        max-width: none !important;
+        overflow: visible !important;
+      }
+    }
+
+    .train-track-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      overflow: visible;
+    }
+
+    .train-track-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .train-piece {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: center center;
+      will-change: transform;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+    }
+
+    .train-engine,
+    .train-wagon {
+      display: block;
+      flex-shrink: 0;
+    }
+
+    @media (width < 768px) {
+      .train-track-overlay {
+        display: none;
+      }
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const overlay = document.getElementById("train-track-overlay");
+    if (!overlay) return;
+
+    const svg = document.getElementById("train-track-svg") as unknown as SVGSVGElement;
+    const tiesGroup = document.getElementById("track-ties-group");
+    const railsGroup = document.getElementById("track-rails-group");
+    const buffersGroup = document.getElementById("track-buffers-group");
+    const engineEl = document.getElementById("train-engine");
+
+    // Collect wagon elements
+    const wagonEls: HTMLElement[] = [];
+    for (let i = 0; i < 4; i++) {
+      const w = document.getElementById(`wagon-${i}`);
+      if (w) wagonEls.push(w);
+    }
+
+    if (!svg || !tiesGroup || !railsGroup || !engineEl || !buffersGroup) return;
+
+    const mainEl = document.querySelector("main");
+    if (!mainEl) return;
+
+    // Spacing between pieces along the path (in path-length pixels)
+    const pieceSpacing = 72;
+    // Wagon width for centering
+    const wagonHalfW = 32;
+    const wagonHalfH = 22;
+    const engineHalfW = 40;
+    const engineHalfH = 22;
+
+    function updateOverlaySize() {
+      if (!mainEl || !overlay || !svg) return;
+      const mainRect = mainEl.getBoundingClientRect();
+      const mainHeight = mainEl.scrollHeight;
+
+      overlay.style.position = "absolute";
+      overlay.style.top = "0";
+      overlay.style.left = "0";
+      overlay.style.width = "100%";
+      overlay.style.height = mainHeight + "px";
+
+      svg.setAttribute("width", String(mainRect.width));
+      svg.setAttribute("height", String(mainHeight));
+      svg.setAttribute("viewBox", `0 0 ${mainRect.width} ${mainHeight}`);
+    }
+
+    const sectionIds = ["hero", "about", "features", "projects", "community", "cta"];
+
+    // Sections that have a wagon waiting to be picked up
+    // (in order along the track: about=wagon0, features=wagon1, projects=wagon2, community=wagon3)
+    const pickupSections = ["about", "features", "projects", "community"];
+
+    interface SectionInfo {
+      id: string;
+      top: number;
+      height: number;
+      midY: number;
+    }
+
+    function getSections(): SectionInfo[] {
+      if (!mainEl) return [];
+      const mainTop = mainEl.getBoundingClientRect().top + window.scrollY;
+      const sections: SectionInfo[] = [];
+
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          const top = rect.top + window.scrollY - mainTop;
+          sections.push({
+            id,
+            top,
+            height: rect.height,
+            midY: top + rect.height / 2,
+          });
+        }
+      }
+      return sections;
+    }
+
+    function buildTrackPath(sections: SectionInfo[], pageWidth: number): string {
+      if (sections.length < 2) return "";
+
+      const margin = 120;
+      const leftX = margin;
+      const rightX = pageWidth - margin;
+      const curveRadius = 150;
+
+      const points: { x: number; y: number }[] = [];
+
+      for (let i = 0; i < sections.length; i++) {
+        const s = sections[i];
+        const id = s.id;
+
+        if (id === "hero") {
+          points.push({ x: -50, y: s.top + s.height });
+        } else if (id === "about") {
+          points.push({ x: leftX, y: s.top + 40 });
+          points.push({ x: leftX, y: s.top + s.height - 40 });
+        } else if (id === "features") {
+          points.push({ x: rightX, y: s.top + 40 });
+          points.push({ x: rightX, y: s.top + s.height - 40 });
+        } else if (id === "projects") {
+          points.push({ x: rightX, y: s.top + 40 });
+          points.push({ x: rightX, y: s.top + s.height - 40 });
+        } else if (id === "community") {
+          points.push({ x: leftX, y: s.top + 40 });
+          points.push({ x: leftX, y: s.top + s.height - 40 });
+        } else if (id === "cta") {
+          const centerX = pageWidth / 2;
+          points.push({ x: centerX, y: s.top + 60 });
+        }
+      }
+
+      if (points.length < 2) return "";
+
+      let d = `M ${points[0].x} ${points[0].y}`;
+
+      for (let i = 1; i < points.length; i++) {
+        const prev = points[i - 1];
+        const curr = points[i];
+
+        if (i < points.length - 1) {
+          const next = points[i + 1];
+
+          const dx1 = curr.x - prev.x;
+          const dy1 = curr.y - prev.y;
+          const dx2 = next.x - curr.x;
+          const dy2 = next.y - curr.y;
+
+          const len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+          const len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+
+          if (len1 === 0 || len2 === 0) {
+            d += ` L ${curr.x} ${curr.y}`;
+            continue;
+          }
+
+          const r = Math.min(curveRadius, len1 / 2, len2 / 2);
+
+          const startX = curr.x - (dx1 / len1) * r;
+          const startY = curr.y - (dy1 / len1) * r;
+          const endX = curr.x + (dx2 / len2) * r;
+          const endY = curr.y + (dy2 / len2) * r;
+
+          d += ` L ${startX} ${startY}`;
+          d += ` Q ${curr.x} ${curr.y} ${endX} ${endY}`;
+        } else {
+          d += ` L ${curr.x} ${curr.y}`;
+        }
+      }
+
+      return d;
+    }
+
+    function renderTracks(pathD: string) {
+      if (!tiesGroup || !railsGroup || !buffersGroup) return;
+      tiesGroup.innerHTML = "";
+      railsGroup.innerHTML = "";
+      buffersGroup.innerHTML = "";
+
+      if (!pathD) return;
+
+      const ns = "http://www.w3.org/2000/svg";
+      const railGap = 12;
+
+      const measurePath = document.createElementNS(ns, "path");
+      measurePath.setAttribute("d", pathD);
+      measurePath.setAttribute("fill", "none");
+      svg.appendChild(measurePath);
+
+      const totalLen = measurePath.getTotalLength();
+      const sleeperSpacing = 20;
+
+      for (let dist = 0; dist < totalLen; dist += sleeperSpacing) {
+        const pt = measurePath.getPointAtLength(dist);
+        const pt2 = measurePath.getPointAtLength(Math.min(dist + 1, totalLen));
+
+        const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x);
+        const perpAngle = angle + Math.PI / 2;
+
+        const tieLen = railGap * 2 + 10;
+        const x1 = pt.x + Math.cos(perpAngle) * (tieLen / 2);
+        const y1 = pt.y + Math.sin(perpAngle) * (tieLen / 2);
+        const x2 = pt.x - Math.cos(perpAngle) * (tieLen / 2);
+        const y2 = pt.y - Math.sin(perpAngle) * (tieLen / 2);
+
+        const tie = document.createElementNS(ns, "line");
+        tie.setAttribute("x1", String(x1));
+        tie.setAttribute("y1", String(y1));
+        tie.setAttribute("x2", String(x2));
+        tie.setAttribute("y2", String(y2));
+        tie.setAttribute("stroke", "var(--track-wood)");
+        tie.setAttribute("stroke-width", "6");
+        tie.setAttribute("stroke-linecap", "round");
+        tie.setAttribute("opacity", "0.7");
+        tiesGroup.appendChild(tie);
+      }
+
+      svg.removeChild(measurePath);
+
+      const leftRail = document.createElementNS(ns, "path");
+      leftRail.setAttribute("d", pathD);
+      leftRail.setAttribute("fill", "none");
+      leftRail.setAttribute("stroke", "var(--track-rail)");
+      leftRail.setAttribute("stroke-width", "3");
+      leftRail.setAttribute("stroke-linecap", "round");
+      leftRail.setAttribute("stroke-linejoin", "round");
+
+      const rightRail = document.createElementNS(ns, "path");
+      rightRail.setAttribute("d", pathD);
+      rightRail.setAttribute("fill", "none");
+      rightRail.setAttribute("stroke", "var(--track-rail)");
+      rightRail.setAttribute("stroke-width", "3");
+      rightRail.setAttribute("stroke-linecap", "round");
+      rightRail.setAttribute("stroke-linejoin", "round");
+
+      const leftPath = offsetPath(pathD, -railGap, svg);
+      const rightPath = offsetPath(pathD, railGap, svg);
+
+      if (leftPath) leftRail.setAttribute("d", leftPath);
+      if (rightPath) rightRail.setAttribute("d", rightPath);
+
+      const leftShine = document.createElementNS(ns, "path");
+      leftShine.setAttribute("d", leftRail.getAttribute("d") || "");
+      leftShine.setAttribute("fill", "none");
+      leftShine.setAttribute("stroke", "var(--track-rail-shine)");
+      leftShine.setAttribute("stroke-width", "1");
+      leftShine.setAttribute("opacity", "0.5");
+
+      const rightShine = document.createElementNS(ns, "path");
+      rightShine.setAttribute("d", rightRail.getAttribute("d") || "");
+      rightShine.setAttribute("fill", "none");
+      rightShine.setAttribute("stroke", "var(--track-rail-shine)");
+      rightShine.setAttribute("stroke-width", "1");
+      rightShine.setAttribute("opacity", "0.5");
+
+      railsGroup.appendChild(leftRail);
+      railsGroup.appendChild(rightRail);
+      railsGroup.appendChild(leftShine);
+      railsGroup.appendChild(rightShine);
+
+      renderEndBuffer(pathD);
+    }
+
+    function renderEndBuffer(pathD: string) {
+      if (!buffersGroup) return;
+      const ns = "http://www.w3.org/2000/svg";
+      const pathEl = document.createElementNS(ns, "path");
+      pathEl.setAttribute("d", pathD);
+
+      const len = pathEl.getTotalLength();
+      if (len < 2) return;
+
+      const endPt = pathEl.getPointAtLength(len);
+      const preEndPt = pathEl.getPointAtLength(len - 2);
+
+      const angle = Math.atan2(endPt.y - preEndPt.y, endPt.x - preEndPt.x);
+
+      const bufferWidth = 30;
+      const bufferHeight = 12;
+
+      const buffer = document.createElementNS(ns, "rect");
+      buffer.setAttribute("x", String(-bufferWidth / 2));
+      buffer.setAttribute("y", String(-bufferHeight / 2));
+      buffer.setAttribute("width", String(bufferWidth));
+      buffer.setAttribute("height", String(bufferHeight));
+      buffer.setAttribute("rx", "3");
+      buffer.setAttribute("fill", "var(--train-red)");
+      buffer.setAttribute(
+        "transform",
+        `translate(${endPt.x}, ${endPt.y}) rotate(${((angle * 180) / Math.PI) + 90})`
+      );
+      buffersGroup.appendChild(buffer);
+    }
+
+    function offsetPath(pathD: string, offset: number, svgEl: SVGSVGElement): string | null {
+      const ns = "http://www.w3.org/2000/svg";
+      const tempPath = document.createElementNS(ns, "path");
+      tempPath.setAttribute("d", pathD);
+      tempPath.setAttribute("fill", "none");
+      svgEl.appendChild(tempPath);
+
+      const totalLen = tempPath.getTotalLength();
+      if (totalLen === 0) {
+        svgEl.removeChild(tempPath);
+        return null;
+      }
+
+      const step = 4;
+      const points: { x: number; y: number }[] = [];
+
+      for (let dist = 0; dist <= totalLen; dist += step) {
+        const pt = tempPath.getPointAtLength(dist);
+        const pt2 = tempPath.getPointAtLength(Math.min(dist + 0.5, totalLen));
+
+        const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x);
+        const perpAngle = angle + Math.PI / 2;
+
+        points.push({
+          x: pt.x + Math.cos(perpAngle) * offset,
+          y: pt.y + Math.sin(perpAngle) * offset,
+        });
+      }
+
+      svgEl.removeChild(tempPath);
+
+      if (points.length === 0) return null;
+
+      let d = `M ${points[0].x} ${points[0].y}`;
+      for (let i = 1; i < points.length; i++) {
+        d += ` L ${points[i].x} ${points[i].y}`;
+      }
+
+      return d;
+    }
+
+    // Store computed path for animation
+    let trackPathD = "";
+    let trackTotalLength = 0;
+
+    // Pickup distances: the path distance where each wagon gets picked up.
+    // Computed after building the path, based on section positions.
+    let pickupDistances: number[] = [];
+
+    function computePickupDistances(sections: SectionInfo[]) {
+      if (!trackPathD || trackTotalLength === 0) return;
+
+      const ns = "http://www.w3.org/2000/svg";
+      const tempPath = document.createElementNS(ns, "path");
+      tempPath.setAttribute("d", trackPathD);
+      tempPath.setAttribute("fill", "none");
+      svg.appendChild(tempPath);
+
+      if (!mainEl) {
+        svg.removeChild(tempPath);
+        return;
+      }
+      const mainTop = mainEl.getBoundingClientRect().top + window.scrollY;
+
+      // For each pickup section, find the path distance closest to its top
+      pickupDistances = [];
+      for (const sectionId of pickupSections) {
+        const section = sections.find(s => s.id === sectionId);
+        if (!section) {
+          pickupDistances.push(0);
+          continue;
+        }
+
+        // Target Y: near the top of the section (where the wagon waits)
+        const targetY = section.top + 40;
+
+        // Binary-search-ish: sample along path to find closest Y
+        let bestDist = 0;
+        let bestDelta = Infinity;
+        const step = 20;
+        for (let d = 0; d <= trackTotalLength; d += step) {
+          const pt = tempPath.getPointAtLength(d);
+          const delta = Math.abs(pt.y - targetY);
+          if (delta < bestDelta) {
+            bestDelta = delta;
+            bestDist = d;
+          }
+        }
+        // Refine
+        const start = Math.max(0, bestDist - step);
+        const end = Math.min(trackTotalLength, bestDist + step);
+        for (let d = start; d <= end; d += 2) {
+          const pt = tempPath.getPointAtLength(d);
+          const delta = Math.abs(pt.y - targetY);
+          if (delta < bestDelta) {
+            bestDelta = delta;
+            bestDist = d;
+          }
+        }
+
+        pickupDistances.push(bestDist);
+      }
+
+      svg.removeChild(tempPath);
+    }
+
+    function computeTrack() {
+      if (!mainEl || !svg) return;
+      const mainRect = mainEl.getBoundingClientRect();
+      const sections = getSections();
+
+      updateOverlaySize();
+
+      trackPathD = buildTrackPath(sections, mainRect.width);
+      renderTracks(trackPathD);
+
+      if (trackPathD) {
+        const ns = "http://www.w3.org/2000/svg";
+        const tempPath = document.createElementNS(ns, "path");
+        tempPath.setAttribute("d", trackPathD);
+        tempPath.setAttribute("fill", "none");
+        svg.appendChild(tempPath);
+        trackTotalLength = tempPath.getTotalLength();
+        svg.removeChild(tempPath);
+      }
+
+      computePickupDistances(sections);
+    }
+
+    function positionPiece(
+      el: HTMLElement,
+      tempPath: SVGPathElement,
+      dist: number,
+      halfW: number,
+      halfH: number,
+    ) {
+      const clampedDist = Math.max(0, Math.min(dist, trackTotalLength));
+      const pt = tempPath.getPointAtLength(clampedDist);
+      const pt2 = tempPath.getPointAtLength(Math.min(clampedDist + 1, trackTotalLength));
+      const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * (180 / Math.PI);
+
+      el.style.transform =
+        `translate(${pt.x - halfW}px, ${pt.y - halfH}px) rotate(${angle}deg) rotate(180deg)`;
+    }
+
+    function animateTrain() {
+      if (!trackPathD || trackTotalLength === 0 || !engineEl || !mainEl || !svg) return;
+
+      const ns = "http://www.w3.org/2000/svg";
+      const tempPath = document.createElementNS(ns, "path");
+      tempPath.setAttribute("d", trackPathD);
+      tempPath.setAttribute("fill", "none");
+      svg.appendChild(tempPath);
+
+      // Calculate scroll progress
+      const mainRect = mainEl.getBoundingClientRect();
+      const scrollTop = window.scrollY;
+      const mainTop = mainRect.top + scrollTop;
+      const mainHeight = mainEl.scrollHeight;
+      const viewportHeight = window.innerHeight;
+
+      const scrollRange = mainHeight - viewportHeight;
+      let rawProgress = scrollRange > 0 ? (scrollTop - mainTop) / scrollRange : 0;
+      rawProgress = Math.max(0, Math.min(1, rawProgress));
+
+      const trainStart = 0.20;
+      const trainEnd = 0.95;
+      let progress = (rawProgress - trainStart) / (trainEnd - trainStart);
+      progress = Math.max(0, Math.min(1, progress));
+
+      // Engine distance along path (engine is at the very back, pushing)
+      const engineDist = progress * trackTotalLength;
+
+      // Determine which wagons are collected.
+      // The engine pushes wagons ahead of it. New wagons are prepended at the
+      // FRONT of the whole train (furthest from the engine). So the order on
+      // the path from front to back is: wagon0, wagon1, wagon2, ..., engine.
+      //
+      // The front of the train (where it would contact the next wagon) is at:
+      //   engineDist + attachedCount * pieceSpacing
+      //
+      // A wagon i is picked up when the front of the growing train reaches it:
+      //   engineDist + (alreadyAttached) * pieceSpacing >= pickupDist[i]
+      //
+      // We process wagons in order (0, 1, 2, 3). Each one that's already been
+      // picked up means the train is one slot longer when approaching the next.
+
+      let attachedCount = 0;
+      const collected: boolean[] = [];
+
+      for (let i = 0; i < wagonEls.length; i++) {
+        const pickupDist = pickupDistances[i] ?? 0;
+        // The front of the train including already-attached wagons
+        const trainFront = engineDist + (attachedCount + 1) * pieceSpacing;
+
+        if (trainFront >= pickupDist) {
+          collected.push(true);
+          attachedCount++;
+        } else {
+          collected.push(false);
+        }
+      }
+
+      // Position engine
+      positionPiece(engineEl, tempPath, engineDist, engineHalfW, engineHalfH);
+
+      // Position wagons
+      // Collected wagons are stacked ahead of the engine.
+      // The OLDEST collected wagon (i=0) stays closest to the engine (slot 1).
+      // Each newly collected wagon is pushed to the FRONT of the train
+      // (furthest from engine), so colors never swap.
+
+      let slot = 1; // start from closest to engine
+      for (let i = 0; i < wagonEls.length; i++) {
+        const wagonEl = wagonEls[i];
+        if (!wagonEl) continue;
+
+        const pickupDist = pickupDistances[i] ?? 0;
+
+        if (collected[i]) {
+          const wagonDist = engineDist + slot * pieceSpacing;
+          positionPiece(
+            wagonEl,
+            tempPath,
+            Math.min(wagonDist, trackTotalLength),
+            wagonHalfW,
+            wagonHalfH,
+          );
+          slot++;
+        } else {
+          // Wagon is waiting stationary at its pickup point
+          positionPiece(wagonEl, tempPath, pickupDist, wagonHalfW, wagonHalfH);
+        }
+      }
+
+      svg.removeChild(tempPath);
+    }
+
+    // Initial compute
+    computeTrack();
+    animateTrain();
+
+    // Scroll handler
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          animateTrain();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // Resize handler
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        computeTrack();
+        animateTrain();
+      }, 200);
+    });
+  });
+</script>

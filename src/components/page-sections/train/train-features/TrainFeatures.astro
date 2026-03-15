@@ -1,0 +1,163 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import Text from "@core-elements/text/Text.astro";
+
+type FeatureItem = {
+  title?: string;
+  description?: string;
+  icon?: string;
+};
+
+const {
+  eyebrow = "",
+  heading = "",
+  subtext = "",
+  features = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "4xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["train-features", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  id="features"
+  {...htmlAttributes}
+>
+  <div class="train-features-inner">
+    <div class="train-features-header">
+      <SimpleText
+        class="train-features-eyebrow"
+        data-prop="eyebrow"
+        text={eyebrow}
+      />
+      <Heading
+        level="h2"
+        size="xl"
+        alignX="center"
+        data-prop="heading"
+      >
+        {heading}
+      </Heading>
+      <Text
+        class="train-features-subtext"
+        alignX="center"
+        data-prop="subtext"
+        text={subtext}
+      />
+    </div>
+
+    <div class="train-features-grid" data-children-prop="features">
+      {features.map((feature: FeatureItem) => (
+        <div class="train-feature-card" data-editable="array-item">
+          <div class="train-feature-icon">
+            <Fragment set:html={feature.icon || `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="var(--blue-100)"/><path d="M16 8l6 10H10l6-10z" fill="var(--blue-500)"/></svg>`} />
+          </div>
+          <h3 class="train-feature-title">{feature.title}</h3>
+          <p class="train-feature-desc">{feature.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</CustomSection>
+
+<style>
+  @layer page-sections {
+    .train-features-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .train-features-header {
+      text-align: center;
+      margin-bottom: var(--spacing-2xl);
+      max-width: 640px;
+    }
+
+    :global(.train-features-eyebrow) {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--blue-600);
+      text-align: center;
+    }
+
+    :global(.train-features-subtext) :global(p) {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--color-text-muted);
+      margin-top: var(--spacing-sm);
+    }
+
+    .train-features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-xl);
+      width: 100%;
+    }
+
+    .train-feature-card {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: var(--spacing-xl);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .train-feature-card:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .train-feature-icon {
+      margin-bottom: var(--spacing-md);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--blue-50);
+      border-radius: 12px;
+    }
+
+    .train-feature-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: var(--spacing-sm);
+      color: var(--color-text);
+    }
+
+    .train-feature-desc {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+
+    @media (width < 768px) {
+      .train-features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (width >= 768px) and (width < 1024px) {
+      .train-features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+</style>

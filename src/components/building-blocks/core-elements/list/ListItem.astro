@@ -1,0 +1,78 @@
+---
+import Icon from "@core-elements/icon/Icon.astro";
+import MarkdownIt from "markdown-it";
+
+const {
+  text = "",
+  iconName,
+  iconColor = "default",
+  showIcon = true,
+  class: className,
+  useDefaultEditableBinding = false,
+  "data-prop": customDataProp,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const md = new MarkdownIt({ html: true });
+
+const effectiveDataProp = customDataProp ?? (useDefaultEditableBinding ? "text" : null);
+const textDataAttributes = effectiveDataProp
+  ? { "data-editable": "text", "data-prop": effectiveDataProp }
+  : {};
+---
+
+<li
+  class:list={["item", className]}
+  {...htmlAttributes}
+>
+  <span class:list={["item-inner", showIcon && iconName && "list-item-has-icon"]}>
+    {
+      showIcon && iconName && (
+        <Icon
+          name={iconName}
+          color={iconColor}
+          size="none"
+          class="list-icon"
+          aria-hidden="true"
+        />
+      )
+    }
+    <p {...textDataAttributes}>
+      {text ? <Fragment set:html={md.renderInline(text)} /> : <slot />}
+    </p>
+  </span>
+</li>
+
+<style>
+  @layer components {
+    .item {
+      > .item-inner {
+        &.list-item-has-icon {
+          display: block;
+        }
+
+        > p {
+          display: inline;
+          font-size: inherit;
+          margin: 0;
+        }
+
+        > :global(.list-icon) {
+          display: inline-block;
+          flex-shrink: 0;
+          height: 1em;
+          margin-inline-end: var(--spacing-em-xs);
+          vertical-align: -0.15em;
+          width: 1em;
+
+          :global(svg) {
+            display: block;
+            height: 100%;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+</style>

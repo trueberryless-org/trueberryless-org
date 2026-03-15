@@ -1,0 +1,92 @@
+label: List
+icon: list
+description: Lists items with icons, bullets, or numbers as markers.
+value:
+  _component: building-blocks/core-elements/list
+  items:
+    - text: List item 1
+      iconName: check
+      iconColor: default
+    - text: List item 2
+      iconName: lock-closed
+      iconColor: default
+    - text: List item 3
+      iconName: briefcase
+      iconColor: default
+  direction: vertical
+  alignX: start
+  size: md
+  listType: icon
+preview:
+  text:
+    - List
+  icon: list
+picker_preview:
+  text: List
+  subtext: Lists items with icons, bullets, or numbers as markers.
+_inputs_from_glob:
+  - /src/components/building-blocks/core-elements/list/list.cloudcannon.inputs.yml
+_structures:
+  listItems:
+    values:
+      - label: List Item
+        value:
+          text: "List item"
+          iconName: ""
+          iconColor: default
+        preview:
+          icon: text_fields
+          image:
+            - template: src/icons/{iconName}.svg
+        _inputs:
+          text:
+            type: markdown
+            comment: The text to display in the list item.
+            options:
+              blockquote: false
+              bold: true
+              format:
+              italic: true
+              link: true
+              strike: false
+              subscript: true
+              superscript: true
+              underline: false
+              bulletedlist: false
+              numberedlist: false
+              removeformat: true
+          iconName:
+            type: select
+            comment: The name of the icon to display from the icon library.
+            hidden: "listType !== 'icon'"
+            options:
+              values: _select_data.icons
+              preview:
+                text:
+                  - key: name
+                image:
+                  - template: src/icons/{id}.svg
+          iconColor:
+            type: select
+            comment: The color of the icon.
+            hidden: "listType !== 'icon'"
+            options:
+              values:
+                - id: default
+                  name: Default
+                - id: blue
+                  name: Blue
+                - id: green
+                  name: Green
+                - id: yellow
+                  name: Yellow
+                - id: orange
+                  name: Orange
+                - id: red
+                  name: Red
+                - id: purple
+                  name: Purple
+                - id: pink
+                  name: Pink
+                - id: cyan
+                  name: Cyan

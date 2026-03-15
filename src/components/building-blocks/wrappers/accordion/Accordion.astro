@@ -1,0 +1,69 @@
+---
+import { slugifyLabel } from "@components/utils/slugify";
+import AccordionItem from "./AccordionItem.astro";
+
+type ItemProps = Record<string, unknown>;
+
+const {
+  items,
+  openFirst,
+  singleOpen = false,
+  label,
+  useDefaultEditableBinding = false,
+  "data-children-prop": childrenDataProp,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const generatedLabel = label || `Accordion-${crypto.randomUUID()}`;
+
+if (!htmlAttributes.id) {
+  htmlAttributes.id = slugifyLabel(generatedLabel);
+}
+
+const accordionName = singleOpen ? `accordion-${crypto.randomUUID()}` : undefined;
+
+const effectiveChildrenProp = childrenDataProp ?? (useDefaultEditableBinding ? "items" : null);
+const arrayDataAttributes = effectiveChildrenProp
+  ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
+  : {};
+
+const hasItems = items?.length > 0;
+const hasSlotContent = Astro.slots.has("default");
+
+if (!_component && !hasItems && !hasSlotContent) return;
+---
+
+<div
+  class:list={["accordion"]}
+  {...htmlAttributes}
+>
+  <div {...arrayDataAttributes}>
+    <slot>
+      {
+        items?.map((item: ItemProps, index: number) => {
+          const isFirst = index === 0 && openFirst;
+
+          return (
+            <AccordionItem
+              isOpen={isFirst}
+              accordionName={accordionName}
+              useDefaultEditableBinding={!!effectiveChildrenProp}
+              data-editable="array-item"
+              data-id="building-blocks/wrappers/accordion/accordion-item"
+              {...item}
+            />
+          );
+        })
+      }
+    </slot>
+  </div>
+</div>
+
+<style>
+  @layer components {
+    .accordion {
+      margin-top: var(--spacing-lg);
+    }
+  }
+</style>

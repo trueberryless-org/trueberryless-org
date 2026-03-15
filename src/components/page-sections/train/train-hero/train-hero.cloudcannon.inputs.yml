@@ -1,0 +1,55 @@
+eyebrow:
+  type: text
+  comment: Badge text displayed above the heading.
+heading:
+  type: text
+  comment: Main heading text for the hero.
+headingGradient:
+  type: text
+  comment: Gradient-styled continuation of the heading.
+subtext:
+  type: markdown
+  comment: Supporting text beneath the heading.
+  options:
+    blockquote: false
+    bold: true
+    format:
+    italic: true
+    link: true
+    strike: false
+    subscript: true
+    superscript: true
+    underline: false
+    bulletedlist: false
+    numberedlist: false
+buttonSections:
+  type: array
+  comment: Call-to-action buttons.
+  options:
+    structures: _structures.buttonSections
+colorScheme:
+  type: select
+  comment: Color scheme theme.
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+backgroundColor:
+  type: select
+  comment: Background color.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

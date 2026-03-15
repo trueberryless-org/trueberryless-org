@@ -1,0 +1,26 @@
+label:
+  type: text
+  comment: The label text for the input field.
+name:
+  type: text
+  comment: The name attribute for the input field.
+type:
+  type: select
+  options:
+    values:
+      - text
+      - email
+      - password
+      - tel
+      - url
+      - number
+  comment: The input type.
+placeholder:
+  type: text
+  comment: Placeholder text for the input field.
+required:
+  type: switch
+  comment: Whether the field is required.
+value:
+  type: text
+  comment: The default value for the input field.

@@ -1,0 +1,304 @@
+---
+import Component from "@components/utils/renderBlock.astro";
+import { slugifyLabel } from "@components/utils/slugify";
+
+const {
+  firstColumnContentSections = [],
+  secondColumnContentSections = [],
+  distributionMode = "half",
+  verticalAlignment = "top",
+  reverse = false,
+  reverseOrderOnMobile = true,
+  fixedWidth,
+  minSplitWidth = 700,
+  gap = "lg",
+  useDefaultEditableBinding = false,
+  class: className,
+  label,
+  "data-first-prop": customFirstDataProp,
+  "data-second-prop": customSecondDataProp,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+if (!htmlAttributes.id && label) {
+  htmlAttributes.id = slugifyLabel(label);
+}
+
+const effectiveFirstProp =
+  customFirstDataProp ?? (useDefaultEditableBinding ? "firstColumnContentSections" : null);
+const effectiveSecondProp =
+  customSecondDataProp ?? (useDefaultEditableBinding ? "secondColumnContentSections" : null);
+
+// Get content blocks and prop names based on reverse setting
+const firstSplitBlocks = reverse ? secondColumnContentSections : firstColumnContentSections;
+const secondSplitBlocks = reverse ? firstColumnContentSections : secondColumnContentSections;
+const firstPropName = reverse ? effectiveSecondProp : effectiveFirstProp;
+const secondPropName = reverse ? effectiveFirstProp : effectiveSecondProp;
+const firstSlotName = reverse ? "second" : "first";
+const secondSlotName = reverse ? "first" : "second";
+const firstPaneUsesSlot = Astro.slots.has(firstSlotName);
+const secondPaneUsesSlot = Astro.slots.has(secondSlotName);
+const firstPaneEditable = !!firstPropName && !firstPaneUsesSlot;
+const secondPaneEditable = !!secondPropName && !secondPaneUsesSlot;
+
+const arrayDataAttributesFirst = firstPropName
+  ? { "data-editable": "array", "data-prop": firstPropName }
+  : {};
+
+const arrayDataAttributesSecond = secondPropName
+  ? { "data-editable": "array", "data-prop": secondPropName }
+  : {};
+
+const getReversedDistributionMode = (mode: string) => {
+  const reverseMap = {
+    "third-two-thirds": "two-thirds-third",
+    "two-thirds-third": "third-two-thirds",
+    "quarter-three-quarters": "three-quarters-quarter",
+    "three-quarters-quarter": "quarter-three-quarters",
+    "fixed-flexible": "flexible-fixed",
+    "flexible-fixed": "fixed-flexible",
+    half: "half",
+  };
+
+  return reverseMap[mode as keyof typeof reverseMap] || mode;
+};
+
+const finalDistributionMode = reverse
+  ? getReversedDistributionMode(distributionMode)
+  : distributionMode;
+
+const splitId = `split-${crypto.randomUUID()}`;
+---
+
+<section
+  class:list={["split", className]}
+  {...htmlAttributes}
+>
+  <div
+    class:list={[
+      "split-inner",
+      `align-${verticalAlignment}`,
+      finalDistributionMode,
+      `gap-${gap}`,
+      { reversed: reverse },
+    ]}
+    data-split-id={splitId}
+    style={fixedWidth ? `--split-fixed-width: ${fixedWidth}px;` : ""}
+  >
+    <div
+      class="pane first"
+      {...arrayDataAttributesFirst}
+    >
+      {
+        reverse ? (
+          <slot name="second">
+            {firstSplitBlocks && (
+              <Component
+                contentSections={firstSplitBlocks}
+                useDefaultEditableBinding={firstPaneEditable}
+              />
+            )}
+          </slot>
+        ) : (
+          <slot name="first">
+            {firstSplitBlocks && (
+              <Component
+                contentSections={firstSplitBlocks}
+                useDefaultEditableBinding={firstPaneEditable}
+              />
+            )}
+          </slot>
+        )
+      }
+    </div>
+    <div
+      class="pane second"
+      {...arrayDataAttributesSecond}
+    >
+      {
+        reverse ? (
+          <slot name="first">
+            {secondSplitBlocks && (
+              <Component
+                contentSections={secondSplitBlocks}
+                useDefaultEditableBinding={secondPaneEditable}
+              />
+            )}
+          </slot>
+        ) : (
+          <slot name="second">
+            {secondSplitBlocks && (
+              <Component
+                contentSections={secondSplitBlocks}
+                useDefaultEditableBinding={secondPaneEditable}
+              />
+            )}
+          </slot>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+{
+  minSplitWidth > 0 && (
+    <style
+      is:inline
+      set:html={`
+    @container (max-width: ${minSplitWidth}px) {
+      .split-inner[data-split-id="${splitId}"] {
+        grid-template-columns: var(--split-columns-mobile);
+      }
+      ${
+        reverseOrderOnMobile
+          ? `
+      .split-inner.reversed[data-split-id="${splitId}"] .pane.first {
+        order: 2;
+      }
+      .split-inner.reversed[data-split-id="${splitId}"] .pane.second {
+        order: 1;
+      }
+      `
+          : ""
+      }
+    }
+  `}
+    />
+  )
+}
+
+<style>
+  @layer components {
+    .split {
+      margin-top: var(--spacing-lg);
+
+      > .split-inner {
+        --split-columns-mobile: 1fr;
+        --split-columns-desktop: 1fr 1fr;
+        --split-fixed-width: auto;
+
+        display: grid;
+        gap: var(--spacing-lg);
+        grid-template-columns: var(--split-columns-desktop);
+
+        &.gap-xs {
+          gap: var(--spacing-xs);
+        }
+
+        &.gap-sm {
+          gap: var(--spacing-sm);
+        }
+
+        &.gap-md {
+          gap: var(--spacing-md);
+        }
+
+        &.gap-lg {
+          gap: var(--spacing-lg);
+        }
+
+        &.gap-xl {
+          gap: var(--spacing-xl);
+        }
+
+        &.gap-2xl {
+          gap: var(--spacing-2xl);
+        }
+
+        &.gap-3xl {
+          gap: var(--spacing-3xl);
+        }
+
+        &.align-top {
+          align-items: start;
+        }
+
+        &.align-center {
+          align-items: center;
+        }
+
+        &.align-bottom {
+          align-items: end;
+        }
+
+        &.align-stretch {
+          align-items: stretch;
+
+          > .pane > :global(*:only-child) {
+            height: 100%;
+          }
+        }
+
+        & .pane {
+          container-type: inline-size;
+          min-width: 0;
+          overflow-wrap: break-word;
+          overflow-wrap: break-word;
+
+          > :global(*:first-child) {
+            margin-top: 0 !important;
+          }
+        }
+
+        &.half {
+          --split-columns-desktop: 1fr 1fr;
+        }
+
+        &.third-two-thirds {
+          --split-columns-desktop: 1fr 2fr;
+        }
+
+        &.two-thirds-third {
+          --split-columns-desktop: 2fr 1fr;
+        }
+
+        &.quarter-three-quarters {
+          --split-columns-desktop: 1fr 3fr;
+        }
+
+        &.three-quarters-quarter {
+          --split-columns-desktop: 3fr 1fr;
+        }
+
+        &.fixed-flexible {
+          --split-columns-desktop: var(--split-fixed-width) 1fr;
+        }
+
+        &.flexible-fixed {
+          --split-columns-desktop: 1fr var(--split-fixed-width);
+        }
+
+        @media (width < 640px) {
+          &.gap-xs {
+            gap: var(--spacing-xs);
+          }
+
+          &.gap-sm {
+            gap: var(--spacing-xs);
+          }
+
+          &.gap-md {
+            gap: var(--spacing-sm);
+          }
+
+          &.gap-lg {
+            gap: var(--spacing-md);
+          }
+
+          &.gap-xl {
+            gap: var(--spacing-md);
+          }
+
+          &.gap-2xl {
+            gap: var(--spacing-lg);
+          }
+
+          &.gap-3xl {
+            gap: var(--spacing-xl);
+          }
+        }
+      }
+    }
+  }
+</style>
