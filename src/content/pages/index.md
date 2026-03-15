@@ -35,7 +35,7 @@ pageSections:
     eyebrow: The Foundation
     heading: Organized for Momentum
     subtext: trueberryless-org was established to decouple personal identity from technical infrastructure.
-    description: Originally designed to manage deployments on Rocky Linux, our organization has evolved into a specialized open-source hub. By migrating our deployment pipeline to Netlify and utilizing ArgoCD for manifest management, we provide a stable, high-velocity track for web utilities, ensuring every "wagon" in our ecosystem is built for production-grade performance.
+    description: Originally designed to manage complex deployments on Rocky Linux, our organization has evolved into a specialized open-source hub. By migrating our pipeline to Netlify, we have replaced manual server management and complex manifest files with a high-velocity, automated track. This shift allows us to focus entirely on building production-grade packages for the web ecosystem.
     colorScheme: inherit
     backgroundColor: none
   - _component: page-sections/train/train-features
