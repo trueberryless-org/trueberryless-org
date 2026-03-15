@@ -1,4 +1,9 @@
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
   :where(:root) {
     html,
     body {
@@ -6,7 +11,6 @@
       overflow-x: hidden;
       padding: 0;
       width: 100%;
-      scroll-behavior: smooth;
     }
 
     body {

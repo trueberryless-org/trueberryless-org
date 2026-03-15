@@ -27,7 +27,7 @@ const {
   <CustomSection
     maxContentWidth="2xl"
     paddingHorizontal="md"
-    paddingVertical="2xl"
+    paddingVertical="md"
     useDefaultEditableBinding={false}
   >
     <div class="footer-content">
@@ -89,6 +89,11 @@ const {
         .content-container {
           flex: 1;
         }
+
+        :global(.text),
+        :global(.button-group) {
+          margin-top: 0;
+        }
       }
 
       :global(.footer-legal-text) {
@@ -96,6 +101,10 @@ const {
         text-align: center;
         @container (min-width: 600px) {
           text-align: start;
+        }
+
+        :global(p) {
+          margin: 0;
         }
       }
 
