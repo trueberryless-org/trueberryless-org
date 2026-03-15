@@ -1,8 +1,8 @@
 {
-  "name": "Astro Component Starter",
-  "url": "https://example.com",
-  "description": "",
+  "name": "trueberryless-org",
+  "url": "https://trueberryless-org.trueberryless.org",
+  "description": "Open source tools and libraries for the modern developer ecosystem.",
   "logoSource": "/images/logo.svg",
-  "titleFormat": "{title} | Astro Component Starter",
-  "twitterHandle": "@yourusername"
+  "titleFormat": "{title} | trueberryless-org",
+  "twitterHandle": "@trueberryless"
 }

@@ -1,33 +1,38 @@
 {
   "logoSource": "/images/logo.svg",
-  "logoAlt": "Logo",
+  "logoAlt": "trueberryless-org Logo",
   "navData": [
     {
-      "name": "Home",
-      "path": "/",
+      "name": "About",
+      "path": "/#about",
       "children": []
     },
     {
-      "name": "Why",
-      "path": "/why/",
+      "name": "Features",
+      "path": "/#features",
       "children": []
     },
     {
-      "name": "Blog",
-      "path": "/blog/",
+      "name": "Projects",
+      "path": "/#projects",
+      "children": []
+    },
+    {
+      "name": "Community",
+      "path": "/#community",
       "children": []
     }
   ],
   "buttonSections": [
     {
       "_component": "building-blocks/core-elements/button",
-      "text": "Search",
-      "hideText": true,
-      "link": "/search/",
-      "iconName": "magnifying-glass",
+      "text": "GitHub",
+      "hideText": false,
+      "link": "https://github.com/trueberryless-org",
+      "iconName": "social/github",
       "iconPosition": "before",
-      "variant": "ghost",
-      "size": "lg"
+      "variant": "primary",
+      "size": "md"
     }
   ]
 }

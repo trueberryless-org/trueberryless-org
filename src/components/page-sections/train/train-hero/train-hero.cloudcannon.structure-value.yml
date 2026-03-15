@@ -1,0 +1,39 @@
+label: Train Hero
+icon: hero
+description: Playful hero section with gradient heading, badges, and floating code decorations.
+value:
+  _component: page-sections/train/train-hero
+  eyebrow: Open Source Community
+  heading: Building the Future
+  headingGradient: Together
+  subtext: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  buttonSections:
+    - _component: building-blocks/core-elements/button
+      text: Get Started
+      hideText: false
+      link: "#about"
+      iconName: ""
+      iconPosition: before
+      variant: primary
+      size: md
+    - _component: building-blocks/core-elements/button
+      text: View on GitHub
+      hideText: false
+      link: https://github.com/trueberryless-org
+      iconName: ""
+      iconPosition: before
+      variant: outline
+      size: md
+  colorScheme: inherit
+  backgroundColor: none
+preview:
+  text:
+    - Train Hero
+  subtext:
+    - key: heading
+  icon: hero
+picker_preview:
+  text: Train Hero
+  subtext: Playful hero with gradient heading and floating code decorations.
+_inputs_from_glob:
+  - /src/components/page-sections/train/train-hero/train-hero.cloudcannon.inputs.yml

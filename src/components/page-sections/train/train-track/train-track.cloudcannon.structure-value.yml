@@ -1,0 +1,19 @@
+label: Train Track
+icon: route
+description: Full-page railroad track overlay with animated Lego train that follows scroll.
+value:
+  _component: page-sections/train/train-track
+  enabled: true
+  colorScheme: inherit
+  backgroundColor: none
+preview:
+  text:
+    - Train Track
+  subtext:
+    - Scroll-driven train animation overlay
+  icon: route
+picker_preview:
+  text: Train Track
+  subtext: Railroad track overlay with animated Lego train.
+_inputs_from_glob:
+  - /src/components/page-sections/train/train-track/train-track.cloudcannon.inputs.yml

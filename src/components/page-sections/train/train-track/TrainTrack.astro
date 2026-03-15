@@ -1,0 +1,564 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+
+const {
+  enabled = true,
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "none",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+{enabled && (
+  <CustomSection
+    class:list={["train-track-section", className]}
+    maxContentWidth="2xl"
+    paddingHorizontal="none"
+    paddingVertical="none"
+    colorScheme={colorScheme}
+    backgroundColor="none"
+    useDefaultEditableBinding={useDefaultEditableBinding}
+    {...htmlAttributes}
+  >
+    <div class="train-track-overlay" id="train-track-overlay" aria-hidden="true">
+      <svg
+        id="train-track-svg"
+        class="train-track-svg"
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <!-- Sleeper/tie pattern -->
+          <pattern id="sleeper-pattern" patternUnits="userSpaceOnUse" width="20" height="20">
+            <rect x="7" y="0" width="6" height="20" rx="1" fill="var(--track-wood)" />
+          </pattern>
+        </defs>
+
+        <!-- Track groups rendered by JS -->
+        <g id="track-ties-group"></g>
+        <g id="track-rails-group"></g>
+      </svg>
+
+      <!-- Lego Technic Train (engine + wagon) -->
+      <div id="train-container" class="train-container">
+        <!-- Engine -->
+        <svg class="train-engine" width="80" height="44" viewBox="0 0 80 44" xmlns="http://www.w3.org/2000/svg">
+          <!-- Body -->
+          <rect x="4" y="8" width="72" height="24" rx="4" fill="var(--train-blue)" />
+          <!-- Cab -->
+          <rect x="50" y="2" width="26" height="16" rx="3" fill="var(--train-blue-light)" />
+          <!-- Window -->
+          <rect x="56" y="5" width="14" height="8" rx="2" fill="rgba(255,255,255,0.85)" />
+          <!-- Chimney -->
+          <rect x="12" y="2" width="8" height="10" rx="2" fill="var(--train-dark)" />
+          <!-- Technic dots (studs) -->
+          <circle cx="20" cy="16" r="3" fill="var(--train-blue-light)" opacity="0.7" />
+          <circle cx="30" cy="16" r="3" fill="var(--train-blue-light)" opacity="0.7" />
+          <circle cx="40" cy="16" r="3" fill="var(--train-blue-light)" opacity="0.7" />
+          <!-- Headlight -->
+          <circle cx="6" cy="20" r="3" fill="var(--train-yellow)" />
+          <!-- Wheels -->
+          <circle cx="18" cy="36" r="6" fill="var(--train-dark)" />
+          <circle cx="18" cy="36" r="3" fill="var(--train-gray)" />
+          <circle cx="38" cy="36" r="6" fill="var(--train-dark)" />
+          <circle cx="38" cy="36" r="3" fill="var(--train-gray)" />
+          <circle cx="62" cy="36" r="6" fill="var(--train-dark)" />
+          <circle cx="62" cy="36" r="3" fill="var(--train-gray)" />
+          <!-- Bumper -->
+          <rect x="0" y="26" width="4" height="6" rx="1" fill="var(--train-red)" />
+          <!-- Connector (back) -->
+          <rect x="76" y="18" width="4" height="8" rx="1" fill="var(--train-gray)" />
+        </svg>
+
+        <!-- Wagon -->
+        <svg class="train-wagon" width="64" height="44" viewBox="0 0 64 44" xmlns="http://www.w3.org/2000/svg">
+          <!-- Connector (front) -->
+          <rect x="0" y="18" width="4" height="8" rx="1" fill="var(--train-gray)" />
+          <!-- Body -->
+          <rect x="6" y="6" width="52" height="26" rx="4" fill="var(--train-yellow)" />
+          <!-- Side detail -->
+          <rect x="10" y="10" width="44" height="8" rx="2" fill="var(--train-yellow-light)" />
+          <!-- Technic dots -->
+          <circle cx="18" cy="24" r="3" fill="var(--train-yellow-light)" opacity="0.6" />
+          <circle cx="32" cy="24" r="3" fill="var(--train-yellow-light)" opacity="0.6" />
+          <circle cx="46" cy="24" r="3" fill="var(--train-yellow-light)" opacity="0.6" />
+          <!-- Wheels -->
+          <circle cx="18" cy="36" r="6" fill="var(--train-dark)" />
+          <circle cx="18" cy="36" r="3" fill="var(--train-gray)" />
+          <circle cx="46" cy="36" r="6" fill="var(--train-dark)" />
+          <circle cx="46" cy="36" r="3" fill="var(--train-gray)" />
+          <!-- Connector (back) -->
+          <rect x="58" y="18" width="6" height="8" rx="1" fill="var(--train-gray)" />
+        </svg>
+      </div>
+    </div>
+  </CustomSection>
+)}
+
+<style>
+  @layer page-sections {
+    .train-track-section {
+      :global(.outer-content) {
+        padding: 0 !important;
+        max-width: none !important;
+        overflow: visible !important;
+      }
+      :global(.inner-content) {
+        padding: 0 !important;
+        max-width: none !important;
+        overflow: visible !important;
+      }
+    }
+
+    .train-track-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      overflow: visible;
+    }
+
+    .train-track-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .train-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      transform-origin: center center;
+      will-change: transform;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .train-container.visible {
+      opacity: 1;
+    }
+
+    .train-engine,
+    .train-wagon {
+      display: block;
+      flex-shrink: 0;
+    }
+
+    @media (width < 768px) {
+      .train-track-overlay {
+        display: none;
+      }
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const overlay = document.getElementById("train-track-overlay");
+    if (!overlay) return;
+
+    const svg = document.getElementById("train-track-svg") as unknown as SVGSVGElement;
+    const tiesGroup = document.getElementById("track-ties-group");
+    const railsGroup = document.getElementById("track-rails-group");
+    const trainContainer = document.getElementById("train-container");
+
+    if (!svg || !tiesGroup || !railsGroup || !trainContainer) return;
+
+    // Get the main content container - the parent that holds all sections
+    const mainEl = document.querySelector("main");
+    if (!mainEl) return;
+
+    // Set overlay to cover the full main area
+    function updateOverlaySize() {
+      if (!mainEl || !overlay || !svg) return;
+      const mainRect = mainEl.getBoundingClientRect();
+      const scrollTop = window.scrollY;
+      const mainTop = mainRect.top + scrollTop;
+      const mainHeight = mainEl.scrollHeight;
+
+      overlay.style.position = "absolute";
+      overlay.style.top = "0";
+      overlay.style.left = "0";
+      overlay.style.width = "100%";
+      overlay.style.height = mainHeight + "px";
+
+      svg.setAttribute("width", String(mainRect.width));
+      svg.setAttribute("height", String(mainHeight));
+      svg.setAttribute("viewBox", `0 0 ${mainRect.width} ${mainHeight}`);
+    }
+
+    // Section IDs we look for
+    const sectionIds = ["hero", "about", "features", "projects", "community", "cta"];
+
+    interface SectionInfo {
+      id: string;
+      top: number;
+      height: number;
+      midY: number;
+    }
+
+    function getSections(): SectionInfo[] {
+      if (!mainEl) return [];
+      const mainTop = mainEl.getBoundingClientRect().top + window.scrollY;
+      const sections: SectionInfo[] = [];
+
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          const top = rect.top + window.scrollY - mainTop;
+          sections.push({
+            id,
+            top,
+            height: rect.height,
+            midY: top + rect.height / 2,
+          });
+        }
+      }
+      return sections;
+    }
+
+    function buildTrackPath(sections: SectionInfo[], pageWidth: number): string {
+      if (sections.length < 2) return "";
+
+      const margin = 120; // distance from page edge
+      const leftX = margin;
+      const rightX = pageWidth - margin;
+      const curveRadius = 100; // radius for round corners
+
+      // Track starts off-screen left, enters at about section
+      // Pattern: about = track on left (content right), features = centered,
+      // projects = track on right (content left), community = track on left
+
+      const points: { x: number; y: number }[] = [];
+
+      for (let i = 0; i < sections.length; i++) {
+        const s = sections[i];
+        const id = s.id;
+
+        if (id === "hero") {
+          // Track starts from left off-screen, at the bottom of hero
+          points.push({ x: -50, y: s.top + s.height });
+        } else if (id === "about") {
+          // Left side
+          points.push({ x: leftX, y: s.top + 40 });
+          points.push({ x: leftX, y: s.top + s.height - 40 });
+        } else if (id === "features") {
+          // Center pass-through
+          const centerX = pageWidth / 2;
+          points.push({ x: centerX, y: s.midY });
+        } else if (id === "projects") {
+          // Right side
+          points.push({ x: rightX, y: s.top + 40 });
+          points.push({ x: rightX, y: s.top + s.height - 40 });
+        } else if (id === "community") {
+          // Left side
+          points.push({ x: leftX, y: s.top + 40 });
+          points.push({ x: leftX, y: s.top + s.height - 40 });
+        } else if (id === "cta") {
+          // Center, goes off right
+          const centerX = pageWidth / 2;
+          points.push({ x: centerX, y: s.midY });
+          points.push({ x: pageWidth + 50, y: s.midY });
+        }
+      }
+
+      if (points.length < 2) return "";
+
+      // Build smooth SVG path with rounded corners
+      let d = `M ${points[0].x} ${points[0].y}`;
+
+      for (let i = 1; i < points.length; i++) {
+        const prev = points[i - 1];
+        const curr = points[i];
+
+        if (i < points.length - 1) {
+          const next = points[i + 1];
+
+          // Calculate direction vectors
+          const dx1 = curr.x - prev.x;
+          const dy1 = curr.y - prev.y;
+          const dx2 = next.x - curr.x;
+          const dy2 = next.y - curr.y;
+
+          const len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+          const len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+
+          if (len1 === 0 || len2 === 0) {
+            d += ` L ${curr.x} ${curr.y}`;
+            continue;
+          }
+
+          // Limit radius to half the shortest segment
+          const r = Math.min(curveRadius, len1 / 2, len2 / 2);
+
+          // Point where curve begins (before the corner)
+          const startX = curr.x - (dx1 / len1) * r;
+          const startY = curr.y - (dy1 / len1) * r;
+
+          // Point where curve ends (after the corner)
+          const endX = curr.x + (dx2 / len2) * r;
+          const endY = curr.y + (dy2 / len2) * r;
+
+          d += ` L ${startX} ${startY}`;
+          d += ` Q ${curr.x} ${curr.y} ${endX} ${endY}`;
+        } else {
+          d += ` L ${curr.x} ${curr.y}`;
+        }
+      }
+
+      return d;
+    }
+
+    function renderTracks(pathD: string) {
+      if (!tiesGroup || !railsGroup) return;
+      tiesGroup.innerHTML = "";
+      railsGroup.innerHTML = "";
+
+      if (!pathD) return;
+
+      const ns = "http://www.w3.org/2000/svg";
+      const railGap = 12; // half-gap between the two rails
+
+      // Create a temporary path to measure and place sleepers
+      const measurePath = document.createElementNS(ns, "path");
+      measurePath.setAttribute("d", pathD);
+      measurePath.setAttribute("fill", "none");
+      svg.appendChild(measurePath);
+
+      const totalLen = measurePath.getTotalLength();
+      const sleeperSpacing = 20;
+
+      // Draw sleepers (ties)
+      for (let dist = 0; dist < totalLen; dist += sleeperSpacing) {
+        const pt = measurePath.getPointAtLength(dist);
+        const pt2 = measurePath.getPointAtLength(Math.min(dist + 1, totalLen));
+
+        const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x);
+        const perpAngle = angle + Math.PI / 2;
+
+        const tieLen = railGap * 2 + 10;
+        const x1 = pt.x + Math.cos(perpAngle) * (tieLen / 2);
+        const y1 = pt.y + Math.sin(perpAngle) * (tieLen / 2);
+        const x2 = pt.x - Math.cos(perpAngle) * (tieLen / 2);
+        const y2 = pt.y - Math.sin(perpAngle) * (tieLen / 2);
+
+        const tie = document.createElementNS(ns, "line");
+        tie.setAttribute("x1", String(x1));
+        tie.setAttribute("y1", String(y1));
+        tie.setAttribute("x2", String(x2));
+        tie.setAttribute("y2", String(y2));
+        tie.setAttribute("stroke", "var(--track-wood)");
+        tie.setAttribute("stroke-width", "6");
+        tie.setAttribute("stroke-linecap", "round");
+        tie.setAttribute("opacity", "0.7");
+        tiesGroup.appendChild(tie);
+      }
+
+      svg.removeChild(measurePath);
+
+      // Draw two parallel rails
+      // We'll offset the main path perpendicularly for each rail
+      // For simplicity, use stroke-dasharray trick with two paths offset by translation
+      // Actually, let's draw them properly by offsetting points
+
+      // Left rail
+      const leftRail = document.createElementNS(ns, "path");
+      leftRail.setAttribute("d", pathD);
+      leftRail.setAttribute("fill", "none");
+      leftRail.setAttribute("stroke", "var(--track-rail)");
+      leftRail.setAttribute("stroke-width", "3");
+      leftRail.setAttribute("stroke-linecap", "round");
+      leftRail.setAttribute("stroke-linejoin", "round");
+
+      // Right rail (we'll create offset paths by shifting)
+      const rightRail = document.createElementNS(ns, "path");
+      rightRail.setAttribute("d", pathD);
+      rightRail.setAttribute("fill", "none");
+      rightRail.setAttribute("stroke", "var(--track-rail)");
+      rightRail.setAttribute("stroke-width", "3");
+      rightRail.setAttribute("stroke-linecap", "round");
+      rightRail.setAttribute("stroke-linejoin", "round");
+
+      // To create two parallel rails, we build offset paths
+      const leftPath = offsetPath(pathD, -railGap, svg);
+      const rightPath = offsetPath(pathD, railGap, svg);
+
+      if (leftPath) leftRail.setAttribute("d", leftPath);
+      if (rightPath) rightRail.setAttribute("d", rightPath);
+
+      // Rail shine highlights
+      const leftShine = document.createElementNS(ns, "path");
+      leftShine.setAttribute("d", leftRail.getAttribute("d") || "");
+      leftShine.setAttribute("fill", "none");
+      leftShine.setAttribute("stroke", "var(--track-rail-shine)");
+      leftShine.setAttribute("stroke-width", "1");
+      leftShine.setAttribute("opacity", "0.5");
+
+      const rightShine = document.createElementNS(ns, "path");
+      rightShine.setAttribute("d", rightRail.getAttribute("d") || "");
+      rightShine.setAttribute("fill", "none");
+      rightShine.setAttribute("stroke", "var(--track-rail-shine)");
+      rightShine.setAttribute("stroke-width", "1");
+      rightShine.setAttribute("opacity", "0.5");
+
+      railsGroup.appendChild(leftRail);
+      railsGroup.appendChild(rightRail);
+      railsGroup.appendChild(leftShine);
+      railsGroup.appendChild(rightShine);
+    }
+
+    function offsetPath(pathD: string, offset: number, svgEl: SVGSVGElement): string | null {
+      const ns = "http://www.w3.org/2000/svg";
+      const tempPath = document.createElementNS(ns, "path");
+      tempPath.setAttribute("d", pathD);
+      tempPath.setAttribute("fill", "none");
+      svgEl.appendChild(tempPath);
+
+      const totalLen = tempPath.getTotalLength();
+      if (totalLen === 0) {
+        svgEl.removeChild(tempPath);
+        return null;
+      }
+
+      const step = 4;
+      const points: { x: number; y: number }[] = [];
+
+      for (let dist = 0; dist <= totalLen; dist += step) {
+        const pt = tempPath.getPointAtLength(dist);
+        const pt2 = tempPath.getPointAtLength(Math.min(dist + 0.5, totalLen));
+
+        const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x);
+        const perpAngle = angle + Math.PI / 2;
+
+        points.push({
+          x: pt.x + Math.cos(perpAngle) * offset,
+          y: pt.y + Math.sin(perpAngle) * offset,
+        });
+      }
+
+      svgEl.removeChild(tempPath);
+
+      if (points.length === 0) return null;
+
+      let d = `M ${points[0].x} ${points[0].y}`;
+      for (let i = 1; i < points.length; i++) {
+        d += ` L ${points[i].x} ${points[i].y}`;
+      }
+
+      return d;
+    }
+
+    // Store computed path for animation
+    let trackPathD = "";
+    let trackTotalLength = 0;
+
+    function computeTrack() {
+      if (!mainEl || !svg) return;
+      const mainRect = mainEl.getBoundingClientRect();
+      const sections = getSections();
+
+      updateOverlaySize();
+
+      trackPathD = buildTrackPath(sections, mainRect.width);
+      renderTracks(trackPathD);
+
+      // Compute total length for animation
+      if (trackPathD) {
+        const ns = "http://www.w3.org/2000/svg";
+        const tempPath = document.createElementNS(ns, "path");
+        tempPath.setAttribute("d", trackPathD);
+        tempPath.setAttribute("fill", "none");
+        svg.appendChild(tempPath);
+        trackTotalLength = tempPath.getTotalLength();
+        svg.removeChild(tempPath);
+      }
+    }
+
+    function animateTrain() {
+      if (!trackPathD || trackTotalLength === 0 || !trainContainer || !mainEl || !svg) return;
+
+      const ns = "http://www.w3.org/2000/svg";
+      const tempPath = document.createElementNS(ns, "path");
+      tempPath.setAttribute("d", trackPathD);
+      tempPath.setAttribute("fill", "none");
+      svg.appendChild(tempPath);
+
+      // Calculate scroll progress
+      const mainRect = mainEl.getBoundingClientRect();
+      const scrollTop = window.scrollY;
+      const mainTop = mainRect.top + scrollTop;
+      const mainHeight = mainEl.scrollHeight;
+      const viewportHeight = window.innerHeight;
+
+      // Progress: 0 at top of hero, 1 at bottom of page
+      const scrollRange = mainHeight - viewportHeight;
+      let progress = scrollRange > 0 ? (scrollTop - mainTop) / scrollRange : 0;
+      progress = Math.max(0, Math.min(1, progress));
+
+      // Map scroll progress to path position
+      const dist = progress * trackTotalLength;
+
+      // Get engine position
+      const engineDist = Math.max(0, dist);
+      const pt = tempPath.getPointAtLength(engineDist);
+      const pt2 = tempPath.getPointAtLength(Math.min(engineDist + 1, trackTotalLength));
+
+      const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * (180 / Math.PI);
+
+      // Position relative to the overlay/main
+      const mainScrollRect = mainEl.getBoundingClientRect();
+      const overlayLeft = mainScrollRect.left;
+
+      trainContainer.style.transform = `translate(${pt.x - 72}px, ${pt.y - 22}px) rotate(${angle}deg)`;
+
+      // Show train only after some scroll (not in hero)
+      if (progress > 0.02) {
+        trainContainer.classList.add("visible");
+      } else {
+        trainContainer.classList.remove("visible");
+      }
+
+      svg.removeChild(tempPath);
+    }
+
+    // Initial compute
+    computeTrack();
+    animateTrain();
+
+    // Scroll handler
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          animateTrain();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // Resize handler
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        computeTrack();
+        animateTrain();
+      }, 200);
+    });
+  });
+</script>

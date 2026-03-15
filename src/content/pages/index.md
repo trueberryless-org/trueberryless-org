@@ -1,160 +1,111 @@
 ---
 _schema: default
-title: Astro Component Starter
-description: Build fast, customizable Astro sites with a modern component starter that is easy to edit and maintain.
+title: trueberryless-org
+description: Open source tools and libraries for the modern developer ecosystem.
 pageSections:
-  - _component: page-sections/heroes/hero-center
-    eyebrow:
-    heading: The Astro Component Starter for building any site
-    subtext: >-
-      Built on web fundamentals. Easy to customize, fast to use, and simple to
-      maintain.
+  - _component: page-sections/train/train-track
+    enabled: true
+    colorScheme: inherit
+    backgroundColor: none
+  - _component: page-sections/train/train-hero
+    eyebrow: Open Source Community
+    heading: Building the Future
+    headingGradient: Together
+    subtext: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
     buttonSections:
       - _component: building-blocks/core-elements/button
-        text: Explore Components
+        text: Get Started
         hideText: false
-        link: /component-docs/
-        iconName: ''
+        link: "#about"
+        iconName: ""
         iconPosition: before
         variant: primary
         size: md
       - _component: building-blocks/core-elements/button
-        text: View in GitHub
+        text: View on GitHub
         hideText: false
-        link: https://github.com/CloudCannon/astro-component-starter
-        iconName: ''
+        link: https://github.com/trueberryless-org
+        iconName: ""
         iconPosition: before
-        variant: secondary
+        variant: outline
         size: md
     colorScheme: inherit
-    backgroundColor: base
-  - _component: page-sections/features/feature-split
-    eyebrow: Built for Astro
-    heading: Fast, modern, and easy to work with
-    subtext: >-
-      The Component Starter takes full advantage of Astro's zero-JS-by-default
-      approach. You get fast pages, simple routing, and a component system that
-      stays easy to use as your site grows.
-    buttonSections: []
-    imageSource: /src/assets/images/component-docs/website-feature.svg
-    imageAlt: Website Feature
-    imageAspectRatio: none
-    imageRounded: false
-    reverse: false
+    backgroundColor: none
+  - _component: page-sections/train/train-about
+    eyebrow: About Us
+    heading: Who We Are
+    subtext: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    description: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
     colorScheme: inherit
-    backgroundColor: base
-  - _component: page-sections/features/feature-split
-    eyebrow: CloudCannon Ready
-    heading: Easy visual editing
-    subtext: >-
-      Every component is built to work seamlessly in CloudCannon's Visual
-      Editor. Developers can create and style custom Page Sections with Astro.
-      Editors can click, change, and rearrange content right on the page without
-      touching the code or guessing where anything lives.
-    buttonSections: []
-    imageSource: /src/assets/images/component-docs/website-split.svg
-    imageAlt: Website Split
-    imageAspectRatio: none
-    imageRounded: false
-    reverse: true
-    colorScheme: inherit
-    backgroundColor:
-    paddingVertical: lg
-  - _component: page-sections/features/feature-split
-    eyebrow: Performance
-    heading: Fast by architecture, not by accident
-    subtext: >-
-      Your components render to static HTML, keeping bundles lean and pages
-      instant. Your users get instant page loads. You get a modern developer
-      experience.
-    buttonSections: []
-    imageSource: /src/assets/images/component-docs/website-hero.svg
-    imageAlt: Website Hero
-    imageAspectRatio: none
-    imageRounded: false
-    reverse: false
-    colorScheme: inherit
-    backgroundColor: base
-  - _component: page-sections/features/feature-split
-    eyebrow: Documentation
-    heading: Every component, clearly documented
-    subtext: >-
-      Each component comes with straightforward docs, real examples, full
-      descriptions of every property, and clear guidance without having to dig
-      through source files.
-    buttonSections: []
-    imageSource: /src/assets/images/component-docs/website-documented.svg
-    imageAlt: Website Hero
-    imageAspectRatio: none
-    imageRounded: false
-    reverse: true
-    colorScheme: inherit
-    backgroundColor: base
-  - _component: page-sections/features/feature-grid
-    eyebrow: Principles
-    heading: Built for real-world web projects
-    subtext: No trends. No noise. Just reliability.
-    gap: xl
-    minItemWidth: 280
-    maxItemWidth: 360
+    backgroundColor: none
+  - _component: page-sections/train/train-features
+    eyebrow: Features
+    heading: What We Offer
+    subtext: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
     features:
-      - title: Web fundamentals
-        description: >-
-          Semantic HTML. Lean CSS. JavaScript only when it's needed. The stack
-          is boring by design, and that’s exactly why it works.
-        iconName: cube
-        iconColor: blue
-      - title: Built for speed
-        description: >-
-          Static-rendered, minimal payloads, zero waste. Built to be extremely
-          fast from the first byte.
-        iconName: bolt
-        iconColor: yellow
-      - title: Everything just fits
-        description: >-
-          Simple, predictable components that play nice together. Build bigger
-          pieces without creating a maintenance mess.
-        iconName: puzzle-piece
-        iconColor: green
-      - title: Controlled editing
-        description: >-
-          Enough freedom for editors to move fast. Enough structure for
-          developers to sleep at night.
-        iconName: pencil
-        iconColor: purple
-      - title: Adaptable
-        description: >-
-          Purposefully plain styling. The whole component starter adapts to your
-          designs without a fight.
-        iconName: paint-brush
-        iconColor: pink
+      - title: Open Source First
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        icon: ""
+      - title: Developer Experience
+        description: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        icon: ""
+      - title: Community Driven
+        description: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        icon: ""
     colorScheme: inherit
     backgroundColor: surface
-    align: center
-  - _component: page-sections/ctas/cta-center
-    heading: Ready to start building?
-    subtext: >-
-      Browse the complete Astro Component Starter and see live examples of every
-      component in action. All components are ready to use in CloudCannon and
-      are fully customizable.
+  - _component: page-sections/train/train-projects
+    eyebrow: Projects
+    heading: Our Open Source Work
+    subtext: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation.
+    projects:
+      - name: starlight-utils
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        link: "#"
+        stars: "1.2k"
+      - name: mutaction
+        description: Ut enim ad minim veniam, quis nostrud exercitation.
+        link: "#"
+        stars: "856"
+      - name: purista-sdk
+        description: Duis aute irure dolor in reprehenderit in voluptate.
+        link: "#"
+        stars: "432"
+    colorScheme: inherit
+    backgroundColor: none
+  - _component: page-sections/train/train-community
+    eyebrow: Community
+    heading: Join Our Community
+    subtext: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    stats:
+      - value: "50+"
+        label: Contributors
+      - value: "10k+"
+        label: Downloads
+      - value: "25+"
+        label: Repositories
+    colorScheme: inherit
+    backgroundColor: none
+  - _component: page-sections/train/train-cta
+    heading: Ready to Get Started?
+    subtext: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
     buttonSections:
       - _component: building-blocks/core-elements/button
-        text: Explore Components
+        text: Start Building
         hideText: false
-        link: /component-docs/
-        iconName: ''
+        link: "#"
+        iconName: ""
         iconPosition: before
         variant: primary
         size: md
       - _component: building-blocks/core-elements/button
-        text: View in GitHub
+        text: Read the Docs
         hideText: false
-        link: https://github.com/CloudCannon/astro-component-starter
-        iconName: ''
+        link: "#"
+        iconName: ""
         iconPosition: before
-        variant: tertiary
+        variant: outline
         size: md
-    colorScheme: dark
-    backgroundColor: surface
-    rounded: false
+    colorScheme: inherit
+    backgroundColor: none
 ---

@@ -1,0 +1,182 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import Text from "@core-elements/text/Text.astro";
+
+type ProjectItem = {
+  name?: string;
+  description?: string;
+  link?: string;
+  stars?: string;
+};
+
+const {
+  eyebrow = "",
+  heading = "",
+  subtext = "",
+  projects = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "4xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["train-projects", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <div class="train-projects-inner" id="projects">
+    <div class="train-projects-content">
+      <SimpleText
+        class="train-projects-eyebrow"
+        data-prop="eyebrow"
+        text={eyebrow}
+      />
+      <Heading
+        level="h2"
+        size="xl"
+        data-prop="heading"
+      >
+        {heading}
+      </Heading>
+      <Text
+        class="train-projects-subtext"
+        data-prop="subtext"
+        text={subtext}
+      />
+
+      <div class="train-projects-list" data-children-prop="projects">
+        {projects.map((project: ProjectItem) => (
+          <a href={project.link || "#"} class="train-project-item" data-editable="array-item">
+            <div class="train-project-info">
+              <div class="train-project-name-row">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--blue-500)" aria-hidden="true">
+                  <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9z"/>
+                </svg>
+                <span class="train-project-name">{project.name}</span>
+              </div>
+              <p class="train-project-desc">{project.description}</p>
+            </div>
+            {project.stars && (
+              <div class="train-project-stars">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--yellow-500)" aria-hidden="true">
+                  <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
+                </svg>
+                <span>{project.stars}</span>
+              </div>
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+    <div class="train-projects-track-space"></div>
+  </div>
+</CustomSection>
+
+<style>
+  @layer page-sections {
+    .train-projects-inner {
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: var(--spacing-2xl);
+      align-items: center;
+    }
+
+    .train-projects-track-space {
+      min-height: 300px;
+    }
+
+    .train-projects-content {
+      max-width: 700px;
+    }
+
+    :global(.train-projects-eyebrow) {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--blue-600);
+    }
+
+    :global(.train-projects-subtext) :global(p) {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--color-text-muted);
+      margin-top: var(--spacing-sm);
+    }
+
+    .train-projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-xl);
+    }
+
+    .train-project-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-md) var(--spacing-lg);
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .train-project-item:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      transform: translateX(4px);
+    }
+
+    .train-project-name-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .train-project-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--blue-700);
+    }
+
+    .train-project-desc {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin: 0.25rem 0 0;
+      line-height: 1.5;
+    }
+
+    .train-project-stars {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      flex-shrink: 0;
+    }
+
+    @media (width < 768px) {
+      .train-projects-inner {
+        grid-template-columns: 1fr;
+      }
+      .train-projects-track-space {
+        display: none;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,49 @@
+label: Train Community
+icon: group
+description: Community section with stats, content on right, track on left.
+value:
+  _component: page-sections/train/train-community
+  eyebrow: Community
+  heading: Join Our Community
+  subtext: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.
+  stats:
+    - value: "50+"
+      label: Contributors
+    - value: "10k+"
+      label: Downloads
+    - value: "25+"
+      label: Repositories
+  colorScheme: inherit
+  backgroundColor: none
+preview:
+  text:
+    - Train Community
+  subtext:
+    - key: heading
+  icon: group
+picker_preview:
+  text: Train Community
+  subtext: Community section with stat cards and track.
+_inputs_from_glob:
+  - /src/components/page-sections/train/train-community/train-community.cloudcannon.inputs.yml
+_structures:
+  trainStatItems:
+    values:
+      - label: Stat
+        icon: analytics
+        value:
+          value: "0"
+          label: Stat label
+        preview:
+          text:
+            - key: value
+            - Stat
+          subtext:
+            - key: label
+        _inputs:
+          value:
+            type: text
+            comment: The numeric or text value.
+          label:
+            type: text
+            comment: Label describing the stat.

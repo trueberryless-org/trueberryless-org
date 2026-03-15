@@ -1,33 +1,29 @@
 {
   "logoSource": "/images/logo.svg",
-  "logoAlt": "Logo",
+  "logoAlt": "trueberryless-org Logo",
   "links": [
     {
-      "name": "Home",
-      "path": "/"
+      "name": "About",
+      "path": "/#about"
     },
     {
-      "name": "Why",
-      "path": "/why/"
+      "name": "Features",
+      "path": "/#features"
     },
     {
-      "name": "Blog",
-      "path": "/blog/"
+      "name": "Projects",
+      "path": "/#projects"
+    },
+    {
+      "name": "Community",
+      "path": "/#community"
     }
   ],
   "socials": [
     {
       "icon": "social/github",
-      "link": "https://github.com"
-    },
-    {
-      "icon": "social/x",
-      "link": "https://twitter.com"
-    },
-    {
-      "icon": "social/linkedin",
-      "link": "https://linkedin.com"
+      "link": "https://github.com/trueberryless-org"
     }
   ],
-  "footerText": "© 2026 All rights reserved."
+  "footerText": "© 2026 trueberryless-org. All rights reserved."
 }

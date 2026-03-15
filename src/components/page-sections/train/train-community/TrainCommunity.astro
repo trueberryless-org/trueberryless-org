@@ -1,0 +1,145 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import Text from "@core-elements/text/Text.astro";
+
+type StatItem = {
+  value?: string;
+  label?: string;
+};
+
+const {
+  eyebrow = "",
+  heading = "",
+  subtext = "",
+  stats = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "4xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["train-community", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <div class="train-community-inner" id="community">
+    <div class="train-community-track-space"></div>
+    <div class="train-community-content">
+      <SimpleText
+        class="train-community-eyebrow"
+        data-prop="eyebrow"
+        text={eyebrow}
+      />
+      <Heading
+        level="h2"
+        size="xl"
+        data-prop="heading"
+      >
+        {heading}
+      </Heading>
+      <Text
+        class="train-community-subtext"
+        data-prop="subtext"
+        text={subtext}
+      />
+
+      <div class="train-community-stats" data-children-prop="stats">
+        {stats.map((stat: StatItem) => (
+          <div class="train-stat-card" data-editable="array-item">
+            <span class="train-stat-value">{stat.value}</span>
+            <span class="train-stat-label">{stat.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</CustomSection>
+
+<style>
+  @layer page-sections {
+    .train-community-inner {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--spacing-2xl);
+      align-items: center;
+    }
+
+    .train-community-track-space {
+      min-height: 300px;
+    }
+
+    .train-community-content {
+      max-width: 700px;
+    }
+
+    :global(.train-community-eyebrow) {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--blue-600);
+    }
+
+    :global(.train-community-subtext) :global(p) {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--color-text-muted);
+      margin-top: var(--spacing-sm);
+    }
+
+    .train-community-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-xl);
+    }
+
+    .train-stat-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--spacing-lg);
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .train-stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--blue-600);
+      line-height: 1;
+    }
+
+    .train-stat-label {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-top: 0.35rem;
+    }
+
+    @media (width < 768px) {
+      .train-community-inner {
+        grid-template-columns: 1fr;
+      }
+      .train-community-track-space {
+        display: none;
+      }
+      .train-community-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+</style>

@@ -1,0 +1,37 @@
+label: Train CTA
+icon: campaign
+description: Call-to-action section with blue gradient card.
+value:
+  _component: page-sections/train/train-cta
+  heading: Ready to Get Started?
+  subtext: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  buttonSections:
+    - _component: building-blocks/core-elements/button
+      text: Start Building
+      hideText: false
+      link: "#"
+      iconName: ""
+      iconPosition: before
+      variant: primary
+      size: md
+    - _component: building-blocks/core-elements/button
+      text: Read the Docs
+      hideText: false
+      link: "#"
+      iconName: ""
+      iconPosition: before
+      variant: outline
+      size: md
+  colorScheme: inherit
+  backgroundColor: none
+preview:
+  text:
+    - Train CTA
+  subtext:
+    - key: heading
+  icon: campaign
+picker_preview:
+  text: Train CTA
+  subtext: Blue gradient call-to-action card.
+_inputs_from_glob:
+  - /src/components/page-sections/train/train-cta/train-cta.cloudcannon.inputs.yml

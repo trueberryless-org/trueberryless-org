@@ -1,0 +1,112 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Text from "@core-elements/text/Text.astro";
+import ButtonGroup from "@wrappers/button-group/ButtonGroup.astro";
+
+const {
+  heading = "",
+  subtext = "",
+  buttonSections = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "4xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["train-cta", className]}
+  maxContentWidth="lg"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <div class="train-cta-inner" id="cta">
+    <div class="train-cta-card">
+      <Heading
+        level="h2"
+        size="xl"
+        alignX="center"
+        data-prop="heading"
+      >
+        {heading}
+      </Heading>
+      <Text
+        class="train-cta-subtext"
+        alignX="center"
+        data-prop="subtext"
+        text={subtext}
+      />
+      <ButtonGroup
+        class="train-cta-buttons"
+        buttonSections={buttonSections}
+        alignX="center"
+        data-children-prop="buttonSections"
+      />
+    </div>
+  </div>
+</CustomSection>
+
+<style>
+  @layer page-sections {
+    .train-cta-inner {
+      display: flex;
+      justify-content: center;
+    }
+
+    .train-cta-card {
+      background: linear-gradient(135deg, var(--blue-600), var(--blue-800));
+      border-radius: 20px;
+      padding: var(--spacing-3xl) var(--spacing-2xl);
+      text-align: center;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .train-cta-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(255,255,255,0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .train-cta-card :global(h2) {
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+
+    :global(.train-cta-subtext) :global(p) {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 520px;
+      margin-inline: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    :global(.train-cta-buttons) {
+      margin-top: var(--spacing-xl) !important;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (width < 640px) {
+      .train-cta-card {
+        padding: var(--spacing-2xl) var(--spacing-lg);
+      }
+    }
+  }
+</style>

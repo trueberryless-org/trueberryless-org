@@ -1,0 +1,110 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import Text from "@core-elements/text/Text.astro";
+
+const {
+  eyebrow = "",
+  heading = "",
+  subtext = "",
+  description = "",
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "4xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["train-about", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <div class="train-about-inner" id="about">
+    <div class="train-about-track-space"></div>
+    <div class="train-about-content">
+      <SimpleText
+        class="train-about-eyebrow"
+        data-prop="eyebrow"
+        text={eyebrow}
+      />
+      <Heading
+        level="h2"
+        size="xl"
+        data-prop="heading"
+      >
+        {heading}
+      </Heading>
+      <Text
+        class="train-about-subtext"
+        data-prop="subtext"
+        text={subtext}
+      />
+      <Text
+        class="train-about-description"
+        data-prop="description"
+        text={description}
+      />
+    </div>
+  </div>
+</CustomSection>
+
+<style>
+  @layer page-sections {
+    .train-about-inner {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--spacing-2xl);
+      align-items: center;
+    }
+
+    .train-about-track-space {
+      /* Reserved space for the train track overlay */
+      min-height: 300px;
+    }
+
+    .train-about-content {
+      max-width: 640px;
+    }
+
+    :global(.train-about-eyebrow) {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--blue-600);
+    }
+
+    :global(.train-about-subtext) :global(p) {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--color-text-muted);
+      margin-top: var(--spacing-md);
+    }
+
+    :global(.train-about-description) :global(p) {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--color-text-muted);
+      margin-top: var(--spacing-lg);
+    }
+
+    @media (width < 768px) {
+      .train-about-inner {
+        grid-template-columns: 1fr;
+      }
+      .train-about-track-space {
+        display: none;
+      }
+    }
+  }
+</style>
