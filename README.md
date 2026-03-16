@@ -12,9 +12,10 @@ Originally built to manage complex deployments on Rocky Linux via ArgoCD, this p
 This site is built using a highly customized version of the **Astro Component Starter**. It leverages a modular "train-and-wagon" architecture where every UI element is engineered for momentum and visual editing via [CloudCannon](https://cloudcannon.com/).
 
 ### Key Engineering Features:
-* **Starlight Integration:** Seamlessly connects to our fleet of Starlight plugins.
-* **Automated Sync:** Managed via our `template-files` engine to ensure standardized workflows and configurations across the org.
-* **Unbranded Foundation:** While the theme is currently "Train-focused," the underlying system is built on CSS variables, allowing for rapid identity shifts.
+
+- **Starlight Integration:** Seamlessly connects to our fleet of Starlight plugins.
+- **Automated Sync:** Managed via our `template-files` engine to ensure standardized workflows and configurations across the org.
+- **Unbranded Foundation:** While the theme is currently "Train-focused," the underlying system is built on CSS variables, allowing for rapid identity shifts.
 
 ## 🚀 Quick Start
 
@@ -60,10 +61,10 @@ src/
 
 ## 🛠 Dev and Build Commands
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the development server |
-| `npm run build` | Production build (Excludes component docs) |
+| Command                      | Description                                |
+| ---------------------------- | ------------------------------------------ |
+| `npm run dev`                | Start the development server               |
+| `npm run build`              | Production build (Excludes component docs) |
 | `npm run build:with-library` | Production build (Includes component docs) |
 
 ## 🤝 Contributions & Maintenance
