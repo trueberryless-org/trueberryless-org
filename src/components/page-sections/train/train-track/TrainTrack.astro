@@ -672,6 +672,70 @@ const wagonColors = [
             </g>
           </svg>
         </div>
+
+        <div
+          class="train-piece"
+          id="tree-group-1"
+          style="display: none; z-index: 5;"
+        >
+          <svg
+            width="100"
+            height="100"
+            viewBox="-50 -50 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="10"
+              cy="-10"
+              r="24"
+              fill="#66bb6a"
+            />
+            <circle
+              cx="-15"
+              cy="5"
+              r="18"
+              fill="#81c784"
+            />
+            <circle
+              cx="-5"
+              cy="-20"
+              r="16"
+              fill="#a5d6a7"
+            />
+          </svg>
+        </div>
+
+        <div
+          class="train-piece"
+          id="tree-group-2"
+          style="display: none; z-index: 5;"
+        >
+          <svg
+            width="100"
+            height="100"
+            viewBox="-50 -50 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="-10"
+              cy="10"
+              r="24"
+              fill="#66bb6a"
+            />
+            <circle
+              cx="15"
+              cy="-5"
+              r="18"
+              fill="#81c784"
+            />
+            <circle
+              cx="5"
+              cy="20"
+              r="16"
+              fill="#a5d6a7"
+            />
+          </svg>
+        </div>
       </div>
     </CustomSection>
   )
@@ -1190,15 +1254,39 @@ const wagonColors = [
       pondEl.style.transform = `translate(${pt.x - 300}px, ${pt.y - 125}px)`;
     }
 
+    function positionTreeGroup1(dist) {
+      const el = document.getElementById("tree-group-1");
+      if (!el || !measurePath) return;
+      el.style.display = "block";
+      const pt = measurePath.getPointAtLength(dist);
+      el.style.transform = `translate(${pt.x + 20}px, ${pt.y - 100}px)`;
+    }
+
+    function positionTreeGroup2(dist) {
+      const el = document.getElementById("tree-group-2");
+      if (!el || !measurePath) return;
+      el.style.display = "block";
+      const pt = measurePath.getPointAtLength(dist);
+      el.style.transform = `translate(${pt.x - 120}px, ${pt.y - 20}px)`;
+    }
+
     function computeFlipPoints(sections) {
       if (!measurePath || trackTotalLength === 0) return;
 
+      const about = sections.find((s) => s.id === "about");
       const features = sections.find((s) => s.id === "features");
       const projects = sections.find((s) => s.id === "projects");
       const community = sections.find((s) => s.id === "community");
 
+      if (about) {
+        const tree1Dist = findDistanceForY(about.midY + 50);
+        positionTreeGroup1(tree1Dist);
+      }
+
       if (features) {
         flipStartDist = findDistanceForY(features.midY + 100);
+        const tree2Dist = findDistanceForY(features.top + 60);
+        positionTreeGroup2(tree2Dist);
       }
 
       if (projects) {
