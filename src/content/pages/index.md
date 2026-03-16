@@ -63,11 +63,11 @@ pageSections:
     subtext: The most powerful modules currently driving the Starlight ecosystem.
     projects:
       - name: Starlight Sidebar Topics Dropdown
-        description: The leading engine for managing complex documentation hierarchies with a sleek dropdown interface.
+        description: A dropdown topic list for the Starlight Sidebar Topics plugin.
         link: https://github.com/trueberryless-org/starlight-sidebar-topics-dropdown
         stars: '44'
       - name: Starlight View Modes
-        description: A versatile plugin adding essential accessibility and user-choice capabilities to the documentation experience.
+        description: A Starlight plugin adding different view modes, like Zen mode, to your documentation.
         link: https://github.com/trueberryless-org/starlight-view-modes
         stars: '36'
       - name: Awesome Starlight
