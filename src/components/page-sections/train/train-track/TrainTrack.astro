@@ -454,6 +454,224 @@ const wagonColors = [
             </g>
           </svg>
         </div>
+
+        <div
+          class="train-piece"
+          id="pond-piece"
+          style="display: none; z-index: 5; filter: none;"
+        >
+          <svg
+            width="250"
+            height="250"
+            viewBox="-125 -125 250 250"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M40,-60 C80,-70 110,-30 100,20 C90,70 50,100 0,90 C-50,80 -90,50 -100,0 C-110,-50 -70,-80 -20,-70 C10,-60 20,-50 40,-60 Z"
+              fill="#e1f5fe"
+              stroke="#b3e5fc"
+              stroke-width="3"
+            />
+
+            <g>
+              <path
+                d="M40,-60 C80,-70 110,-30 100,20 C90,70 50,100 0,90 C-50,80 -90,50 -100,0 C-110,-50 -70,-80 -20,-70 C10,-60 20,-50 40,-60 Z"
+                fill="none"
+                stroke="#b3e5fc"
+                stroke-width="2"
+                opacity="0"
+              >
+                <animateTransform
+                  attributeName="transform"
+                  type="scale"
+                  from="0.95"
+                  to="0.6"
+                  dur="6s"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="opacity"
+                  values="0; 0.25; 0"
+                  keyTimes="0; 0.1; 1"
+                  dur="6s"
+                  repeatCount="indefinite"
+                />
+              </path>
+              <path
+                d="M40,-60 C80,-70 110,-30 100,20 C90,70 50,100 0,90 C-50,80 -90,50 -100,0 C-110,-50 -70,-80 -20,-70 C10,-60 20,-50 40,-60 Z"
+                fill="none"
+                stroke="#b3e5fc"
+                stroke-width="2"
+                opacity="0"
+              >
+                <animateTransform
+                  attributeName="transform"
+                  type="scale"
+                  from="0.95"
+                  to="0.6"
+                  dur="6s"
+                  begin="2s"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="opacity"
+                  values="0; 0.25; 0"
+                  keyTimes="0; 0.1; 1"
+                  dur="6s"
+                  begin="2s"
+                  repeatCount="indefinite"
+                />
+              </path>
+              <path
+                d="M40,-60 C80,-70 110,-30 100,20 C90,70 50,100 0,90 C-50,80 -90,50 -100,0 C-110,-50 -70,-80 -20,-70 C10,-60 20,-50 40,-60 Z"
+                fill="none"
+                stroke="#b3e5fc"
+                stroke-width="2"
+                opacity="0"
+              >
+                <animateTransform
+                  attributeName="transform"
+                  type="scale"
+                  from="0.95"
+                  to="0.6"
+                  dur="6s"
+                  begin="4s"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="opacity"
+                  values="0; 0.25; 0"
+                  keyTimes="0; 0.1; 1"
+                  dur="6s"
+                  begin="4s"
+                  repeatCount="indefinite"
+                />
+              </path>
+            </g>
+
+            <g>
+              <circle
+                cx="-80"
+                cy="-85"
+                r="18"
+                fill="#81c784"
+              />
+              <circle
+                cx="-65"
+                cy="-100"
+                r="14"
+                fill="#a5d6a7"
+              />
+              <circle
+                cx="-50"
+                cy="-80"
+                r="20"
+                fill="#66bb6a"
+              />
+              <circle
+                cx="80"
+                cy="80"
+                r="16"
+                fill="#81c784"
+              />
+              <circle
+                cx="95"
+                cy="65"
+                r="14"
+                fill="#66bb6a"
+              />
+            </g>
+
+            <g>
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                from="0 10 10"
+                to="360 10 10"
+                dur="24s"
+                repeatCount="indefinite"
+              />
+
+              <g transform="translate(-30, -20) rotate(-30)">
+                <ellipse
+                  cx="0"
+                  cy="-6"
+                  rx="5"
+                  ry="3"
+                  fill="#fff59d"
+                  transform="rotate(15 0 -6)"
+                />
+                <ellipse
+                  cx="0"
+                  cy="6"
+                  rx="5"
+                  ry="3"
+                  fill="#fff59d"
+                  transform="rotate(-15 0 6)"
+                />
+                <ellipse
+                  cx="0"
+                  cy="0"
+                  rx="10"
+                  ry="7"
+                  fill="#fff9c4"
+                />
+                <circle
+                  cx="8"
+                  cy="0"
+                  r="5"
+                  fill="#fff9c4"
+                />
+                <ellipse
+                  cx="13"
+                  cy="0"
+                  rx="4"
+                  ry="2"
+                  fill="#ffb74d"
+                />
+              </g>
+
+              <g transform="translate(40, 30) rotate(120)">
+                <ellipse
+                  cx="0"
+                  cy="-6"
+                  rx="5"
+                  ry="3"
+                  fill="#fff59d"
+                  transform="rotate(15 0 -6)"
+                />
+                <ellipse
+                  cx="0"
+                  cy="6"
+                  rx="5"
+                  ry="3"
+                  fill="#fff59d"
+                  transform="rotate(-15 0 6)"
+                />
+                <ellipse
+                  cx="0"
+                  cy="0"
+                  rx="10"
+                  ry="7"
+                  fill="#fff9c4"
+                />
+                <circle
+                  cx="8"
+                  cy="0"
+                  r="5"
+                  fill="#fff9c4"
+                />
+                <ellipse
+                  cx="13"
+                  cy="0"
+                  rx="4"
+                  ry="2"
+                  fill="#ffb74d"
+                />
+              </g>
+            </g>
+          </svg>
+        </div>
       </div>
     </CustomSection>
   )
@@ -956,14 +1174,39 @@ const wagonColors = [
       tunnelEl.style.transform = `translate(${pt.x - 100}px, ${pt.y - 100}px) rotate(${angle}deg)`;
     }
 
+    function positionPond(dist) {
+      const pondEl = document.getElementById("pond-piece");
+      if (!pondEl || !measurePath) return;
+
+      if (window.innerWidth < 700) {
+        pondEl.style.display = "none";
+        return;
+      }
+
+      pondEl.style.display = "block";
+
+      const pt = measurePath.getPointAtLength(dist);
+
+      pondEl.style.transform = `translate(${pt.x - 300}px, ${pt.y - 125}px)`;
+    }
+
     function computeFlipPoints(sections) {
       if (!measurePath || trackTotalLength === 0) return;
 
       const features = sections.find((s) => s.id === "features");
+      const projects = sections.find((s) => s.id === "projects");
       const community = sections.find((s) => s.id === "community");
 
       if (features) {
         flipStartDist = findDistanceForY(features.midY + 100);
+      }
+
+      if (projects) {
+        flipEndDist = findDistanceForY(projects.midY + 10);
+        if (window.innerWidth < 1150) {
+          flipEndDist = findDistanceForY(projects.top + 50);
+        }
+        positionPond(flipEndDist);
       }
 
       if (community) {
