@@ -379,6 +379,12 @@ const wagonColors = [
     const mainEl = document.querySelector("main");
     if (!mainEl) return;
 
+    // Smoothing state
+    let targetProgress = 0;
+    let currentProgress = 0;
+    const lerpFactor = 0.1; // Adjust between 0.05 and 0.15 for more/less smoothing
+    let measurePath: SVGPathElement | null = null; // Reusable path for performance
+
     // Spacing between pieces along the path (in path-length pixels)
     const pieceSpacing = 72;
     // Wagon width for centering
@@ -545,17 +551,17 @@ const wagonColors = [
       const ns = "http://www.w3.org/2000/svg";
       const railGap = 12;
 
-      const measurePath = document.createElementNS(ns, "path");
-      measurePath.setAttribute("d", pathD);
-      measurePath.setAttribute("fill", "none");
-      svg.appendChild(measurePath);
+      const tempPath = document.createElementNS(ns, "path");
+      tempPath.setAttribute("d", pathD);
+      tempPath.setAttribute("fill", "none");
+      svg.appendChild(tempPath);
 
-      const totalLen = measurePath.getTotalLength();
+      const totalLen = tempPath.getTotalLength();
       const sleeperSpacing = 20;
 
       for (let dist = 0; dist < totalLen; dist += sleeperSpacing) {
-        const pt = measurePath.getPointAtLength(dist);
-        const pt2 = measurePath.getPointAtLength(Math.min(dist + 1, totalLen));
+        const pt = tempPath.getPointAtLength(dist);
+        const pt2 = tempPath.getPointAtLength(Math.min(dist + 1, totalLen));
 
         const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x);
         const perpAngle = angle + Math.PI / 2;
@@ -578,7 +584,7 @@ const wagonColors = [
         tiesGroup.appendChild(tie);
       }
 
-      svg.removeChild(measurePath);
+      svg.removeChild(tempPath);
 
       const leftRail = document.createElementNS(ns, "path");
       leftRail.setAttribute("d", pathD);
@@ -705,16 +711,9 @@ const wagonColors = [
     let pickupDistances: number[] = [];
 
     function computePickupDistances(sections: SectionInfo[]) {
-      if (!trackPathD || trackTotalLength === 0) return;
-
-      const ns = "http://www.w3.org/2000/svg";
-      const tempPath = document.createElementNS(ns, "path");
-      tempPath.setAttribute("d", trackPathD);
-      tempPath.setAttribute("fill", "none");
-      svg.appendChild(tempPath);
+      if (!trackPathD || trackTotalLength === 0 || !measurePath) return;
 
       if (!mainEl) {
-        svg.removeChild(tempPath);
         return;
       }
       const mainTop = mainEl.getBoundingClientRect().top + window.scrollY;
@@ -736,7 +735,7 @@ const wagonColors = [
         let bestDelta = Infinity;
         const step = 20;
         for (let d = 0; d <= trackTotalLength; d += step) {
-          const pt = tempPath.getPointAtLength(d);
+          const pt = measurePath.getPointAtLength(d);
           const delta = Math.abs(pt.y - targetY);
           if (delta < bestDelta) {
             bestDelta = delta;
@@ -747,7 +746,7 @@ const wagonColors = [
         const start = Math.max(0, bestDist - step);
         const end = Math.min(trackTotalLength, bestDist + step);
         for (let d = start; d <= end; d += 2) {
-          const pt = tempPath.getPointAtLength(d);
+          const pt = measurePath.getPointAtLength(d);
           const delta = Math.abs(pt.y - targetY);
           if (delta < bestDelta) {
             bestDelta = delta;
@@ -757,8 +756,6 @@ const wagonColors = [
 
         pickupDistances.push(bestDist);
       }
-
-      svg.removeChild(tempPath);
     }
 
     function computeTrack() {
@@ -773,12 +770,15 @@ const wagonColors = [
 
       if (trackPathD) {
         const ns = "http://www.w3.org/2000/svg";
-        const tempPath = document.createElementNS(ns, "path");
-        tempPath.setAttribute("d", trackPathD);
-        tempPath.setAttribute("fill", "none");
-        svg.appendChild(tempPath);
-        trackTotalLength = tempPath.getTotalLength();
-        svg.removeChild(tempPath);
+        // Create a reusable path for highly efficient frame-by-frame measurement
+        if (!measurePath) {
+          measurePath = document.createElementNS(ns, "path");
+          measurePath.setAttribute("fill", "none");
+          measurePath.setAttribute("opacity", "0");
+          svg.appendChild(measurePath);
+        }
+        measurePath.setAttribute("d", trackPathD);
+        trackTotalLength = measurePath.getTotalLength();
       }
 
       computePickupDistances(sections);
@@ -786,29 +786,22 @@ const wagonColors = [
 
     function positionPiece(
       el: HTMLElement,
-      tempPath: SVGPathElement,
+      referencePath: SVGPathElement,
       dist: number,
       halfW: number,
       halfH: number
     ) {
       const clampedDist = Math.max(0, Math.min(dist, trackTotalLength));
-      const pt = tempPath.getPointAtLength(clampedDist);
-      const pt2 = tempPath.getPointAtLength(Math.min(clampedDist + 1, trackTotalLength));
+      const pt = referencePath.getPointAtLength(clampedDist);
+      const pt2 = referencePath.getPointAtLength(Math.min(clampedDist + 1, trackTotalLength));
       const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * (180 / Math.PI);
 
       el.style.transform = `translate(${pt.x - halfW}px, ${pt.y - halfH}px) rotate(${angle}deg) rotate(180deg)`;
     }
 
-    function animateTrain() {
-      if (!trackPathD || trackTotalLength === 0 || !engineEl || !mainEl || !svg) return;
+    function updateTargetProgress() {
+      if (!trackPathD || trackTotalLength === 0 || !engineEl || !mainEl) return;
 
-      const ns = "http://www.w3.org/2000/svg";
-      const tempPath = document.createElementNS(ns, "path");
-      tempPath.setAttribute("d", trackPathD);
-      tempPath.setAttribute("fill", "none");
-      svg.appendChild(tempPath);
-
-      // Calculate scroll progress
       const mainRect = mainEl.getBoundingClientRect();
       const scrollTop = window.scrollY;
       const mainTop = mainRect.top + scrollTop;
@@ -822,10 +815,14 @@ const wagonColors = [
       const trainStart = 0.15;
       const trainEnd = 1.05;
       let progress = (rawProgress - trainStart) / (trainEnd - trainStart);
-      progress = Math.max(0, Math.min(1, progress));
+      targetProgress = Math.max(0, Math.min(1, progress));
+    }
+
+    function renderTrainPosition() {
+      if (!measurePath || trackTotalLength === 0 || !engineEl) return;
 
       // Engine distance along path (engine is at the very back, pushing)
-      const engineDist = progress * trackTotalLength;
+      const engineDist = currentProgress * trackTotalLength;
 
       // Determine which wagons are collected.
       // The engine pushes wagons ahead of it. New wagons are prepended at the
@@ -858,7 +855,7 @@ const wagonColors = [
       }
 
       // Position engine
-      positionPiece(engineEl, tempPath, engineDist, engineHalfW, engineHalfH);
+      positionPiece(engineEl, measurePath, engineDist, engineHalfW, engineHalfH);
 
       // Position wagons
       // Collected wagons are stacked ahead of the engine.
@@ -877,7 +874,7 @@ const wagonColors = [
           const wagonDist = engineDist + slot * pieceSpacing;
           positionPiece(
             wagonEl,
-            tempPath,
+            measurePath,
             Math.min(wagonDist, trackTotalLength),
             wagonHalfW,
             wagonHalfH
@@ -885,28 +882,38 @@ const wagonColors = [
           slot++;
         } else {
           // Wagon is waiting stationary at its pickup point
-          positionPiece(wagonEl, tempPath, pickupDist, wagonHalfW, wagonHalfH);
+          positionPiece(wagonEl, measurePath, pickupDist, wagonHalfW, wagonHalfH);
         }
       }
-
-      svg.removeChild(tempPath);
     }
 
-    // Initial compute
-    computeTrack();
-    animateTrain();
+    // Continuously interpolates current position to target for buttery smooth easing
+    function animationLoop() {
+      const diff = targetProgress - currentProgress;
 
-    // Scroll handler
-    let ticking = false;
-    window.addEventListener("scroll", () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          animateTrain();
-          ticking = false;
-        });
-        ticking = true;
+      if (Math.abs(diff) > 0.0001) {
+        currentProgress += diff * lerpFactor;
+        renderTrainPosition();
       }
-    });
+
+      requestAnimationFrame(animationLoop);
+    }
+
+    // Initial setup
+    computeTrack();
+    updateTargetProgress();
+    currentProgress = targetProgress; // Snap to correct position on load
+    renderTrainPosition();
+    requestAnimationFrame(animationLoop);
+
+    // Instead of rendering instantly, we just calculate the target goal on scroll
+    window.addEventListener(
+      "scroll",
+      () => {
+        updateTargetProgress();
+      },
+      { passive: true }
+    );
 
     // Resize handler
     let resizeTimeout: ReturnType<typeof setTimeout>;
@@ -914,7 +921,9 @@ const wagonColors = [
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
         computeTrack();
-        animateTrain();
+        updateTargetProgress();
+        currentProgress = targetProgress; // Instantly adjust to new layout proportions
+        renderTrainPosition();
       }, 200);
     });
   });
