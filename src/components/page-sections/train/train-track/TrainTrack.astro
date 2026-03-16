@@ -293,6 +293,167 @@ const wagonColors = [
             </g>
           </svg>
         </div>
+
+        <div
+          class="train-piece"
+          id="tunnel-piece"
+          style="display: none; z-index: 20;"
+        >
+          <svg
+            class="train-tunnel"
+            width="200"
+            height="140"
+            viewBox="-100 -70 200 140"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g>
+              <circle
+                cx="-50"
+                cy="-35"
+                r="16"
+                fill="#81c784"
+              />
+              <circle
+                cx="-20"
+                cy="-40"
+                r="20"
+                fill="#a5d6a7"
+              />
+              <circle
+                cx="10"
+                cy="-38"
+                r="15"
+                fill="#81c784"
+              />
+              <circle
+                cx="45"
+                cy="-35"
+                r="18"
+                fill="#66bb6a"
+              />
+              <circle
+                cx="-45"
+                cy="35"
+                r="18"
+                fill="#66bb6a"
+              />
+              <circle
+                cx="-10"
+                cy="40"
+                r="22"
+                fill="#81c784"
+              />
+              <circle
+                cx="30"
+                cy="38"
+                r="16"
+                fill="#a5d6a7"
+              />
+              <circle
+                cx="55"
+                cy="30"
+                r="14"
+                fill="#81c784"
+              />
+
+              <circle
+                cx="-25"
+                cy="-42"
+                r="3"
+                fill="#ffeb3b"
+              />
+              <circle
+                cx="35"
+                cy="40"
+                r="3"
+                fill="#ff4081"
+              />
+              <circle
+                cx="-15"
+                cy="48"
+                r="2.5"
+                fill="#ffeb3b"
+              />
+            </g>
+
+            <rect
+              x="-60"
+              y="-28"
+              width="120"
+              height="56"
+              rx="4"
+              fill="var(--train-gray)"
+              stroke="var(--train-dark)"
+              stroke-width="3"
+            />
+
+            <rect
+              x="-52"
+              y="-20"
+              width="104"
+              height="40"
+              rx="2"
+              fill="none"
+              stroke="var(--train-dark)"
+              stroke-width="1"
+              opacity="0.3"
+            />
+
+            <g fill="var(--train-dark)">
+              <circle
+                cx="-40"
+                cy="-24"
+                r="2"
+              />
+              <circle
+                cx="-20"
+                cy="-24"
+                r="2"
+              />
+              <circle
+                cx="0"
+                cy="-24"
+                r="2"
+              />
+              <circle
+                cx="20"
+                cy="-24"
+                r="2"
+              />
+              <circle
+                cx="40"
+                cy="-24"
+                r="2"
+              />
+
+              <circle
+                cx="-40"
+                cy="24"
+                r="2"
+              />
+              <circle
+                cx="-20"
+                cy="24"
+                r="2"
+              />
+              <circle
+                cx="0"
+                cy="24"
+                r="2"
+              />
+              <circle
+                cx="20"
+                cy="24"
+                r="2"
+              />
+              <circle
+                cx="40"
+                cy="24"
+                r="2"
+              />
+            </g>
+          </svg>
+        </div>
       </div>
     </CustomSection>
   )
@@ -396,7 +557,6 @@ const wagonColors = [
     function updateOverlaySize() {
       if (!mainEl || !overlay || !svg) return;
       const mainRect = mainEl.getBoundingClientRect();
-      // No extra height needed - track ends inside the CTA section
       const mainHeight = mainEl.scrollHeight;
 
       overlay.style.position = "absolute";
@@ -408,6 +568,13 @@ const wagonColors = [
       svg.setAttribute("width", String(mainRect.width));
       svg.setAttribute("height", String(mainHeight));
       svg.setAttribute("viewBox", `0 0 ${mainRect.width} ${mainHeight}`);
+
+      const tunnelSvg = document.getElementById("tunnel-svg");
+      if (tunnelSvg) {
+        tunnelSvg.setAttribute("width", String(mainRect.width));
+        tunnelSvg.setAttribute("height", String(mainHeight));
+        tunnelSvg.setAttribute("viewBox", `0 0 ${mainRect.width} ${mainHeight}`);
+      }
     }
 
     const sectionIds = ["hero", "about", "features", "projects", "community", "cta"];
@@ -710,27 +877,27 @@ const wagonColors = [
     // Computed after building the path, based on section positions.
     let pickupDistances: number[] = [];
 
-    function computePickupDistances(sections: SectionInfo[]) {
-      if (!trackPathD || trackTotalLength === 0 || !measurePath) return;
+    function computePickupDistances(sections) {
+      if (!trackPathD || trackTotalLength === 0 || !measurePath || !mainEl) return;
 
-      if (!mainEl) {
-        return;
-      }
-      const mainTop = mainEl.getBoundingClientRect().top + window.scrollY;
-
-      // For each pickup section, find the path distance closest to its top
       pickupDistances = [];
-      for (const sectionId of pickupSections) {
+      for (let i = 0; i < pickupSections.length; i++) {
+        const sectionId = pickupSections[i];
         const section = sections.find((s) => s.id === sectionId);
         if (!section) {
           pickupDistances.push(0);
           continue;
         }
 
-        // Target Y: near the vertical center of the section (aligned with heading)
-        const targetY = section.top + section.height * 0.35;
+        // Default vertical alignment (35% down the section)
+        let targetY = section.top + section.height * 0.35;
 
-        // Binary-search-ish: sample along path to find closest Y
+        // NEW: If it's the 4th wagon (purple, index 3),
+        // nudge it 500px higher so it stays clear of the tunnel
+        if (i === 3) {
+          targetY -= 150;
+        }
+
         let bestDist = 0;
         let bestDelta = Infinity;
         const step = 20;
@@ -742,7 +909,8 @@ const wagonColors = [
             bestDist = d;
           }
         }
-        // Refine
+
+        // Refine the distance
         const start = Math.max(0, bestDist - step);
         const end = Math.min(trackTotalLength, bestDist + step);
         for (let d = start; d <= end; d += 2) {
@@ -758,6 +926,52 @@ const wagonColors = [
       }
     }
 
+    let flipStartDist = 0;
+    let flipEndDist = 0;
+
+    function findDistanceForY(targetY) {
+      let bestDist = 0;
+      let bestDelta = Infinity;
+      for (let d = 0; d <= trackTotalLength; d += 10) {
+        const pt = measurePath.getPointAtLength(d);
+        const delta = Math.abs(pt.y - targetY);
+        if (delta < bestDelta) {
+          bestDelta = delta;
+          bestDist = d;
+        }
+      }
+      return bestDist;
+    }
+
+    function positionTunnel(dist) {
+      const tunnelEl = document.getElementById("tunnel-piece");
+      if (!tunnelEl || !measurePath) return;
+
+      tunnelEl.style.display = "block";
+
+      const pt = measurePath.getPointAtLength(dist);
+      const pt2 = measurePath.getPointAtLength(Math.min(dist + 1, trackTotalLength));
+      const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * (180 / Math.PI);
+
+      tunnelEl.style.transform = `translate(${pt.x - 100}px, ${pt.y - 100}px) rotate(${angle}deg)`;
+    }
+
+    function computeFlipPoints(sections) {
+      if (!measurePath || trackTotalLength === 0) return;
+
+      const features = sections.find((s) => s.id === "features");
+      const community = sections.find((s) => s.id === "community");
+
+      if (features) {
+        flipStartDist = findDistanceForY(features.midY + 100);
+      }
+
+      if (community) {
+        flipEndDist = findDistanceForY(community.midY + 10);
+        positionTunnel(flipEndDist);
+      }
+    }
+
     function computeTrack() {
       if (!mainEl || !svg) return;
       const mainRect = mainEl.getBoundingClientRect();
@@ -770,7 +984,6 @@ const wagonColors = [
 
       if (trackPathD) {
         const ns = "http://www.w3.org/2000/svg";
-        // Create a reusable path for highly efficient frame-by-frame measurement
         if (!measurePath) {
           measurePath = document.createElementNS(ns, "path");
           measurePath.setAttribute("fill", "none");
@@ -782,6 +995,7 @@ const wagonColors = [
       }
 
       computePickupDistances(sections);
+      computeFlipPoints(sections);
     }
 
     function positionPiece(
@@ -796,7 +1010,13 @@ const wagonColors = [
       const pt2 = referencePath.getPointAtLength(Math.min(clampedDist + 1, trackTotalLength));
       const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * (180 / Math.PI);
 
-      el.style.transform = `translate(${pt.x - halfW}px, ${pt.y - halfH}px) rotate(${angle}deg) rotate(180deg)`;
+      const isFlipped =
+        flipStartDist > 0 &&
+        flipEndDist > 0 &&
+        clampedDist > flipStartDist &&
+        clampedDist < flipEndDist;
+
+      el.style.transform = `translate(${pt.x - halfW}px, ${pt.y - halfH}px) rotate(${angle}deg) rotate(180deg) ${isFlipped ? "scaleY(-1)" : ""}`;
     }
 
     function updateTargetProgress() {
@@ -812,8 +1032,8 @@ const wagonColors = [
       let rawProgress = scrollRange > 0 ? (scrollTop - mainTop) / scrollRange : 0;
       rawProgress = Math.max(0, Math.min(1, rawProgress));
 
-      const trainStart = 0.15;
-      const trainEnd = 1.05;
+      const trainStart = 0.11;
+      const trainEnd = 1.03;
       let progress = (rawProgress - trainStart) / (trainEnd - trainStart);
       targetProgress = Math.max(0, Math.min(1, progress));
     }
