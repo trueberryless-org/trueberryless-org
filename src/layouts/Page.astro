@@ -1,48 +1,19 @@
 ---
 import Footer from "@components/navigation/footer/Footer.astro";
 import MainNavigation from "@components/navigation/main-nav/MainNav.astro";
-import MainComponent from "@components/utils/MainComponent.astro";
 import footerData from "@data/footer.json";
 import mainNavData from "@data/mainNav.json";
 import Layout from "@layouts/BaseLayout.astro";
 
-import type { ContentBlock } from "../types";
-
 type Props = {
-  frontmatter?: {
-    title: string;
-    description?: string;
-    keywords?: string[];
-    image?: string;
-    canonical?: string;
-    pageSections?: ContentBlock[];
-  };
-  title?: string;
+  title: string;
   description?: string;
   keywords?: string[];
   image?: string;
   canonical?: string;
-  mainNav?: Record<string, unknown>;
-  footer?: Record<string, unknown>;
 };
 
-const {
-  frontmatter,
-  title: titleProp,
-  description: descriptionProp,
-  keywords: keywordsProp,
-  image: imageProp,
-  canonical: canonicalProp,
-  mainNav = mainNavData,
-  footer = footerData,
-} = Astro.props as Props;
-
-const title = frontmatter?.title ?? titleProp ?? "";
-const description = frontmatter?.description ?? descriptionProp;
-const keywords = frontmatter?.keywords ?? keywordsProp;
-const image = frontmatter?.image ?? imageProp;
-const canonical = frontmatter?.canonical ?? canonicalProp;
-const sections = frontmatter?.pageSections ?? [];
+const { title, description, keywords, image, canonical } = Astro.props;
 ---
 
 <Layout
@@ -52,21 +23,10 @@ const sections = frontmatter?.pageSections ?? [];
   image={image}
   canonical={canonical}
 >
-  <MainNavigation {...mainNav} />
+  <MainNavigation {...mainNavData} />
 
   <main>
-    {
-      sections.length > 0 && (
-        <div
-          data-editable="component"
-          data-component="utils/main-component"
-          data-prop-sections="pageSections"
-        >
-          <MainComponent sections={sections} />
-        </div>
-      )
-    }
     <slot />
   </main>
-  <Footer {...footer} />
+  <Footer {...footerData} />
 </Layout>

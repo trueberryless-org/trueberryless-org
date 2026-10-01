@@ -1,24 +1,15 @@
 ---
-import Component from "@components/utils/renderBlock.astro";
+import Button from "@core-elements/button/Button.astro";
 import { slugifyLabel } from "@components/utils/slugify";
 
 const {
   direction = "row",
   alignX = "start",
-  buttonSections,
-  "data-children-prop": childrenDataProp,
-  useDefaultEditableBinding = false,
+  buttonSections = [],
   class: className,
   label,
-  _component,
   ...htmlAttributes
 } = Astro.props;
-
-const effectiveChildrenProp =
-  childrenDataProp ?? (useDefaultEditableBinding ? "buttonSections" : null);
-const arrayDataAttributes = effectiveChildrenProp
-  ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
-  : {};
 
 if (!htmlAttributes.id && label) {
   htmlAttributes.id = slugifyLabel(label);
@@ -32,29 +23,18 @@ const alignMap = {
 
 const alignClass = alignMap[alignX as keyof typeof alignMap] ?? "align-start";
 
-const hasButtonSections = buttonSections?.length > 0;
-const hasSlotContent = Astro.slots.has("default");
-
-if (!_component && !hasButtonSections && !hasSlotContent) return;
+if (buttonSections.length === 0 && !Astro.slots.has("default")) return;
 ---
 
 <div
   class:list={["button-group", className]}
   {...htmlAttributes}
 >
-  <div
-    class:list={["button-group__items", direction === "column" ? "column" : "row", alignClass]}
-    {...arrayDataAttributes}
-  >
+  <div class:list={["button-group__items", direction === "column" ? "column" : "row", alignClass]}>
     <slot>
-      {
-        buttonSections && buttonSections.length > 0 && (
-          <Component
-            contentSections={buttonSections}
-            useDefaultEditableBinding={!!effectiveChildrenProp}
-          />
-        )
-      }
+      {buttonSections.map((button) => (
+        <Button {...button} />
+      ))}
     </slot>
   </div>
 </div>

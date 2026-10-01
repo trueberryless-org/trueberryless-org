@@ -20,8 +20,6 @@ const {
   backgroundColor,
   paddingVertical = "4xl",
   class: className,
-  useDefaultEditableBinding = false,
-  _component,
   ...htmlAttributes
 } = Astro.props;
 ---
@@ -33,7 +31,6 @@ const {
   paddingVertical={paddingVertical}
   colorScheme={colorScheme}
   backgroundColor={backgroundColor}
-  useDefaultEditableBinding={useDefaultEditableBinding}
   id="projects"
   {...htmlAttributes}
 >
@@ -41,65 +38,56 @@ const {
     <div class="train-projects-content">
       <SimpleText
         class="train-projects-eyebrow"
-        data-prop="eyebrow"
         text={eyebrow}
       />
       <Heading
         level="h2"
         size="xl"
-        data-prop="heading"
       >
         {heading}
       </Heading>
       <Text
         class="train-projects-subtext"
-        data-prop="subtext"
         text={subtext}
       />
 
-      <div
-        class="train-projects-list"
-        data-children-prop="projects"
-      >
-        {
-          projects.map((project: ProjectItem) => (
-            <a
-              href={project.link || "#"}
-              class="train-project-item"
-              data-editable="array-item"
-            >
-              <div class="train-project-info">
-                <div class="train-project-name-row">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="var(--blue-500)"
-                    aria-hidden="true"
-                  >
-                    <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9z" />
-                  </svg>
-                  <span class="train-project-name">{project.name}</span>
-                </div>
-                <p class="train-project-desc">{project.description}</p>
+      <div class="train-projects-list">
+        {projects.map((project: ProjectItem) => (
+          <a
+            href={project.link || "#"}
+            class="train-project-item"
+          >
+            <div class="train-project-info">
+              <div class="train-project-name-row">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="var(--blue-500)"
+                  aria-hidden="true"
+                >
+                  <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9z" />
+                </svg>
+                <span class="train-project-name">{project.name}</span>
               </div>
-              {project.stars && (
-                <div class="train-project-stars">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 16 16"
-                    fill="var(--yellow-500)"
-                    aria-hidden="true"
-                  >
-                    <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z" />
-                  </svg>
-                  <span>{project.stars}</span>
-                </div>
-              )}
-            </a>
-          ))
-        }
+              <p class="train-project-desc">{project.description}</p>
+            </div>
+            {project.stars && (
+              <div class="train-project-stars">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 16 16"
+                  fill="var(--yellow-500)"
+                  aria-hidden="true"
+                >
+                  <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z" />
+                </svg>
+                <span>{project.stars}</span>
+              </div>
+            )}
+          </a>
+        ))}
       </div>
     </div>
     <div class="train-projects-track-space"></div>

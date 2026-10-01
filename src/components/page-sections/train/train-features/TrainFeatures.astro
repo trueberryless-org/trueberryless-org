@@ -19,8 +19,6 @@ const {
   backgroundColor,
   paddingVertical = "4xl",
   class: className,
-  useDefaultEditableBinding = false,
-  _component,
   ...htmlAttributes
 } = Astro.props;
 ---
@@ -32,7 +30,6 @@ const {
   paddingVertical={paddingVertical}
   colorScheme={colorScheme}
   backgroundColor={backgroundColor}
-  useDefaultEditableBinding={useDefaultEditableBinding}
   id="features"
   {...htmlAttributes}
 >
@@ -41,54 +38,43 @@ const {
       <SimpleText
         class="train-features-eyebrow"
         alignX="center"
-        data-prop="eyebrow"
         text={eyebrow}
       />
       <Heading
         level="h2"
         size="xl"
         alignX="center"
-        data-prop="heading"
       >
         {heading}
       </Heading>
       <Text
         class="train-features-subtext"
         alignX="center"
-        data-prop="subtext"
         text={subtext}
       />
     </div>
 
-    <div
-      class="train-features-grid"
-      data-children-prop="features"
-    >
-      {
-        features.map((feature: FeatureItem & { link?: string }) => (
-          <a
-            href={feature.link}
-            class="train-feature-card-link"
-            style="text-decoration: none; color: inherit;"
-          >
-            <div
-              class="train-feature-card"
-              data-editable="array-item"
-            >
-              <div class="train-feature-icon">
-                <Fragment
-                  set:html={
-                    feature.icon ||
-                    `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="var(--blue-100)"/><path d="M16 8l6 10H10l6-10z" fill="var(--blue-500)"/></svg>`
-                  }
-                />
-              </div>
-              <h3 class="train-feature-title">{feature.title}</h3>
-              <p class="train-feature-desc">{feature.description}</p>
+    <div class="train-features-grid">
+      {features.map((feature: FeatureItem & { link?: string }) => (
+        <a
+          href={feature.link}
+          class="train-feature-card-link"
+          style="text-decoration: none; color: inherit;"
+        >
+          <div class="train-feature-card">
+            <div class="train-feature-icon">
+              <Fragment
+                set:html={
+                  feature.icon ||
+                  `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="var(--blue-100)"/><path d="M16 8l6 10H10l6-10z" fill="var(--blue-500)"/></svg>`
+                }
+              />
             </div>
-          </a>
-        ))
-      }
+            <h3 class="train-feature-title">{feature.title}</h3>
+            <p class="train-feature-desc">{feature.description}</p>
+          </div>
+        </a>
+      ))}
     </div>
 
     <!-- Mobile floating yellow wagon (absolute positioned decoration) -->

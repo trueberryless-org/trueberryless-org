@@ -1,0 +1,27 @@
+---
+import TrainAbout from "@page-sections/train/train-about/TrainAbout.astro";
+import TrainCommunity from "@page-sections/train/train-community/TrainCommunity.astro";
+import TrainCta from "@page-sections/train/train-cta/TrainCta.astro";
+import TrainFeatures from "@page-sections/train/train-features/TrainFeatures.astro";
+import TrainHero from "@page-sections/train/train-hero/TrainHero.astro";
+import TrainProjects from "@page-sections/train/train-projects/TrainProjects.astro";
+import TrainTrack from "@page-sections/train/train-track/TrainTrack.astro";
+import Page from "@layouts/Page.astro";
+
+import { about, community, cta, features, hero, projects, track } from "../data/home";
+---
+
+<Page
+  title="trueberryless-org"
+  description="High-performance engines and modular blueprints for the modern developer ecosystem."
+>
+  <div data-pagefind-body>
+    <TrainTrack {...track} />
+    <TrainHero {...hero} />
+    <TrainAbout {...about} />
+    <TrainFeatures {...features} />
+    <TrainProjects {...projects} />
+    <TrainCommunity {...community} />
+    <TrainCta {...cta} />
+  </div>
+</Page>

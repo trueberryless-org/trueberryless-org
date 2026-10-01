@@ -1,31 +1,17 @@
 ---
 import MarkdownIt from "markdown-it";
 
-const {
-  text,
-  size = "md",
-  alignX = "start",
-  class: className,
-  useDefaultEditableBinding = false,
-  "data-prop": customDataProp,
-  _component,
-  ...htmlAttributes
-} = Astro.props;
+const { text, size = "md", alignX = "start", class: className, ...htmlAttributes } = Astro.props;
 
 const md = MarkdownIt({ html: true });
 let MarkdownText = text ? md.renderInline(text) : "";
 
 MarkdownText = MarkdownText.replace(/\n/g, "<br />");
 
-const effectiveDataProp = customDataProp ?? (useDefaultEditableBinding ? "text" : null);
-const textDataAttributes = effectiveDataProp
-  ? { "data-editable": "text", "data-prop": effectiveDataProp }
-  : {};
-
 const hasText = text?.trim().length > 0;
 const hasSlotContent = Astro.slots.has("default");
 
-if (!_component && !hasText && !hasSlotContent) return;
+if (!hasText && !hasSlotContent) return;
 ---
 
 <div
@@ -33,13 +19,8 @@ if (!_component && !hasText && !hasSlotContent) return;
   {...htmlAttributes}
 >
   <p class:list={["simple-text-content", size && `size-${size}`, `align-${alignX}`]}>
-    <span
-      class="simple-text-inner"
-      {...textDataAttributes}
-    >
-      <slot>
-        {text && <Fragment set:html={MarkdownText} />}
-      </slot>
+    <span class="simple-text-inner">
+      <slot>{text && <Fragment set:html={MarkdownText} />}</slot>
     </span>
   </p>
 </div>

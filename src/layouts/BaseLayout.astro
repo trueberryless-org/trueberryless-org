@@ -15,7 +15,10 @@ export interface Props {
 const props = Astro.props;
 const formattedTitle = seoData.titleFormat.replace("{title}", props.title);
 const pageDescription = props.description || seoData.description;
-const pageImage = props.image || seoData.ogImage || seoData.logoSource;
+const pageImage = new URL(
+  props.image || seoData.ogImage || seoData.logoSource,
+  Astro.site ?? Astro.url
+).href;
 ---
 
 <!doctype html>
@@ -42,20 +45,12 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
       @layer reset, base, components, page-sections, utils, overrides;
     </style>
 
-    {
-      import.meta.env.DEV ? (
-        <script
-          type="module"
-          src="/@vite/client"
-        />
-      ) : null
-    }
-
-    <script>
-      if (window.inEditorMode) {
-        import("../../live-editing");
-      }
-    </script>
+    {import.meta.env.DEV ? (
+      <script
+        type="module"
+        src="/@vite/client"
+      />
+    ) : null}
 
     <SEO
       title={formattedTitle}
@@ -423,28 +418,23 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
       <div
         class="loader-backdrop"
         style="background:#ab47bc; z-index:9004"
-      >
-      </div>
+      ></div>
       <div
         class="loader-backdrop"
         style="background:#66bb6a; z-index:9003"
-      >
-      </div>
+      ></div>
       <div
         class="loader-backdrop"
         style="background:#ef4444; z-index:9002"
-      >
-      </div>
+      ></div>
       <div
         class="loader-backdrop"
         style="background:#fbbf24; z-index:9001"
-      >
-      </div>
+      ></div>
       <div
         class="loader-backdrop"
         style="background:#2563eb; z-index:9000"
-      >
-      </div>
+      ></div>
     </div>
 
     <style is:inline>
@@ -831,13 +821,8 @@ const pageImage = props.image || seoData.ogImage || seoData.logoSource;
         updateTrainPosition(getTrainX(0));
       })();
     </script>
-
     <div>
       <slot />
     </div>
-    <script>
-      import "@choctawnationofoklahoma/lite-vimeo";
-      import "@justinribeiro/lite-youtube";
-    </script>
   </body>
 </html>
