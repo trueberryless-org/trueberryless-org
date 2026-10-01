@@ -10,16 +10,8 @@ const {
   iconName,
   iconPosition = "before",
   class: className,
-  useDefaultEditableBinding = false,
-  "data-prop": customDataProp,
-  _component,
   ...htmlAttributes
 } = Astro.props;
-
-const effectiveDataProp = customDataProp ?? (useDefaultEditableBinding ? "text" : null);
-const textDataAttributes = effectiveDataProp
-  ? { "data-editable": "text", "data-prop": effectiveDataProp }
-  : {};
 
 const md = MarkdownIt({ html: true });
 let MarkdownText = text ? md.renderInline(text) : "";
@@ -30,7 +22,7 @@ const Tag = level;
 const hasText = text?.trim().length > 0;
 const hasSlotContent = Astro.slots.has("default");
 
-if (!_component && !hasText && !hasSlotContent) return;
+if (!hasText && !hasSlotContent) return;
 ---
 
 <Tag
@@ -47,10 +39,7 @@ if (!_component && !hasText && !hasSlotContent) return;
         role="presentation"
       />
     )}
-    <span
-      class="heading-text"
-      {...textDataAttributes}
-    >
+    <span class="heading-text">
       <slot>{text && <Fragment set:html={MarkdownText} />}</slot>
     </span>
     {iconPosition === "after" && (

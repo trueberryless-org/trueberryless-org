@@ -34,31 +34,17 @@ const {
   positionVertical = "center",
   positionHorizontal = "center",
   background = false,
-  useDefaultEditableBinding = false,
   class: className,
-  "data-prop-src": customDataPropSrc,
-  "data-prop-alt": customDataPropAlt,
-  "data-editable": customDataEditable,
-  _component,
   ...htmlAttributes
 } = Astro.props;
 
 const hasValidSrc = source && typeof source === "string" && source.trim() !== "";
 
-if (!_component && !hasValidSrc) {
+if (!hasValidSrc) {
   return;
 }
 
 const normalizedAlt = alt || "";
-const isEditable =
-  useDefaultEditableBinding || customDataPropSrc != null || customDataPropAlt != null;
-const dataAttributes = isEditable
-  ? {
-      "data-editable": customDataEditable || "image",
-      "data-prop-src": customDataPropSrc || "source",
-      "data-prop-alt": customDataPropAlt || "alt",
-    }
-  : {};
 
 const positionClass = `position-${positionVertical}-${positionHorizontal}`;
 const isLocalSource = typeof source === "string" && source.startsWith("/src/");
@@ -165,7 +151,6 @@ if (
         loading={priority ? "eager" : "lazy"}
         decoding={priority ? "sync" : "async"}
         fetchpriority={priority ? "high" : undefined}
-        {...dataAttributes}
       />
     ) : (
       <picture>
@@ -177,7 +162,6 @@ if (
           fetchpriority={priority ? "high" : undefined}
           width={width}
           height={height}
-          {...dataAttributes}
         />
       </picture>
     )}

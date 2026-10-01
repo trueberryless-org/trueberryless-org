@@ -1,6 +1,0 @@
-name:
-  type: text
-  comment: The name attribute for the hidden input field.
-value:
-  type: text
-  comment: The value to be stored in the hidden field.

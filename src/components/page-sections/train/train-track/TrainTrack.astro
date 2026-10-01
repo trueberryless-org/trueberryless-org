@@ -7,8 +7,6 @@ const {
   backgroundColor,
   paddingVertical = "none",
   class: className,
-  useDefaultEditableBinding = false,
-  _component,
   ...htmlAttributes
 } = Astro.props;
 
@@ -33,7 +31,6 @@ const wagonColors = [
     paddingVertical="none"
     colorScheme={colorScheme}
     backgroundColor="none"
-    useDefaultEditableBinding={useDefaultEditableBinding}
     {...htmlAttributes}
   >
     <div

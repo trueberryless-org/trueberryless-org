@@ -20,8 +20,6 @@ const {
   backgroundColor,
   paddingVertical = "4xl",
   class: className,
-  useDefaultEditableBinding = false,
-  _component,
   ...htmlAttributes
 } = Astro.props;
 ---
@@ -33,7 +31,6 @@ const {
   paddingVertical={paddingVertical}
   colorScheme={colorScheme}
   backgroundColor={backgroundColor}
-  useDefaultEditableBinding={useDefaultEditableBinding}
   id="projects"
   {...htmlAttributes}
 >
@@ -41,31 +38,24 @@ const {
     <div class="train-projects-content">
       <SimpleText
         class="train-projects-eyebrow"
-        data-prop="eyebrow"
         text={eyebrow}
       />
       <Heading
         level="h2"
         size="xl"
-        data-prop="heading"
       >
         {heading}
       </Heading>
       <Text
         class="train-projects-subtext"
-        data-prop="subtext"
         text={subtext}
       />
 
-      <div
-        class="train-projects-list"
-        data-children-prop="projects"
-      >
+      <div class="train-projects-list">
         {projects.map((project: ProjectItem) => (
           <a
             href={project.link || "#"}
             class="train-project-item"
-            data-editable="array-item"
           >
             <div class="train-project-info">
               <div class="train-project-name-row">

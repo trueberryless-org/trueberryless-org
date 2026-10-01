@@ -43,10 +43,6 @@ test.describe("landing page", () => {
     expect(overflow).toBeLessThanOrEqual(0);
   });
 
-  test("excludes the component library from the build", async ({ request }) => {
-    expect((await request.get("/component-docs/")).status()).toBe(404);
-  });
-
   test("has no accessibility violations", async ({ page }) => {
     const { violations } = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21aa"])

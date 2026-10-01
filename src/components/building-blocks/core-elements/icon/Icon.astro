@@ -8,14 +8,12 @@ const {
   background = false,
   alignX = "",
   class: className,
-  useDefaultEditableBinding: _useDefaultEditableBinding = false,
-  _component,
   ...htmlAttributes
 } = Astro.props;
 
 const isValidName = name && typeof name === "string" && name.trim();
 
-if (!_component && !isValidName) {
+if (!isValidName) {
   return;
 }
 ---

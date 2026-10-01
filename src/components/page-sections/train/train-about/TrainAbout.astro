@@ -13,8 +13,6 @@ const {
   backgroundColor,
   paddingVertical = "4xl",
   class: className,
-  useDefaultEditableBinding = false,
-  _component,
   ...htmlAttributes
 } = Astro.props;
 ---
@@ -26,7 +24,6 @@ const {
   paddingVertical={paddingVertical}
   colorScheme={colorScheme}
   backgroundColor={backgroundColor}
-  useDefaultEditableBinding={useDefaultEditableBinding}
   id="about"
   {...htmlAttributes}
 >
@@ -246,24 +243,20 @@ const {
     <div class="train-about-content">
       <SimpleText
         class="train-about-eyebrow"
-        data-prop="eyebrow"
         text={eyebrow}
       />
       <Heading
         level="h2"
         size="xl"
-        data-prop="heading"
       >
         {heading}
       </Heading>
       <Text
         class="train-about-subtext"
-        data-prop="subtext"
         text={subtext}
       />
       <Text
         class="train-about-description"
-        data-prop="description"
         text={description}
       />
     </div>

@@ -1,20 +1,5 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": [
-    "live-editing.js",
-    "src/pages/**/*.astro",
-    "src/components/**/*.astro",
-    "src/component-docs/**/*.{astro,ts}",
-    "tests/**/*.{test,spec}.ts"
-  ],
-  "ignoreIssues": {
-    "src/types.ts": ["types"],
-    "src/component-docs/layouts/SidebarNavLayout.astro": ["unlisted"]
-  },
-  "ignoreDependencies": [
-    "@choctawnationofoklahoma/lite-vimeo",
-    "@justinribeiro/lite-youtube",
-    "lightningcss"
-  ],
-  "ignore": [".cloudcannon/schemas/**", "src/component-docs/components/ComponentViewer/script.js"]
+  "entry": ["src/pages/**/*.astro", "tests/**/*.{test,spec}.ts"],
+  "ignoreDependencies": ["lightningcss"]
 }

@@ -7,77 +7,51 @@ Welcome to the central station of the **trueberryless-org** ecosystem. This repo
 
 Originally built to manage complex deployments on Rocky Linux via ArgoCD, this project has evolved into a streamlined, open-source hub. By migrating our pipeline to **Netlify**, we’ve moved away from manual server management and complex manifest files in favor of a high-velocity, automated track.
 
-## 🛠 Built with Purpose
+## Built with Astro
 
-This site is built using a highly customized version of the **Astro Component Starter**. It leverages a modular "train-and-wagon" architecture where every UI element is engineered for momentum and visual editing via [CloudCannon](https://cloudcannon.com/).
+The site is a plain [Astro](https://astro.build) site. The landing page is `src/pages/index.astro`, which renders the sections of the "train" theme (`src/components/page-sections/train/`) with the content from `src/data/home.ts`. The look is driven by CSS variables in `src/styles/`, so the theme can be changed without touching the components.
 
-### Key Engineering Features:
+Earlier versions were built with the CloudCannon component starter. The visual editor, the component library with its builder and the generic block renderer are gone, the components that the page does not use were removed, and the content moved from front matter to a typed data file.
 
-- **Starlight Integration:** Seamlessly connects to our fleet of Starlight plugins.
-- **Automated Sync:** Managed via our `template-files` engine to ensure standardized workflows and configurations across the org.
-- **Unbranded Foundation:** While the theme is currently "Train-focused," the underlying system is built on CSS variables, allowing for rapid identity shifts.
+- **Starlight integration:** the page links to our fleet of Starlight plugins.
+- **Automated sync:** standardized workflows and configuration across the organization are managed by the `template-files` repository.
 
-## 🚀 Quick Start
-
-To get this "locomotive" running locally:
+## Quick start
 
 ```bash
-# Clone the repository
 git clone https://github.com/trueberryless-org/trueberryless-org
-
-# Install dependencies
 pnpm install
-
-# Start the engine
 pnpm dev
 ```
 
-Your site is now running at `http://localhost:4321`.
+The site runs at `http://localhost:4321`.
 
-**Component Docs:** Access the visual builder and documentation at `http://localhost:4321/component-docs/`.
-
-## 📦 The Blueprint
-
-We follow the **Three-File Pattern**, ensuring that developers keep control of the code while editors can visually manage content.
-
-```
-src/components/.../train-hero/
-├── TrainHero.astro                   # The locomotive (Logic/Markup)
-├── train-hero.cloudcannon.inputs.yml # The control panel (Editor inputs)
-└── train-hero.cloudcannon.structure-value.yml # The manifest (Defaults)
-```
-
-### Directory Map
+## Project structure
 
 ```
 src/
-├── components/          # 40+ modular wagons (Hero, Features, Projects)
-│   ├── building-blocks/ # Core UI: buttons, headings, layout
-│   └── page-sections/   # Full-width train sections
-├── content/             # Markdown-driven pages and blog posts
-├── styles/              # Design tokens and theme variables
-└── component-docs/      # Built-in visual component library
+├── components/
+│   ├── building-blocks/  # buttons, headings, icons, images, text
+│   ├── navigation/       # main navigation, mobile menu, footer
+│   └── page-sections/    # the train sections of the landing page
+├── data/                 # landing page content, navigation, footer, SEO
+├── layouts/              # base layout and page layout
+├── pages/                # index.astro
+└── styles/               # design tokens and themes
 ```
 
-## 🛠 Dev and Build Commands
+## Commands
 
-| Command                      | Description                                |
-| ---------------------------- | ------------------------------------------ |
-| `pnpm dev`                   | Start the development server               |
-| `pnpm build`                 | Production build (Excludes component docs) |
-| `pnpm build:with-library` | Production build (Includes component docs) |
-
-### Quality checks
-
-| Command             | Description                                                              |
-| ------------------- | ------------------------------------------------------------------------ |
-| `pnpm check`        | Sync content collections and validate them against their schemas         |
-| `pnpm lint`         | Lint scripts with oxlint and styles with stylelint                       |
-| `pnpm format:check` | Check formatting with Prettier                                           |
-| `pnpm knip`         | Find unused files and dependencies                                       |
-| `pnpm test`         | Unit tests with Vitest                                                   |
-| `pnpm test:e2e`     | Build, then run the Playwright end-to-end tests against the landing page |
-
+| Command             | Description                                          |
+| ------------------- | ---------------------------------------------------- |
+| `pnpm dev`          | Start the development server                         |
+| `pnpm build`        | Production build                                     |
+| `pnpm check`        | Sync the Astro types                                 |
+| `pnpm lint`         | Lint scripts with oxlint and styles with stylelint   |
+| `pnpm format:check` | Check formatting with Prettier                       |
+| `pnpm knip`         | Find unused files and dependencies                   |
+| `pnpm test`         | Unit tests with Vitest                               |
+| `pnpm test:e2e`     | Build, then run the Playwright end-to-end tests      |
 
 ## 🤝 Contributions & Maintenance
 

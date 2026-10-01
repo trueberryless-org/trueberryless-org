@@ -25,7 +25,6 @@
   ],
   "buttonSections": [
     {
-      "_component": "building-blocks/core-elements/button",
       "text": "GitHub",
       "hideText": false,
       "link": "https://github.com/trueberryless-org",

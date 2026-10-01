@@ -1,11 +1,9 @@
 ---
-import Component from "@components/utils/renderBlock.astro";
 import { slugifyLabel } from "@components/utils/slugify";
 import Image from "@core-elements/image/Image.astro";
 
 const {
   label,
-  contentSections,
   maxContentWidth,
   paddingHorizontal,
   paddingVertical = "4xl",
@@ -13,10 +11,7 @@ const {
   backgroundColor,
   backgroundImage,
   rounded = false,
-  useDefaultEditableBinding = false,
   class: className,
-  _component,
-  "data-children-prop": childrenDataProp,
   ...htmlAttributes
 } = Astro.props;
 
@@ -31,14 +26,6 @@ const {
 if (!htmlAttributes.id && label) {
   htmlAttributes.id = slugifyLabel(label);
 }
-
-const hasContentSections = contentSections !== undefined;
-const effectiveChildrenProp =
-  childrenDataProp ?? (useDefaultEditableBinding ? "contentSections" : null);
-const arrayDataAttributes =
-  effectiveChildrenProp && hasContentSections
-    ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
-    : {};
 ---
 
 <section
@@ -54,9 +41,6 @@ const arrayDataAttributes =
       source={source}
       alt={alt}
       priority={priority}
-      useDefaultEditableBinding={hasContentSections && !!effectiveChildrenProp}
-      data-prop-src="backgroundImage.source"
-      data-prop-alt="backgroundImage.alt"
       positionVertical={positionVertical}
       positionHorizontal={positionHorizontal}
       background={true}
@@ -72,16 +56,8 @@ const arrayDataAttributes =
         paddingVertical && `pad-y-${paddingVertical}`,
         maxContentWidth && `max-width-${maxContentWidth}`,
       ]}
-      {...arrayDataAttributes}
     >
-      <slot>
-        {contentSections && (
-          <Component
-            contentSections={contentSections}
-            useDefaultEditableBinding={!!effectiveChildrenProp}
-          />
-        )}
-      </slot>
+      <slot />
     </div>
   </div>
 </section>

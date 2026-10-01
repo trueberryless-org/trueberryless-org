@@ -18,8 +18,6 @@ const {
   backgroundColor,
   paddingVertical = "4xl",
   class: className,
-  useDefaultEditableBinding = false,
-  _component,
   ...htmlAttributes
 } = Astro.props;
 ---
@@ -31,7 +29,6 @@ const {
   paddingVertical={paddingVertical}
   colorScheme={colorScheme}
   backgroundColor={backgroundColor}
-  useDefaultEditableBinding={useDefaultEditableBinding}
   id="community"
   {...htmlAttributes}
 >
@@ -217,31 +214,22 @@ const {
 
       <SimpleText
         class="train-community-eyebrow"
-        data-prop="eyebrow"
         text={eyebrow}
       />
       <Heading
         level="h2"
         size="xl"
-        data-prop="heading"
       >
         {heading}
       </Heading>
       <Text
         class="train-community-subtext"
-        data-prop="subtext"
         text={subtext}
       />
 
-      <div
-        class="train-community-stats"
-        data-children-prop="stats"
-      >
+      <div class="train-community-stats">
         {stats.map((stat: StatItem) => (
-          <div
-            class="train-stat-card"
-            data-editable="array-item"
-          >
+          <div class="train-stat-card">
             <span class="train-stat-value">{stat.value}</span>
             <span class="train-stat-label">{stat.label}</span>
           </div>

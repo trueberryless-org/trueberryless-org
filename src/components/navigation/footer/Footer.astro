@@ -14,8 +14,6 @@ const {
   footerText = "",
   logoSource,
   logoAlt,
-  useDefaultEditableBinding: _useDefaultEditableBinding = false,
-  _component,
   ...htmlAttributes
 } = Astro.props;
 ---
@@ -28,22 +26,16 @@ const {
     maxContentWidth="2xl"
     paddingHorizontal="md"
     paddingVertical="sm"
-    useDefaultEditableBinding={false}
   >
     <div class="footer-content">
       <div class="content-container">
         <Text
           class="footer-legal-text"
           text={footerText || ""}
-          data-prop=""
-          useDefaultEditableBinding={false}
         />
       </div>
       <div class="content-container">
-        <ButtonGroup
-          alignX="end"
-          useDefaultEditableBinding={false}
-        >
+        <ButtonGroup alignX="end">
           {socials.map((social) => (
             <Button
               variant="ghost"
@@ -54,7 +46,6 @@ const {
               aria-label={social.label || `Visit our ${social.icon.replace(/^.*\//, "")} page`}
               target="_blank"
               rel="noopener noreferrer"
-              useDefaultEditableBinding={false}
             />
           ))}
         </ButtonGroup>
