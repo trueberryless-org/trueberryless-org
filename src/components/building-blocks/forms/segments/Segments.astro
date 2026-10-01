@@ -26,61 +26,57 @@ const inputType = multiple ? "checkbox" : "radio";
   aria-labelledby={title ? `${groupId}-legend` : undefined}
   {...htmlAttributes}
 >
-  {
-    title && (
-      <legend
-        id={`${groupId}-legend`}
-        class="legend"
-      >
-        {title}
-        {required && (
-          <span
-            class="segments-required"
-            aria-label="required"
-          >
-            *
-          </span>
-        )}
-      </legend>
-    )
-  }
+  {title && (
+    <legend
+      id={`${groupId}-legend`}
+      class="legend"
+    >
+      {title}
+      {required && (
+        <span
+          class="segments-required"
+          aria-label="required"
+        >
+          *
+        </span>
+      )}
+    </legend>
+  )}
   <div
     class:list={["segments-options", iconOnly && "icon-only", multiple && "multiple"]}
     role="presentation"
   >
-    {
-      options.map((option, index: number) => (
-        <label class="segments-option">
-          <input
-            type={inputType}
-            name={multiple ? `${name}[]` : name}
-            value={option.value}
-            checked={option.checked ? "checked" : undefined}
-            data-checked={option.checked}
-            required={required && index === 0}
-            aria-required={required && index === 0}
-            autocomplete={keepStateOnRefresh ? "on" : "off"}
-            class="segments-field"
-          />
-          <span
-            class="segment"
-            role="button"
-            tabindex="-1"
-            title={iconOnly && option.label ? option.label : undefined}
-          >
-            {option.icon && (
-              <Icon
-                name={option.icon}
-                size="none"
-                class="segment-icon"
-                aria-hidden="true"
-              />
-            )}
-            {option.label && !iconOnly && <span class="segment-label">{option.label}</span>}
-          </span>
-        </label>
-      ))
-    }
+    {options.map((option, index: number) => (
+      <label class="segments-option">
+        <input
+          type={inputType}
+          name={multiple ? `${name}[]` : name}
+          value={option.value}
+          checked={option.checked ? "checked" : undefined}
+          data-checked={option.checked}
+          required={required && index === 0}
+          aria-required={required && index === 0}
+          autocomplete={keepStateOnRefresh ? "on" : "off"}
+          class="segments-field"
+        />
+        <span
+          class="segment"
+          role="button"
+          tabindex="-1"
+          title={iconOnly && option.label ? option.label : undefined}
+        >
+          {option.icon && (
+            <Icon
+              name={option.icon}
+              size="none"
+              class="segment-icon"
+              aria-hidden="true"
+            />
+          )}
+          {option.label && !iconOnly && <span class="segment-label">{option.label}</span>}
+        </span>
+      </label>
+    ))}
   </div>
 </fieldset>
 

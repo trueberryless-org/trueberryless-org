@@ -33,21 +33,19 @@ const fieldId = htmlAttributes.id || `slider-${crypto.randomUUID()}`;
       />
       <span class="slider-track"></span>
     </span>
-    {
-      label && (
-        <span class="slider-label">
-          {label}
-          {required && (
-            <span
-              class="slider-required"
-              aria-label="required"
-            >
-              *
-            </span>
-          )}
-        </span>
-      )
-    }
+    {label && (
+      <span class="slider-label">
+        {label}
+        {required && (
+          <span
+            class="slider-required"
+            aria-label="required"
+          >
+            *
+          </span>
+        )}
+      </span>
+    )}
   </label>
 </div>
 

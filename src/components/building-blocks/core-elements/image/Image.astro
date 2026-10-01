@@ -151,38 +151,36 @@ if (
       background && "background",
     ]}
   >
-    {
-      shouldRenderOptimizedPicture ? (
-        <Picture
-          src={imageSrc}
+    {shouldRenderOptimizedPicture ? (
+      <Picture
+        src={imageSrc}
+        alt={normalizedAlt}
+        widths={filteredWidths}
+        sizes={sizes}
+        formats={["webp"]}
+        width={finalWidth}
+        height={finalHeight}
+        fit={useFit}
+        position={usePosition}
+        loading={priority ? "eager" : "lazy"}
+        decoding={priority ? "sync" : "async"}
+        fetchpriority={priority ? "high" : undefined}
+        {...dataAttributes}
+      />
+    ) : (
+      <picture>
+        <img
+          src={source}
           alt={normalizedAlt}
-          widths={filteredWidths}
-          sizes={sizes}
-          formats={["webp"]}
-          width={finalWidth}
-          height={finalHeight}
-          fit={useFit}
-          position={usePosition}
           loading={priority ? "eager" : "lazy"}
           decoding={priority ? "sync" : "async"}
           fetchpriority={priority ? "high" : undefined}
+          width={width}
+          height={height}
           {...dataAttributes}
         />
-      ) : (
-        <picture>
-          <img
-            src={source}
-            alt={normalizedAlt}
-            loading={priority ? "eager" : "lazy"}
-            decoding={priority ? "sync" : "async"}
-            fetchpriority={priority ? "high" : undefined}
-            width={width}
-            height={height}
-            {...dataAttributes}
-          />
-        </picture>
-      )
-    }
+      </picture>
+    )}
   </div>
 </div>
 

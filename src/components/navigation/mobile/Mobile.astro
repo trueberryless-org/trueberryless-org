@@ -54,6 +54,7 @@ function createNavItemData(item, level, parentGroupId) {
 <label
   for={toggleId}
   class="nav-hamburger mobile-button"
+  role="button"
   aria-label="Toggle navigation menu"
   tabindex="0"
 >
@@ -88,6 +89,7 @@ function createNavItemData(item, level, parentGroupId) {
     <label
       for={toggleId}
       class="mobile-close mobile-button"
+      role="button"
       aria-label="Close navigation menu"
       tabindex="0"
     >
@@ -104,142 +106,140 @@ function createNavItemData(item, level, parentGroupId) {
 
   <div class="mobile-content">
     <ul class="mobile-list">
-      {
-        navData.map((item) => {
-          const itemData = createNavItemData(item, "top");
+      {navData.map((item) => {
+        const itemData = createNavItemData(item, "top");
 
-          if (!itemData.hasChildren) {
-            return (
-              <li class="nav-item">
-                <a
-                  href={itemData.path}
-                  aria-current={itemData.isCurrent ? "page" : undefined}
-                >
-                  {itemData.name}
-                </a>
-              </li>
-            );
-          }
-
+        if (!itemData.hasChildren) {
           return (
-            <li class="nav-item has-children">
-              <input
-                type="radio"
-                name={itemData.groupName}
-                id={itemData.dropdownId}
-                class="nav-item-toggle"
-                aria-expanded={itemData.hasCurrent}
-                aria-controls={itemData.contentId}
-                autocomplete="off"
-                checked={itemData.hasCurrent}
-              />
-              <label
-                for={itemData.dropdownId}
-                class="nav-item-trigger"
-                role="button"
-                aria-controls={itemData.contentId}
-                tabindex="0"
+            <li class="nav-item">
+              <a
+                href={itemData.path}
                 aria-current={itemData.isCurrent ? "page" : undefined}
               >
                 {itemData.name}
-                <span class="nav-item-icon">
-                  <Icon
-                    name="chevron-right"
-                    size="none"
-                    aria-hidden="true"
-                  />
-                </span>
-              </label>
-              <div
-                id={itemData.contentId}
-                class="nav-item-content"
-                role="region"
-                aria-label={`${itemData.name} submenu`}
-                aria-hidden={!itemData.hasCurrent}
-              >
-                <ul class="nav-list">
-                  {itemData.children!.map((child) => {
-                    const childData = createNavItemData(child, "child", itemData.parentGroupId);
+              </a>
+            </li>
+          );
+        }
 
-                    if (!childData.hasChildren) {
-                      return (
-                        <li class="nav-item">
-                          <a
-                            href={childData.path}
-                            aria-current={childData.isCurrent ? "page" : undefined}
-                          >
-                            {childData.name}
-                          </a>
-                        </li>
-                      );
-                    }
+        return (
+          <li class="nav-item has-children">
+            <input
+              type="radio"
+              name={itemData.groupName}
+              id={itemData.dropdownId}
+              class="nav-item-toggle"
+              aria-expanded={itemData.hasCurrent}
+              aria-controls={itemData.contentId}
+              autocomplete="off"
+              checked={itemData.hasCurrent}
+            />
+            <label
+              for={itemData.dropdownId}
+              class="nav-item-trigger"
+              role="button"
+              aria-controls={itemData.contentId}
+              tabindex="0"
+              aria-current={itemData.isCurrent ? "page" : undefined}
+            >
+              {itemData.name}
+              <span class="nav-item-icon">
+                <Icon
+                  name="chevron-right"
+                  size="none"
+                  aria-hidden="true"
+                />
+              </span>
+            </label>
+            <div
+              id={itemData.contentId}
+              class="nav-item-content"
+              role="region"
+              aria-label={`${itemData.name} submenu`}
+              aria-hidden={!itemData.hasCurrent}
+            >
+              <ul class="nav-list">
+                {itemData.children!.map((child) => {
+                  const childData = createNavItemData(child, "child", itemData.parentGroupId);
 
+                  if (!childData.hasChildren) {
                     return (
-                      <li class="nav-item has-children">
-                        <input
-                          type="radio"
-                          name={childData.groupName}
-                          id={childData.dropdownId}
-                          class="nav-item-toggle"
-                          aria-expanded={childData.hasCurrent}
-                          aria-controls={childData.contentId}
-                          autocomplete="off"
-                          checked={childData.hasCurrent}
-                        />
-                        <label
-                          for={childData.dropdownId}
-                          class="nav-item-trigger"
-                          role="button"
-                          aria-controls={childData.contentId}
-                          tabindex="0"
+                      <li class="nav-item">
+                        <a
+                          href={childData.path}
                           aria-current={childData.isCurrent ? "page" : undefined}
                         >
                           {childData.name}
-                          <span class="nav-item-icon">
-                            <Icon
-                              name="chevron-right"
-                              size="none"
-                              aria-hidden="true"
-                            />
-                          </span>
-                        </label>
-                        <div
-                          id={childData.contentId}
-                          class="nav-item-content"
-                          role="region"
-                          aria-label={`${childData.name} submenu`}
-                          aria-hidden={!childData.hasCurrent}
-                        >
-                          <ul class="nav-list">
-                            {childData.children!.map((grandChild) => {
-                              const grandChildData = createNavItemData(
-                                grandChild,
-                                "child",
-                                childData.parentGroupId
-                              );
-
-                              return (
-                                <li class="nav-item">
-                                  <a
-                                    href={grandChildData.path}
-                                    aria-current={grandChildData.isCurrent ? "page" : undefined}
-                                  >
-                                    {grandChildData.name}
-                                  </a>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </div>
+                        </a>
                       </li>
                     );
-                  })}
-                </ul>
-              </div>
-            </li>
-          );
-        })
-      }
+                  }
+
+                  return (
+                    <li class="nav-item has-children">
+                      <input
+                        type="radio"
+                        name={childData.groupName}
+                        id={childData.dropdownId}
+                        class="nav-item-toggle"
+                        aria-expanded={childData.hasCurrent}
+                        aria-controls={childData.contentId}
+                        autocomplete="off"
+                        checked={childData.hasCurrent}
+                      />
+                      <label
+                        for={childData.dropdownId}
+                        class="nav-item-trigger"
+                        role="button"
+                        aria-controls={childData.contentId}
+                        tabindex="0"
+                        aria-current={childData.isCurrent ? "page" : undefined}
+                      >
+                        {childData.name}
+                        <span class="nav-item-icon">
+                          <Icon
+                            name="chevron-right"
+                            size="none"
+                            aria-hidden="true"
+                          />
+                        </span>
+                      </label>
+                      <div
+                        id={childData.contentId}
+                        class="nav-item-content"
+                        role="region"
+                        aria-label={`${childData.name} submenu`}
+                        aria-hidden={!childData.hasCurrent}
+                      >
+                        <ul class="nav-list">
+                          {childData.children!.map((grandChild) => {
+                            const grandChildData = createNavItemData(
+                              grandChild,
+                              "child",
+                              childData.parentGroupId
+                            );
+
+                            return (
+                              <li class="nav-item">
+                                <a
+                                  href={grandChildData.path}
+                                  aria-current={grandChildData.isCurrent ? "page" : undefined}
+                                >
+                                  {grandChildData.name}
+                                </a>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </li>
+        );
+      })}
     </ul>
   </div>
 </nav>

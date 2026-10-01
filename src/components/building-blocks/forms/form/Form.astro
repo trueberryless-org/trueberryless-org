@@ -32,14 +32,12 @@ if (!_component && !hasFormBlocks && !usesFormBlocks) return;
 >
   <div {...arrayDataAttributes}>
     <slot>
-      {
-        formBlocks && (
-          <RenderBlock
-            contentSections={formBlocks}
-            useDefaultEditableBinding={!!effectiveChildrenProp}
-          />
-        )
-      }
+      {formBlocks && (
+        <RenderBlock
+          contentSections={formBlocks}
+          useDefaultEditableBinding={!!effectiveChildrenProp}
+        />
+      )}
     </slot>
   </div>
 </form>

@@ -18,41 +18,39 @@ const {
 const hasSlot = Astro.slots.has("default");
 ---
 
-{
-  hasSlot ? (
-    <Button
-      element="button"
-      type="submit"
-      text={text}
-      variant={variant}
-      size={size}
-      iconName={iconName}
-      iconPosition={iconPosition}
-      hideText={hideText}
-      disabled={disabled}
-      data-prop="text"
-      class:list={["submit", className]}
-      {...htmlAttributes}
-    >
-      <slot />
-    </Button>
-  ) : (
-    <Button
-      element="button"
-      type="submit"
-      text={text}
-      variant={variant}
-      size={size}
-      iconName={iconName}
-      iconPosition={iconPosition}
-      hideText={hideText}
-      disabled={disabled}
-      data-prop="text"
-      class:list={["submit", className]}
-      {...htmlAttributes}
-    />
-  )
-}
+{hasSlot ? (
+  <Button
+    element="button"
+    type="submit"
+    text={text}
+    variant={variant}
+    size={size}
+    iconName={iconName}
+    iconPosition={iconPosition}
+    hideText={hideText}
+    disabled={disabled}
+    data-prop="text"
+    class:list={["submit", className]}
+    {...htmlAttributes}
+  >
+    <slot />
+  </Button>
+) : (
+  <Button
+    element="button"
+    type="submit"
+    text={text}
+    variant={variant}
+    size={size}
+    iconName={iconName}
+    iconPosition={iconPosition}
+    hideText={hideText}
+    disabled={disabled}
+    data-prop="text"
+    class:list={["submit", className]}
+    {...htmlAttributes}
+  />
+)}
 
 <style>
   @layer components {

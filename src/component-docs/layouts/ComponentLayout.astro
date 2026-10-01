@@ -48,53 +48,45 @@ const processedExamples = frontmatterExamples.map((exampleConfig: any) => {
   <h1>{frontmatter.title}</h1>
   <p>{meta.description}</p>
 
-  {
-    primaryExample && (
-      <ComponentViewer
-        component_examples={[primaryExample]}
-        title={meta.title}
-        componentKey={componentKey}
-      />
-    )
-  }
+  {primaryExample && (
+    <ComponentViewer
+      component_examples={[primaryExample]}
+      title={meta.title}
+      componentKey={componentKey}
+    />
+  )}
 
-  {
-    overviewHtml && (
-      <>
-        <h2>Overview</h2>
-        <div set:html={overviewHtml} />
-      </>
-    )
-  }
+  {overviewHtml && (
+    <>
+      <h2>Overview</h2>
+      <div set:html={overviewHtml} />
+    </>
+  )}
 
   <h2>Properties</h2>
   <ComponentProperties configData={configData} />
 
-  {
-    frontmatter.slots && (
-      <>
-        <h2>Slots</h2>
-        <ComponentSlots slotData={frontmatter.slots} />
-      </>
-    )
-  }
+  {frontmatter.slots && (
+    <>
+      <h2>Slots</h2>
+      <ComponentSlots slotData={frontmatter.slots} />
+    </>
+  )}
   {processedExamples.length > 0 && <h2>Examples</h2>}
 
-  {
-    processedExamples.map((exampleGroup: any) => (
-      <>
-        <h3>{exampleGroup.title}</h3>
-        {exampleGroup.examples.length > 0 && (
-          <ComponentViewer
-            component_examples={exampleGroup.examples}
-            title={exampleGroup.title}
-            size={exampleGroup.size}
-            componentKey={componentKey}
-          />
-        )}
-      </>
-    ))
-  }
+  {processedExamples.map((exampleGroup: any) => (
+    <>
+      <h3>{exampleGroup.title}</h3>
+      {exampleGroup.examples.length > 0 && (
+        <ComponentViewer
+          component_examples={exampleGroup.examples}
+          title={exampleGroup.title}
+          size={exampleGroup.size}
+          componentKey={componentKey}
+        />
+      )}
+    </>
+  ))}
 
   <slot />
 </LibraryLayout>

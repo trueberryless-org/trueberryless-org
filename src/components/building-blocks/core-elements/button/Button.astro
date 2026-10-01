@@ -57,16 +57,14 @@ if (!_component && !hasText && !hasSlotContent && !hasIcon) return;
       name={iconName}
       size="none"
     />
-    {
-      !hideText && (
-        <span
-          class="label-text"
-          {...textDataAttributes}
-        >
-          <slot>{text}</slot>
-        </span>
-      )
-    }
+    {!hideText && (
+      <span
+        class="label-text"
+        {...textDataAttributes}
+      >
+        <slot>{text}</slot>
+      </span>
+    )}
   </Tag>
 </span>
 

@@ -38,9 +38,7 @@ if (!_component && ((!hasTitle && !hasTitleSlotContent) || (!hasText && !hasSlot
     {...titleDataAttributes}
   >
     <span {...titleDataAttributes}>
-      <slot name="title">
-        {title}
-      </slot>
+      <slot name="title">{title}</slot>
     </span>
   </dt>
   <dd
@@ -48,9 +46,7 @@ if (!_component && ((!hasTitle && !hasTitleSlotContent) || (!hasText && !hasSlot
     role="definition"
   >
     <span {...contentDataAttributes}>
-      <slot>
-        {text}
-      </slot>
+      <slot>{text}</slot>
     </span>
   </dd>
 </div>

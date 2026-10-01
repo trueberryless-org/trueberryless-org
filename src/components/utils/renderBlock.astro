@@ -35,26 +35,24 @@ Object.entries(componentImports).forEach(([path, obj]) => {
 const { contentSections, useDefaultEditableBinding = true } = Astro.props;
 ---
 
-{
-  // Array-level editable attributes are owned by the caller's container element.
-  // This utility only resolves blocks and marks each rendered block as an array item.
-  contentSections?.map((block) => {
-    const Component = components[block._component];
+{// Array-level editable attributes are owned by the caller's container element.
+// This utility only resolves blocks and marks each rendered block as an array item.
+contentSections?.map((block) => {
+  const Component = components[block._component];
 
-    if (!Component && block._component) {
-      console.warn(
-        `Component not found: ${block._component}. Available components:`,
-        Object.keys(components)
-      );
-    }
+  if (!Component && block._component) {
+    console.warn(
+      `Component not found: ${block._component}. Available components:`,
+      Object.keys(components)
+    );
+  }
 
-    return Component ? (
-      <Component
-        data-editable={useDefaultEditableBinding ? "array-item" : undefined}
-        data-id={block._component}
-        {...block}
-        useDefaultEditableBinding={useDefaultEditableBinding}
-      />
-    ) : null;
-  })
-}
+  return Component ? (
+    <Component
+      data-editable={useDefaultEditableBinding ? "array-item" : undefined}
+      data-id={block._component}
+      {...block}
+      useDefaultEditableBinding={useDefaultEditableBinding}
+    />
+  ) : null;
+})}

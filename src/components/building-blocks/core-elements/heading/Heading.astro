@@ -38,36 +38,30 @@ if (!_component && !hasText && !hasSlotContent) return;
   {...htmlAttributes}
 >
   <span class:list={["heading-inner", size && `size-${size}`, `align-${alignX}`]}>
-    {
-      iconPosition == "before" && (
-        <Icon
-          name={iconName}
-          size="none"
-          class="heading-icon"
-          aria-hidden="true"
-          role="presentation"
-        />
-      )
-    }
+    {iconPosition == "before" && (
+      <Icon
+        name={iconName}
+        size="none"
+        class="heading-icon"
+        aria-hidden="true"
+        role="presentation"
+      />
+    )}
     <span
       class="heading-text"
       {...textDataAttributes}
     >
-      <slot>
-        {text && <Fragment set:html={MarkdownText} />}
-      </slot>
+      <slot>{text && <Fragment set:html={MarkdownText} />}</slot>
     </span>
-    {
-      iconPosition === "after" && (
-        <Icon
-          name={iconName}
-          size="none"
-          class="heading-icon heading-icon-after"
-          aria-hidden="true"
-          role="presentation"
-        />
-      )
-    }
+    {iconPosition === "after" && (
+      <Icon
+        name={iconName}
+        size="none"
+        class="heading-icon heading-icon-after"
+        aria-hidden="true"
+        role="presentation"
+      />
+    )}
   </span>
 </Tag>
 

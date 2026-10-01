@@ -6,7 +6,7 @@ import Divider from "@core-elements/divider/Divider.astro";
 import Image from "@core-elements/image/Image.astro";
 import Text from "@core-elements/text/Text.astro";
 import ButtonGroup from "@wrappers/button-group/ButtonGroup.astro";
-import type { SocialLink } from "../../../../types";
+import type { SocialLink } from "../../../types";
 
 const {
   links = [],
@@ -44,21 +44,19 @@ const {
           alignX="end"
           useDefaultEditableBinding={false}
         >
-          {
-            socials.map((social) => (
-              <Button
-                variant="ghost"
-                size="lg"
-                iconName={social.icon}
-                link={social.link}
-                hideText="true"
-                aria-label={social.label || `Visit our ${social.icon.replace(/^.*\//, "")} page`}
-                target="_blank"
-                rel="noopener noreferrer"
-                useDefaultEditableBinding={false}
-              />
-            ))
-          }
+          {socials.map((social) => (
+            <Button
+              variant="ghost"
+              size="lg"
+              iconName={social.icon}
+              link={social.link}
+              hideText="true"
+              aria-label={social.label || `Visit our ${social.icon.replace(/^.*\//, "")} page`}
+              target="_blank"
+              rel="noopener noreferrer"
+              useDefaultEditableBinding={false}
+            />
+          ))}
         </ButtonGroup>
       </div>
     </div>

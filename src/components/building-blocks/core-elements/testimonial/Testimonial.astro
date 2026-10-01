@@ -46,9 +46,7 @@ const authorDescriptionDataAttributes = effectiveAuthorDescProp
       class="quote"
       {...textDataAttributes}
     >
-      <slot>
-        {text && <Fragment set:html={MarkdownText} />}
-      </slot>
+      <slot>{text && <Fragment set:html={MarkdownText} />}</slot>
     </div>
     <div class="author">
       <Image
@@ -67,19 +65,17 @@ const authorDescriptionDataAttributes = effectiveAuthorDescProp
         >
           {authorName}
         </strong>
-        {
-          authorDescription && (
-            <>
-              <br />
-              <span
-                class="description"
-                {...authorDescriptionDataAttributes}
-              >
-                {authorDescription}
-              </span>
-            </>
-          )
-        }
+        {authorDescription && (
+          <>
+            <br />
+            <span
+              class="description"
+              {...authorDescriptionDataAttributes}
+            >
+              {authorDescription}
+            </span>
+          </>
+        )}
       </cite>
     </div>
   </div>

@@ -18,24 +18,22 @@ const fieldId = htmlAttributes.id || `select-${crypto.randomUUID()}`;
 ---
 
 <div class:list={["select", className]}>
-  {
-    label && (
-      <label
-        for={fieldId}
-        class="label"
-      >
-        {label}
-        {required && (
-          <span
-            class="select-required"
-            aria-label="required"
-          >
-            *
-          </span>
-        )}
-      </label>
-    )
-  }
+  {label && (
+    <label
+      for={fieldId}
+      class="label"
+    >
+      {label}
+      {required && (
+        <span
+          class="select-required"
+          aria-label="required"
+        >
+          *
+        </span>
+      )}
+    </label>
+  )}
   <select
     name={name}
     id={fieldId}
@@ -44,29 +42,25 @@ const fieldId = htmlAttributes.id || `select-${crypto.randomUUID()}`;
     class="field"
     {...htmlAttributes}
   >
-    {
-      placeholder && (
-        <option
-          value=""
-          disabled
-        >
-          {placeholder}
-        </option>
-      )
-    }
-    {
-      options.length > 0 ? (
-        options.map((option) => (
-          <SelectOption
-            value={option.value}
-            label={option.label}
-            selected={option.value === value}
-          />
-        ))
-      ) : (
-        <slot />
-      )
-    }
+    {placeholder && (
+      <option
+        value=""
+        disabled
+      >
+        {placeholder}
+      </option>
+    )}
+    {options.length > 0 ? (
+      options.map((option) => (
+        <SelectOption
+          value={option.value}
+          label={option.label}
+          selected={option.value === value}
+        />
+      ))
+    ) : (
+      <slot />
+    )}
   </select>
 </div>
 

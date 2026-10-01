@@ -26,10 +26,10 @@ To get this "locomotive" running locally:
 git clone https://github.com/trueberryless-org/trueberryless-org
 
 # Install dependencies
-npm install
+pnpm install
 
 # Start the engine
-npm run dev
+pnpm dev
 ```
 
 Your site is now running at `http://localhost:4321`.
@@ -63,14 +63,28 @@ src/
 
 | Command                      | Description                                |
 | ---------------------------- | ------------------------------------------ |
-| `npm run dev`                | Start the development server               |
-| `npm run build`              | Production build (Excludes component docs) |
-| `npm run build:with-library` | Production build (Includes component docs) |
+| `pnpm dev`                   | Start the development server               |
+| `pnpm build`                 | Production build (Excludes component docs) |
+| `pnpm build:with-library` | Production build (Includes component docs) |
+
+### Quality checks
+
+| Command             | Description                                                              |
+| ------------------- | ------------------------------------------------------------------------ |
+| `pnpm check`        | Sync content collections and validate them against their schemas         |
+| `pnpm lint`         | Lint scripts with oxlint and styles with stylelint                       |
+| `pnpm format:check` | Check formatting with Prettier                                           |
+| `pnpm knip`         | Find unused files and dependencies                                       |
+| `pnpm test`         | Unit tests with Vitest                                                   |
+| `pnpm test:e2e`     | Build, then run the Playwright end-to-end tests against the landing page |
+
 
 ## 🤝 Contributions & Maintenance
 
-This organization is maintained by [trueberryless](https://trueberryless.org). We are always looking for contributors to help maintain and scale our ecosystem. Whether you are fixing a bug in a Starlight plugin or improving a component wagon, your help keeps this project on the right track.
+This organization is maintained by [trueberryless](https://felixs.dev). We are always looking for contributors to help maintain and scale our ecosystem. Whether you are fixing a bug in a Starlight plugin or improving a component wagon, your help keeps this project on the right track.
 
-## 📜 License
+## License
 
-This project is licensed under the [MIT License](https://github.com/trueberryless-org/trueberryless-org/blob/main/LICENSE).
+Licensed under the MIT license, Copyright © trueberryless.
+
+See [LICENSE](https://github.com/trueberryless-org/trueberryless-org/blob/main/LICENSE) for more information.

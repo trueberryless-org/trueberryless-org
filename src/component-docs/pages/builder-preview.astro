@@ -37,17 +37,15 @@ if (Astro.request.url) {
     </style>
   </head>
   <body style="margin: 0;">
-    {
-      contentSections.length > 0 ? (
-        <Component
-          contentSections={contentSections}
-          useDefaultEditableBinding={false}
-        />
-      ) : (
-        <p style="color: #94a3b8; padding: 2rem; text-align: center;">
-          Preview will appear here when you add components.
-        </p>
-      )
-    }
+    {contentSections.length > 0 ? (
+      <Component
+        contentSections={contentSections}
+        useDefaultEditableBinding={false}
+      />
+    ) : (
+      <p style="color: #94a3b8; padding: 2rem; text-align: center;">
+        Preview will appear here when you add components.
+      </p>
+    )}
   </body>
 </html>

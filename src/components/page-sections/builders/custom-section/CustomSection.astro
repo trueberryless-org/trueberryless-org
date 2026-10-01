@@ -61,11 +61,9 @@ const arrayDataAttributes =
       positionHorizontal={positionHorizontal}
       background={true}
     />
-    {
-      backgroundColor && (
-        <div class:list={["background", backgroundColor && `bg-${backgroundColor}`]} />
-      )
-    }
+    {backgroundColor && (
+      <div class:list={["background", backgroundColor && `bg-${backgroundColor}`]} />
+    )}
 
     <div
       class:list={[
@@ -77,14 +75,12 @@ const arrayDataAttributes =
       {...arrayDataAttributes}
     >
       <slot>
-        {
-          contentSections && (
-            <Component
-              contentSections={contentSections}
-              useDefaultEditableBinding={!!effectiveChildrenProp}
-            />
-          )
-        }
+        {contentSections && (
+          <Component
+            contentSections={contentSections}
+            useDefaultEditableBinding={!!effectiveChildrenProp}
+          />
+        )}
       </slot>
     </div>
   </div>

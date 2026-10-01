@@ -27,20 +27,16 @@ const textDataAttributes = effectiveDataProp
   {...htmlAttributes}
 >
   <span class:list={["item-inner", showIcon && iconName && "list-item-has-icon"]}>
-    {
-      showIcon && iconName && (
-        <Icon
-          name={iconName}
-          color={iconColor}
-          size="none"
-          class="list-icon"
-          aria-hidden="true"
-        />
-      )
-    }
-    <p {...textDataAttributes}>
-      {text ? <Fragment set:html={md.renderInline(text)} /> : <slot />}
-    </p>
+    {showIcon && iconName && (
+      <Icon
+        name={iconName}
+        color={iconColor}
+        size="none"
+        class="list-icon"
+        aria-hidden="true"
+      />
+    )}
+    <p {...textDataAttributes}>{text ? <Fragment set:html={md.renderInline(text)} /> : <slot />}</p>
   </span>
 </li>
 

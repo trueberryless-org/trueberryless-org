@@ -83,17 +83,15 @@ if (!_component && !hasSlides && !hasSlotContent) return;
         {...arrayDataAttributes}
       >
         <slot>
-          {
-            slides?.map((slide: SlideProps, index: number) => (
-              <CarouselSlide
-                {...slide}
-                data-editable="array-item"
-                data-id="building-blocks/wrappers/carousel/carousel-slide"
-                useDefaultEditableBinding={!!effectiveChildrenProp}
-                aria-label={`Slide ${index + 1} of ${slides.length}`}
-              />
-            ))
-          }
+          {slides?.map((slide: SlideProps, index: number) => (
+            <CarouselSlide
+              {...slide}
+              data-editable="array-item"
+              data-id="building-blocks/wrappers/carousel/carousel-slide"
+              useDefaultEditableBinding={!!effectiveChildrenProp}
+              aria-label={`Slide ${index + 1} of ${slides.length}`}
+            />
+          ))}
         </slot>
       </div>
     </div>

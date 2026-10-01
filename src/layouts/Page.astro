@@ -55,17 +55,15 @@ const sections = frontmatter?.pageSections ?? [];
   <MainNavigation {...mainNav} />
 
   <main>
-    {
-      sections.length > 0 && (
-        <div
-          data-editable="component"
-          data-component="utils/main-component"
-          data-prop-sections="pageSections"
-        >
-          <MainComponent sections={sections} />
-        </div>
-      )
-    }
+    {sections.length > 0 && (
+      <div
+        data-editable="component"
+        data-component="utils/main-component"
+        data-prop-sections="pageSections"
+      >
+        <MainComponent sections={sections} />
+      </div>
+    )}
     <slot />
   </main>
   <Footer {...footer} />

@@ -64,31 +64,29 @@ const {
       class="train-features-grid"
       data-children-prop="features"
     >
-      {
-        features.map((feature: FeatureItem & { link?: string }) => (
-          <a
-            href={feature.link}
-            class="train-feature-card-link"
-            style="text-decoration: none; color: inherit;"
+      {features.map((feature: FeatureItem & { link?: string }) => (
+        <a
+          href={feature.link}
+          class="train-feature-card-link"
+          style="text-decoration: none; color: inherit;"
+        >
+          <div
+            class="train-feature-card"
+            data-editable="array-item"
           >
-            <div
-              class="train-feature-card"
-              data-editable="array-item"
-            >
-              <div class="train-feature-icon">
-                <Fragment
-                  set:html={
-                    feature.icon ||
-                    `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="var(--blue-100)"/><path d="M16 8l6 10H10l6-10z" fill="var(--blue-500)"/></svg>`
-                  }
-                />
-              </div>
-              <h3 class="train-feature-title">{feature.title}</h3>
-              <p class="train-feature-desc">{feature.description}</p>
+            <div class="train-feature-icon">
+              <Fragment
+                set:html={
+                  feature.icon ||
+                  `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="var(--blue-100)"/><path d="M16 8l6 10H10l6-10z" fill="var(--blue-500)"/></svg>`
+                }
+              />
             </div>
-          </a>
-        ))
-      }
+            <h3 class="train-feature-title">{feature.title}</h3>
+            <p class="train-feature-desc">{feature.description}</p>
+          </div>
+        </a>
+      ))}
     </div>
 
     <!-- Mobile floating yellow wagon (absolute positioned decoration) -->

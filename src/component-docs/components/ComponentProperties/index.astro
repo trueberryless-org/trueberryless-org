@@ -246,68 +246,66 @@ const properties: PropertyMeta[] = configData ? parseConfigProperties(configData
 ---
 
 <div class="properties">
-  {
-    properties.length > 0 ? (
-      properties.map((prop: PropertyMeta) => {
-        function renderProperty(prop: PropertyMeta) {
-          return (
-            <div class="property">
-              <h3>
-                <span class="property-name">{prop.name}</span>
-                <span class="property-type">
-                  {prop.type}
-                  {prop.default && prop.type !== "object" && ` | default: ${prop.default}`}
-                </span>
-              </h3>
-              {prop.description && <p>{prop.description}</p>}
+  {properties.length > 0 ? (
+    properties.map((prop: PropertyMeta) => {
+      function renderProperty(prop: PropertyMeta) {
+        return (
+          <div class="property">
+            <h3>
+              <span class="property-name">{prop.name}</span>
+              <span class="property-type">
+                {prop.type}
+                {prop.default && prop.type !== "object" && ` | default: ${prop.default}`}
+              </span>
+            </h3>
+            {prop.description && <p>{prop.description}</p>}
 
-              {prop.enumValues && prop.enumValues.length > 0 && (
-                <div class="enum-values">
-                  <strong>Accepted values:</strong>
-                  <ul>
-                    {prop.enumValues.map((value: string) => (
-                      <li>
-                        <code>{value}</code>
-                      </li>
-                    ))}
-                  </ul>
+            {prop.enumValues && prop.enumValues.length > 0 && (
+              <div class="enum-values">
+                <strong>Accepted values:</strong>
+                <ul>
+                  {prop.enumValues.map((value: string) => (
+                    <li>
+                      <code>{value}</code>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {prop.nestedProperties && prop.nestedProperties.length > 0 && (
+              <div class="nested-properties">
+                <strong>Properties:</strong>
+                <div class="nested-property-list">
+                  {prop.nestedProperties.map((nestedProp: PropertyMeta) =>
+                    renderProperty(nestedProp)
+                  )}
                 </div>
-              )}
+              </div>
+            )}
 
-              {prop.nestedProperties && prop.nestedProperties.length > 0 && (
-                <div class="nested-properties">
-                  <strong>Properties:</strong>
-                  <div class="nested-property-list">
-                    {prop.nestedProperties.map((nestedProp: PropertyMeta) =>
-                      renderProperty(nestedProp)
-                    )}
-                  </div>
+            {prop.arrayItemProperties && prop.arrayItemProperties.length > 0 && (
+              <div class="nested-properties">
+                <strong>Item Properties:</strong>
+                <div class="nested-property-list">
+                  {prop.arrayItemProperties.map((itemProp: PropertyMeta) =>
+                    renderProperty(itemProp)
+                  )}
                 </div>
-              )}
+              </div>
+            )}
+          </div>
+        );
+      }
 
-              {prop.arrayItemProperties && prop.arrayItemProperties.length > 0 && (
-                <div class="nested-properties">
-                  <strong>Item Properties:</strong>
-                  <div class="nested-property-list">
-                    {prop.arrayItemProperties.map((itemProp: PropertyMeta) =>
-                      renderProperty(itemProp)
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          );
-        }
-
-        return renderProperty(prop);
-      })
-    ) : (
-      <p>
-        No properties available. Make sure the component has a valid
-        .cloudcannon.structure-value.yml file.
-      </p>
-    )
-  }
+      return renderProperty(prop);
+    })
+  ) : (
+    <p>
+      No properties available. Make sure the component has a valid .cloudcannon.structure-value.yml
+      file.
+    </p>
+  )}
 </div>
 
 <style>

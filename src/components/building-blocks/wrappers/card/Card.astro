@@ -68,7 +68,7 @@ const usesAfterContentSections = !hasAfterSlot && showBeforeAfter && afterConten
   {...htmlAttributes}
 >
   <Tag
-    {...link && { href: link }}
+    {...(link && { href: link })}
     class:list={["card-inner", rounded && "rounded", border && "border"]}
     data-theme={colorScheme && colorScheme !== "inherit" ? colorScheme : undefined}
   >
@@ -82,32 +82,28 @@ const usesAfterContentSections = !hasAfterSlot && showBeforeAfter && afterConten
       positionHorizontal={positionHorizontal}
       background={true}
     />
-    {
-      backgroundColor && (
-        <div
-          aria-hidden="true"
-          class:list={["background", backgroundColor && `bg-${backgroundColor}`]}
-        />
-      )
-    }
+    {backgroundColor && (
+      <div
+        aria-hidden="true"
+        class:list={["background", backgroundColor && `bg-${backgroundColor}`]}
+      />
+    )}
 
-    {
-      (usesBeforeContentSections || hasBeforeSlot) && (
-        <div
-          class="before-content"
-          {...arrayDataAttributesBefore}
-        >
-          <slot name="before">
-            {beforeContentSections && (
-              <Component
-                contentSections={beforeContentSections}
-                useDefaultEditableBinding={!!effectiveBeforeProp}
-              />
-            )}
-          </slot>
-        </div>
-      )
-    }
+    {(usesBeforeContentSections || hasBeforeSlot) && (
+      <div
+        class="before-content"
+        {...arrayDataAttributesBefore}
+      >
+        <slot name="before">
+          {beforeContentSections && (
+            <Component
+              contentSections={beforeContentSections}
+              useDefaultEditableBinding={!!effectiveBeforeProp}
+            />
+          )}
+        </slot>
+      </div>
+    )}
 
     <div class="card-outer-content">
       <div
@@ -120,35 +116,31 @@ const usesAfterContentSections = !hasAfterSlot && showBeforeAfter && afterConten
         {...arrayDataAttributes}
       >
         <slot>
-          {
-            contentSections && (
-              <Component
-                contentSections={contentSections}
-                useDefaultEditableBinding={!!effectiveChildrenProp}
-              />
-            )
-          }
+          {contentSections && (
+            <Component
+              contentSections={contentSections}
+              useDefaultEditableBinding={!!effectiveChildrenProp}
+            />
+          )}
         </slot>
       </div>
     </div>
 
-    {
-      (usesAfterContentSections || hasAfterSlot) && (
-        <div
-          class="after-content"
-          {...arrayDataAttributesAfter}
-        >
-          <slot name="after">
-            {afterContentSections && (
-              <Component
-                contentSections={afterContentSections}
-                useDefaultEditableBinding={!!effectiveAfterProp}
-              />
-            )}
-          </slot>
-        </div>
-      )
-    }
+    {(usesAfterContentSections || hasAfterSlot) && (
+      <div
+        class="after-content"
+        {...arrayDataAttributesAfter}
+      >
+        <slot name="after">
+          {afterContentSections && (
+            <Component
+              contentSections={afterContentSections}
+              useDefaultEditableBinding={!!effectiveAfterProp}
+            />
+          )}
+        </slot>
+      </div>
+    )}
   </Tag>
 </div>
 

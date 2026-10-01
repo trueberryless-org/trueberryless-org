@@ -1,7 +1,13 @@
 {
   "extends": "stylelint-config-standard",
   "plugins": ["stylelint-order"],
-  "ignoreFiles": ["dist/**/*", "node_modules/**/*"],
+  "ignoreFiles": [
+    "dist/**/*",
+    "node_modules/**/*",
+    "coverage/**",
+    "playwright-report/**",
+    "test-results/**"
+  ],
   "rules": {
     "declaration-empty-line-before": null,
     "no-descending-specificity": null,

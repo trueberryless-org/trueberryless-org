@@ -34,9 +34,7 @@ if (!_component && !hasText && !hasSlotContent) return;
     class:list={["text-inner", `align-${alignX}`]}
     {...textDataAttributes}
   >
-    <slot>
-      {text && <Fragment set:html={markdownContent} />}
-    </slot>
+    <slot>{text && <Fragment set:html={markdownContent} />}</slot>
   </div>
 </div>
 
